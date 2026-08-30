@@ -1,0 +1,122 @@
+{
+  "groups": [
+    {
+      "title": "Specifications",
+      "description": "The NHCX specifications as published by the National Health Authority on nhcx.abdm.gov.in.",
+      "items": [
+        {
+          "title": "Implementation guide",
+          "description": "The open protocol: message envelope, API pattern, authentication and the onward and return journey of every use case.",
+          "url": "https://nhcx.abdm.gov.in/#/NHCX_Specifications/Implementation_Guide",
+          "type": "Web page"
+        },
+        {
+          "title": "Domain data models",
+          "description": "The HL7 FHIR R4 bundles for coverage eligibility, pre-authorisation, claim, payment notice and communication.",
+          "url": "https://nhcx.abdm.gov.in/#/NHCX_Specifications/Domain_Data_Models",
+          "type": "Web page"
+        },
+        {
+          "title": "Terminologies",
+          "description": "ICD-10, SNOMED CT and the national code directories used for coded values.",
+          "url": "https://nhcx.abdm.gov.in/#/NHCX_Specifications/Terminologies",
+          "type": "Web page"
+        },
+        {
+          "title": "Transport security",
+          "description": "TLS, JWS-signed API keys and JWE-encrypted payloads between participants and the exchange.",
+          "url": "https://nhcx.abdm.gov.in/#/NHCX_Specifications/Transport_Security",
+          "type": "Web page"
+        }
+      ]
+    },
+    {
+      "title": "Policies and guidelines",
+      "items": [
+        {
+          "title": "Guidelines for participant onboarding",
+          "description": "Who can join, the documents required, sandbox certification and the production onboarding steps.",
+          "url": "https://nhcx.abdm.gov.in/#/NHCX_Specifications/Guidlines_for_Participant_Onboarding",
+          "type": "Web page"
+        },
+        {
+          "title": "Guidelines for beneficiary authentication",
+          "description": "How providers and payers authenticate a beneficiary through ABHA.",
+          "url": "https://nhcx.abdm.gov.in/#/NHCX_Specifications/Guidlines_for_Beneficiary",
+          "type": "Web page"
+        },
+        {
+          "title": "Guidelines for grievance redressal",
+          "url": "https://nhcx.abdm.gov.in/#/NHCX_Specifications/Guidlines_for_Grievance_Redressal",
+          "type": "Web page"
+        },
+        {
+          "title": "Health care operation policy",
+          "url": "https://nhcx.abdm.gov.in/#/NHCX_Specifications/Health_Care_Operation_Policy",
+          "type": "Web page"
+        },
+        {
+          "title": "ABDM website policy",
+          "url": "https://abdm.gov.in/website-policy",
+          "type": "Web page"
+        },
+        {
+          "title": "ABDM terms and conditions",
+          "url": "https://abdm.gov.in/terms-condition",
+          "type": "Web page"
+        }
+      ]
+    },
+    {
+      "title": "Sandbox and developer resources",
+      "items": [
+        {
+          "title": "ABDM sandbox registration",
+          "description": "Register your organisation on the ABDM sandbox — the first step before NHCX integration.",
+          "url": "https://sandbox.abdm.gov.in/sandbox/v3/sandbox-registration",
+          "type": "Web page"
+        },
+        {
+          "title": "ABDM sandbox — getting started",
+          "url": "https://sandbox.abdm.gov.in/sandbox/v3/new-documentation?doc=getting-started",
+          "type": "Web page"
+        },
+        {
+          "title": "Milestone M1 (ABHA) integration",
+          "description": "Beneficiary authentication through ABHA — needed for production, not for sandbox testing.",
+          "url": "https://sandbox.abdm.gov.in/sandbox/v3/new-documentation?doc=Milestone_one",
+          "type": "Web page"
+        },
+        {
+          "title": "Postman collections",
+          "description": "Ready-made requests for the sandbox APIs.",
+          "url": "https://sandbox.abdm.gov.in/sandbox/v3/new-documentation?doc=postman_collections",
+          "type": "Web page"
+        },
+        {
+          "title": "Sandbox test cases",
+          "description": "The functional test cases to clear for sandbox certification.",
+          "url": "https://sandbox.abdm.gov.in/sandbox/v3/new-documentation?doc=TestCases",
+          "type": "Web page"
+        },
+        {
+          "title": "HCX sandbox documents and Swagger",
+          "description": "API documentation for the claim, pre-auth, coverage-eligibility, communication and participant services.",
+          "url": "https://hcxsbx.abdm.gov.in/#/documents",
+          "type": "Web page"
+        },
+        {
+          "title": "NHA-ABDM on GitHub",
+          "description": "Reference implementations and sample code from the National Health Authority.",
+          "url": "https://github.com/NHA-ABDM",
+          "type": "Repository"
+        },
+        {
+          "title": "ABDM sandbox webinars",
+          "url": "https://sandbox.abdm.gov.in/sandbox/v3/webinars",
+          "type": "Web page"
+        }
+      ]
+    }
+  ]
+}

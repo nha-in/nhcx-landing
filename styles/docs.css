@@ -1,0 +1,529 @@
+/*
+ * Documentation page — the corpus reader, and the assistant docked beside it.
+ *
+ * Loaded by app/documentation/page.tsx only, so the rest of the site does not
+ * carry it. Two halves:
+ *
+ *   1. the page furniture — chapter nav, reader column, on-this-page, chat dock
+ *   2. .markdown-body — GitHub's rendered-markdown rhythm, drawn with the
+ *      site's tokens (styles/globals.css), for the HTML lib/markdown produces
+ *
+ * The page scrolls as a document; the columns are sticky rather than
+ * independently scrolling, so the site's chrome and footer still behave the
+ * way they do everywhere else.
+ */
+
+/* ————— page furniture ————— */
+
+/*
+ * The site's <main> carries `overflow-x: hidden`, and a hidden overflow makes
+ * an element a scroll container — which leaves `position: sticky` inside it
+ * with nothing to stick to, so the chapter list scrolled away with the text.
+ * `clip` clips exactly the same way without creating that scroll container,
+ * which is what the rule wanted in the first place.
+ */
+main:has(.docs-shell) { overflow-x: clip; }
+
+.docs-shell {
+  --docs-top: calc(var(--nav-h) + 24px);
+  max-width: 1600px;
+  margin: 0 auto;
+  padding: 24px 24px 72px;
+  display: grid;
+  grid-template-columns: 258px minmax(0, 1fr);
+  gap: 40px;
+  align-items: start;
+}
+
+/* ————— chapter navigation ————— */
+.docs-nav {
+  position: sticky;
+  top: var(--docs-top);
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  max-height: calc(100vh - var(--docs-top) - 24px);
+  min-width: 0;
+}
+
+.docs-search { position: relative; }
+.docs-search input {
+  width: 100%;
+  height: 34px;
+  padding: 0 28px 0 12px;
+  border-radius: 6px;
+  border: 1px solid var(--line);
+  background: #ffffff;
+  font: 500 13px var(--sans);
+  color: var(--ink);
+}
+.docs-search input::placeholder { color: var(--ink-3); }
+.docs-search input:focus { border-color: var(--primary); outline: 2px solid var(--saffron); outline-offset: 1px; }
+.docs-search button {
+  position: absolute; right: 8px; top: 50%; transform: translateY(-50%);
+  border: none; background: none; cursor: pointer; font-size: 12px; color: var(--ink-3);
+}
+
+.docs-chapters { flex: 1; min-height: 0; overflow-y: auto; padding-right: 6px; scrollbar-width: thin; }
+.docs-chapter + .docs-chapter { margin-top: 18px; }
+.docs-chapter h4 {
+  margin: 0 0 7px;
+  padding: 4px 0 4px 9px;
+  border-left: 2px solid var(--primary);
+  font: 600 10px var(--mono);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--primary);
+}
+.docs-chapter ul { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 1px; }
+.docs-chapter a {
+  display: block;
+  padding: 5px 10px;
+  border-radius: 6px;
+  font-size: 13px;
+  line-height: 1.4;
+  color: var(--ink-3);
+}
+.docs-chapter a:hover { background: var(--ground-2); color: var(--ink); }
+.docs-chapter a[data-active='true'] {
+  font-weight: 600;
+  color: #ffffff;
+  background: var(--primary);
+}
+.docs-chapter a:focus-visible { outline: 2px solid var(--saffron); outline-offset: -2px; }
+.docs-nav-empty, .docs-nav-foot { margin: 0; font: 500 11px var(--mono); color: var(--ink-3); }
+.docs-nav-foot { padding-top: 10px; border-top: 1px solid var(--line); }
+
+/* ————— reader ————— */
+.docs-reader { min-width: 0; scroll-margin-top: var(--docs-top); }
+.docs-reader-inner { display: flex; gap: 34px; align-items: flex-start; }
+/* Without the assistant taking a column the reader would run the full width;
+   the cap keeps the line length in the range prose is actually readable at. */
+.docs-article { min-width: 0; flex: 1; max-width: 860px; }
+
+.docs-crumb {
+  display: flex; align-items: center; justify-content: space-between; gap: 16px;
+  margin-bottom: 20px;
+}
+.docs-crumb span { font: 500 11px var(--mono); letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-3); }
+.docs-crumb b { color: var(--primary); }
+.docs-crumb button {
+  height: 28px; padding: 0 11px; border-radius: 8px; cursor: pointer;
+  border: 1px solid var(--line); background: #ffffff;
+  font: 600 12px var(--sans); color: var(--ink-3);
+}
+.docs-crumb button:hover { color: var(--ink); }
+
+.docs-note { font-size: 14px; line-height: 1.6; color: var(--ink-3); }
+.docs-note p { margin: 0 0 10px; }
+.docs-note code { font: 500 12px var(--mono); padding: 1px 5px; border-radius: 5px; background: var(--ground-2); }
+
+.docs-pager {
+  margin-top: 56px; padding-top: 24px; border-top: 1px solid var(--line);
+  display: grid; grid-template-columns: 1fr 1fr; gap: 12px;
+}
+.docs-pager button {
+  display: flex; flex-direction: column; gap: 3px; cursor: pointer; text-align: left;
+  padding: 12px 14px; border-radius: var(--radius); border: 1px solid var(--line);
+  background: #ffffff;
+}
+.docs-pager button:hover { border-color: var(--primary-line); }
+.docs-pager button span { font: 600 11px var(--mono); color: var(--ink-3); }
+.docs-pager button b { font-size: 14px; font-weight: 600; color: var(--ink); }
+.docs-pager .docs-pager-next { text-align: right; }
+
+/* On this page — hidden when the dock would squeeze it out. */
+.docs-toc { display: none; width: 200px; flex: none; }
+.docs-toc > div { position: sticky; top: var(--docs-top); }
+.docs-toc p {
+  margin: 0 0 7px; padding-left: 10px;
+  font: 600 10px var(--mono); letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-3);
+}
+.docs-toc ul { list-style: none; margin: 0; padding: 0; border-left: 1px solid var(--line); max-height: calc(100vh - var(--docs-top) - 60px); overflow-y: auto; }
+.docs-toc a {
+  display: block; padding: 4px 10px; border-left: 2px solid transparent; margin-left: -1px;
+  font-size: 12px; line-height: 1.45; color: var(--ink-3);
+}
+.docs-toc a:hover { color: var(--ink); }
+.docs-toc a[data-active='true'] { color: var(--primary); border-left-color: var(--primary); font-weight: 600; }
+.docs-toc a[data-depth='3'] { padding-left: 22px; }
+.docs-toc a[data-depth='4'] { padding-left: 32px; }
+
+@media (min-width: 1180px) {
+  .docs-toc { display: block; }
+}
+
+/* ————— the assistant ————— *
+ * A bubble in the corner that expands into a floating panel, and expands
+ * again when an answer needs the room. It never takes a column from the
+ * reader: the documentation is what the page is for.
+ */
+.chat-bubble-launcher {
+  position: fixed; right: 24px; bottom: 24px; z-index: 60;
+  display: inline-flex; align-items: center; gap: 9px; cursor: pointer;
+  height: 48px; padding: 0 20px 0 14px; border-radius: 999px;
+  border: 1px solid var(--primary-line);
+  background: #ffffff;
+  font: 600 14px var(--sans); color: var(--primary);
+  transition: border-color 120ms ease;
+}
+.chat-bubble-launcher:hover { border-color: var(--primary); }
+.chat-bubble-glyph {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 26px; height: 26px; border-radius: 50%;
+  background: var(--primary);
+}
+.chat-bubble-glyph .chat-launcher-dot { box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.85); }
+.chat-bubble-label { white-space: nowrap; }
+
+.chat-launcher-dot { width: 8px; height: 8px; border-radius: 50%; background: #ffffff; flex: none; align-self: center; }
+.chat-launcher-dot[data-mode='unavailable'] { background: #f0c070; }
+.chat-launcher-dot[data-mode='unknown'] { background: rgba(255, 255, 255, 0.6); }
+/* In the panel header the dot sits on white, so it needs its own colour. */
+.chat-head-title .chat-launcher-dot { background: var(--primary); box-shadow: none; }
+.chat-head-title .chat-launcher-dot[data-mode='unavailable'] { background: #c2882a; }
+.chat-head-title .chat-launcher-dot[data-mode='unknown'] { background: var(--ink-3); }
+
+.chat-panel {
+  position: fixed; right: 24px; bottom: 24px; z-index: 60;
+  display: flex; flex-direction: column;
+  width: min(410px, calc(100vw - 48px));
+  height: min(640px, calc(100vh - 96px));
+  border-radius: var(--radius); border: 1px solid var(--line);
+  background: #ffffff;
+  box-shadow: 0 0 0 1px var(--line);
+  overflow: hidden;
+  animation: chatIn 160ms ease-out;
+}
+/* Expanded — for an answer with a table, a payload or a diagram in it. */
+.chat-panel[data-size='wide'] {
+  width: min(760px, calc(100vw - 48px));
+  height: min(880px, calc(100vh - 64px));
+}
+@keyframes chatIn {
+  from { opacity: 0; transform: translateY(10px) scale(0.985); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .chat-panel { animation: none; }
+  .chat-bubble-launcher { transition: none; }
+}
+
+.chat-head {
+  display: flex; align-items: center; justify-content: space-between; gap: 10px;
+  padding: 11px 10px 11px 14px; border-bottom: 1px solid var(--line);
+  background: var(--ground-2);
+}
+.chat-head-title { display: flex; align-items: baseline; gap: 7px; min-width: 0; }
+.chat-head-title b { font-size: 14px; font-weight: 600; white-space: nowrap; }
+/* The strapline is the first thing to go when the panel is narrow — the name
+   and the status dot are what have to survive. */
+.chat-head-title span { font: 500 11px var(--mono); color: var(--ink-3); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+@media (max-width: 460px) {
+  .chat-head-title span { display: none; }
+}
+.chat-head-actions { display: flex; align-items: center; gap: 2px; flex: none; }
+.chat-head-actions button {
+  height: 27px; min-width: 27px; padding: 0 8px; border-radius: 6px; cursor: pointer;
+  border: 1px solid transparent; background: none;
+  font: 600 12px var(--sans); color: var(--ink-3);
+}
+.chat-head-actions button:hover { color: var(--ink); border-color: var(--line); background: #ffffff; }
+
+.chat-transcript { flex: 1; min-height: 0; overflow-y: auto; padding: 16px 14px; display: flex; flex-direction: column; gap: 14px; scrollbar-width: thin; }
+.chat-turn { display: flex; }
+.chat-turn-user { justify-content: flex-end; }
+
+.chat-bubble {
+  min-width: 0; max-width: 100%;
+  padding: 10px 13px; border-radius: var(--radius);
+  border: 1px solid var(--line); background: var(--ground-2);
+  border-top-left-radius: 4px;
+}
+.chat-bubble-user {
+  max-width: 85%;
+  color: #fff; border: none;
+  background: var(--primary);
+  border-radius: var(--radius); border-top-right-radius: 4px;
+  font-size: 13.5px; line-height: 1.55; white-space: pre-wrap;
+}
+.chat-bubble[data-state='error'] { border-color: rgba(178, 44, 44, 0.3); background: rgba(178, 44, 44, 0.06); color: #8c2222; }
+.chat-bubble[data-state='blocked'] { border-color: rgba(194, 136, 42, 0.4); background: rgba(194, 136, 42, 0.08); }
+.chat-guardrail { margin: 0 0 5px; font: 700 10px var(--mono); letter-spacing: 0.08em; text-transform: uppercase; color: #8a5f12; }
+.chat-thinking { font-size: 13px; color: var(--ink-3); }
+
+.chat-suggestions { display: flex; flex-direction: column; gap: 7px; }
+.chat-panel[data-size='wide'] .chat-suggestions { display: grid; grid-template-columns: 1fr 1fr; }
+.chat-suggestions button {
+  text-align: left; cursor: pointer;
+  padding: 9px 11px; border-radius: var(--radius);
+  border: 1px solid var(--line); background: #ffffff;
+  font: 500 13px var(--sans); line-height: 1.45; color: var(--ink-3);
+}
+.chat-suggestions button:hover { border-color: var(--primary-line); color: var(--ink); }
+
+.chat-sources { margin-top: 10px; padding-top: 8px; border-top: 1px solid var(--line); }
+.chat-sources-label { margin: 0 0 6px; font: 700 9.5px var(--mono); letter-spacing: 0.09em; text-transform: uppercase; color: var(--ink-3); }
+.chat-source-chips { display: flex; flex-wrap: wrap; gap: 4px; }
+.chat-chip {
+  display: inline-block; max-width: 14rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  padding: 2px 7px; border-radius: 6px;
+  border: 1px solid var(--line); background: #ffffff;
+  font: 500 11px var(--sans); color: var(--ink-3);
+}
+.chat-chip-link:hover { border-color: var(--primary-line); color: var(--primary); }
+.chat-chip-more { cursor: pointer; border-style: dashed; }
+
+.chat-composer { flex: none; padding: 11px 12px 10px; border-top: 1px solid var(--line); background: var(--ground-2); }
+.chat-composer form { display: flex; align-items: flex-end; gap: 8px; }
+.chat-composer textarea {
+  flex: 1; min-width: 0; resize: none;
+  /* Two lines, so the placeholder is not sliced in half when it wraps. */
+  min-height: 58px; max-height: 140px; padding: 9px 11px;
+  border-radius: var(--radius); border: 1px solid var(--line); background: #ffffff;
+  font: 500 13px var(--sans); line-height: 1.45; color: var(--ink);
+}
+.chat-composer textarea::placeholder { color: var(--ink-3); }
+.chat-composer textarea:focus { border-color: var(--primary); outline: 2px solid var(--saffron); outline-offset: 1px; }
+.chat-composer .btn { flex: none; cursor: pointer; border-width: 1px; }
+.chat-composer .btn:disabled { opacity: 0.45; cursor: default; }
+.chat-footnote { margin: 6px 2px 0; font-size: 10px; line-height: 1.4; color: var(--ink-3); }
+
+.chat-offline {
+  display: flex; align-items: flex-start; gap: 8px; margin-bottom: 9px;
+  padding: 9px 10px; border-radius: var(--radius);
+  border: 1px solid rgba(194, 136, 42, 0.4); background: rgba(194, 136, 42, 0.08);
+}
+.chat-offline > div { min-width: 0; flex: 1; }
+.chat-offline b { font-size: 12px; font-weight: 600; }
+.chat-offline p { margin: 2px 0 0; font-size: 11.5px; line-height: 1.45; color: var(--ink-2); }
+.chat-offline code { display: block; margin-top: 3px; font: 500 10.5px var(--mono); color: var(--ink-2); overflow-wrap: anywhere; }
+.chat-offline button {
+  flex: none; cursor: pointer; height: 24px; padding: 0 9px; border-radius: 6px;
+  border: 1px solid var(--line); background: #ffffff;
+  font: 600 11px var(--sans); color: var(--ink-3);
+}
+
+/* ————— responsive ————— */
+@media (max-width: 1080px) {
+  .docs-shell { grid-template-columns: 1fr; gap: 24px; }
+  .docs-nav { position: static; max-height: none; }
+  .docs-chapters { max-height: 320px; }
+}
+@media (max-width: 620px) {
+  .chat-bubble-launcher { right: 16px; bottom: 16px; height: 44px; }
+  .chat-panel,
+  .chat-panel[data-size='wide'] {
+    right: 10px; left: 10px; bottom: 10px;
+    width: auto; height: min(78vh, 620px);
+  }
+}
+
+/* ————— rendered markdown ————— *
+ * Modelled on GitHub's rendered markdown — same rhythm, same table and code
+ * treatment, same alert styling — drawn with the landing palette.
+ */
+.markdown-body {
+  --md-flow: 1rem;
+  --md-code-bg: var(--ground-2);
+  --md-code-border: var(--line);
+
+  /* Code token palette. */
+  --tok-comment: #6b7790;
+  --tok-string: #1b5e8c;
+  --tok-number: #1f6f8f;
+  --tok-keyword: #9c2c5a;
+  --tok-type: #8a5f12;
+  --tok-func: #6b3ca8;
+  --tok-prop: #17627a;
+  --tok-var: #9a5314;
+  --tok-meta: #6b7790;
+  --tok-punct: #567;
+  --tok-ins: var(--green);
+  --tok-del: #a52a2a;
+
+  color: var(--ink);
+  font-size: 15px;
+  line-height: 1.72;
+  overflow-wrap: break-word;
+}
+.markdown-compact { --md-flow: 0.72rem; font-size: 13.5px; line-height: 1.62; }
+
+/* Flow */
+.markdown-body > *:first-child { margin-block-start: 0; }
+.markdown-body p,
+.markdown-body ul,
+.markdown-body ol,
+.markdown-body dl,
+.markdown-body blockquote,
+.markdown-body .md-code,
+.markdown-body .md-table-scroll,
+.markdown-body .md-alert,
+.markdown-body .md-figure,
+.markdown-body .md-mermaid,
+.markdown-body details { margin-block: var(--md-flow); }
+
+/* Headings */
+.markdown-body .md-heading {
+  position: relative;
+  font-weight: 600;
+  letter-spacing: -0.018em;
+  line-height: 1.3;
+  scroll-margin-top: calc(var(--docs-top, 84px) + 12px);
+  margin-block: 1.7em 0.6em;
+}
+.markdown-body h1.md-heading { font-size: 30px; margin-block-start: 0; padding-block-end: 0.32em; border-block-end: 1px solid var(--line); }
+.markdown-body h2.md-heading { font-size: 21px; padding-block-end: 0.28em; border-block-end: 1px solid var(--line-2); }
+.markdown-body h3.md-heading { font-size: 17px; }
+.markdown-body h4.md-heading { font-size: 15px; }
+.markdown-body h5.md-heading { font-size: 14px; }
+.markdown-body h6.md-heading { font-size: 13px; color: var(--ink-3); }
+
+.markdown-body .md-anchor {
+  position: absolute; inset-inline-start: -1.05em; inline-size: 1em;
+  text-align: center; color: var(--ink-3); opacity: 0; text-decoration: none;
+  transition: opacity 120ms ease;
+}
+.markdown-body .md-anchor::before { content: '#'; }
+.markdown-body .md-heading:hover .md-anchor,
+.markdown-body .md-anchor:focus-visible { opacity: 1; }
+
+/* Inline */
+.markdown-body strong { font-weight: 650; }
+.markdown-body del { color: var(--ink-3); }
+.markdown-body mark { background: var(--peach); border-radius: 3px; padding-inline: 0.15em; }
+.markdown-body .md-link {
+  color: var(--primary);
+  text-decoration: underline;
+  text-underline-offset: 0.18em;
+  text-decoration-thickness: 1px;
+  text-decoration-color: color-mix(in oklab, currentColor 40%, transparent);
+}
+.markdown-body .md-link:hover { text-decoration-color: currentColor; }
+.markdown-body .md-link-external::after { content: '↗'; font-size: 0.75em; margin-inline-start: 0.15em; vertical-align: super; opacity: 0.6; }
+
+.markdown-body kbd {
+  font: 500 0.75em var(--mono); padding: 0.15em 0.4em;
+  border: 1px solid var(--line); border-block-end-width: 2px; border-radius: 5px;
+  background: var(--ground-2);
+}
+.markdown-body :not(pre) > code {
+  font-family: var(--mono); font-size: 0.86em;
+  padding: 0.12em 0.36em; border-radius: 4px;
+  border: 1px solid var(--line-2); background: var(--ground-2); color: var(--ink);
+  white-space: break-spaces;
+}
+
+/* Lists */
+.markdown-body ul, .markdown-body ol { padding-inline-start: 1.55em; }
+.markdown-body ul { list-style: disc; }
+.markdown-body ul ul { list-style: circle; }
+.markdown-body ol { list-style: decimal; }
+.markdown-body li { margin-block: 0.28em; }
+.markdown-body li > ul, .markdown-body li > ol { margin-block: 0.28em; }
+.markdown-body li::marker { color: var(--ink-3); }
+.markdown-body .md-task-list { list-style: none; padding-inline-start: 0.25em; }
+.markdown-body li.md-task { list-style: none; }
+.markdown-body li.md-task input[type='checkbox'] { accent-color: var(--primary); inline-size: 0.95em; block-size: 0.95em; margin-inline-end: 0.35em; vertical-align: -0.1em; }
+.markdown-body li.md-task > p { display: inline; margin: 0; }
+
+/* Quotes and alerts */
+.markdown-body blockquote { padding-inline-start: 1em; border-inline-start: 0.24em solid var(--line); color: var(--ink-2); }
+.markdown-body blockquote > *:first-child { margin-block-start: 0; }
+.markdown-body blockquote > *:last-child { margin-block-end: 0; }
+
+.markdown-body .md-alert {
+  padding: 0.8rem 1rem;
+  border-inline-start: 0.24em solid var(--md-alert-color);
+  border-radius: 0 6px 6px 0;
+  background: color-mix(in oklab, var(--md-alert-color) 8%, transparent);
+}
+.markdown-body .md-alert > *:first-child { margin-block-start: 0; }
+.markdown-body .md-alert > *:last-child { margin-block-end: 0; }
+.markdown-body .md-alert-title {
+  font-weight: 650; font-size: 13px; color: var(--md-alert-color); margin-block-end: 0.3rem;
+}
+.markdown-body .md-alert-note { --md-alert-color: #1f6f8f; }
+.markdown-body .md-alert-tip { --md-alert-color: #1d7a4f; }
+.markdown-body .md-alert-important { --md-alert-color: #6b3ca8; }
+.markdown-body .md-alert-warning { --md-alert-color: #9a6a12; }
+.markdown-body .md-alert-caution { --md-alert-color: #a52a2a; }
+
+/* Mermaid diagrams — the source is the fallback, shown once drawing failed. */
+.markdown-body .md-mermaid {
+  border: 1px solid var(--md-code-border); border-radius: var(--radius);
+  background: var(--md-code-bg); overflow: hidden;
+}
+.markdown-body .md-mermaid-source {
+  display: none; margin: 0; padding: 0.9rem 1rem; overflow-x: auto;
+  font: 500 12px/1.6 var(--mono); color: var(--ink); white-space: pre;
+}
+.markdown-body .md-mermaid[data-state='error'] .md-mermaid-source { display: block; }
+/* Until it draws, the figure says so rather than showing a wall of syntax. */
+.markdown-body .md-mermaid[data-state='pending']::before {
+  content: 'drawing diagram…';
+  display: block; padding: 1.4rem 1rem; text-align: center;
+  font: 500 11px var(--mono); color: var(--ink-3);
+}
+.markdown-body .md-mermaid-svg { display: flex; justify-content: center; padding: 0.75rem; overflow-x: auto; }
+.markdown-body .md-mermaid-svg svg { width: auto; height: auto; max-width: 100%; }
+.markdown-body .md-mermaid-error {
+  padding: 0.45rem 1rem 0.6rem; border-block-start: 1px solid var(--md-code-border);
+  font-size: 11px; color: #8c2222;
+}
+
+/* Code blocks */
+.markdown-body .md-code { border: 1px solid var(--md-code-border); border-radius: var(--radius); background: var(--md-code-bg); overflow: hidden; }
+.markdown-body .md-code-bar {
+  display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+  padding: 5px 5px 5px 13px; border-block-end: 1px solid var(--md-code-border);
+  background: var(--ground-2);
+}
+.markdown-body .md-code-lang { font: 500 10px var(--mono); letter-spacing: 0.07em; text-transform: uppercase; color: var(--ink-3); }
+.markdown-body .md-copy {
+  font: 600 11px var(--sans); padding: 3px 9px; border-radius: 6px;
+  border: 1px solid transparent; color: var(--ink-3); background: transparent; cursor: pointer;
+  transition: background 120ms ease, color 120ms ease, border-color 120ms ease;
+}
+.markdown-body .md-copy:hover { color: var(--ink); background: #ffffff; border-color: var(--line); }
+.markdown-body .md-copy[data-copied='true'] { color: var(--primary); border-color: var(--primary-line); }
+.markdown-body .md-code pre { margin: 0; padding: 0.9rem 1rem; overflow-x: auto; font-size: 12.5px; line-height: 1.62; color: var(--ink); background: none; border: none; border-radius: 0; }
+.markdown-body .md-code pre code { font-family: var(--mono); background: none; padding: 0; white-space: pre; }
+.markdown-body pre.md-raw { padding: 1rem; border-radius: var(--radius); background: var(--md-code-bg); overflow-x: auto; font: 500 12.5px var(--mono); }
+
+.markdown-body .tok-comment { color: var(--tok-comment); font-style: italic; }
+.markdown-body .tok-string { color: var(--tok-string); }
+.markdown-body .tok-number { color: var(--tok-number); }
+.markdown-body .tok-keyword { color: var(--tok-keyword); }
+.markdown-body .tok-type { color: var(--tok-type); }
+.markdown-body .tok-func { color: var(--tok-func); }
+.markdown-body .tok-prop { color: var(--tok-prop); }
+.markdown-body .tok-var { color: var(--tok-var); }
+.markdown-body .tok-meta { color: var(--tok-meta); }
+.markdown-body .tok-punct { color: var(--tok-punct); }
+.markdown-body .tok-ins { color: var(--tok-ins); }
+.markdown-body .tok-del { color: var(--tok-del); }
+
+/* Tables */
+.markdown-body .md-table-scroll { overflow-x: auto; border: 1px solid var(--line); border-radius: var(--radius); }
+.markdown-body table { inline-size: 100%; border-collapse: collapse; font-size: 13px; }
+.markdown-body thead { background: var(--ground-2); }
+.markdown-body th { text-align: start; font-weight: 650; white-space: nowrap; }
+.markdown-body th, .markdown-body td { padding: 7px 13px; border-block-end: 1px solid var(--line-2); vertical-align: top; }
+.markdown-body tbody tr:last-child td { border-block-end: none; }
+.markdown-body tbody tr:nth-child(even) { background: #f9fafc; }
+
+/* Media and misc */
+.markdown-body img { max-inline-size: 100%; height: auto; border-radius: 8px; }
+.markdown-body .md-figure { text-align: center; }
+.markdown-body .md-figure figcaption { font-size: 12px; color: var(--ink-3); margin-block-start: 0.4rem; }
+.markdown-body hr { border: none; border-block-start: 1px solid var(--line); margin-block: 2rem; }
+.markdown-body details { border: 1px solid var(--line); border-radius: var(--radius); padding: 10px 14px; background: #ffffff; }
+.markdown-body summary { cursor: pointer; font-weight: 600; font-size: 14px; list-style: none; }
+
+/* Footnotes */
+.markdown-body .md-footnote-ref a { color: var(--primary); text-decoration: none; font-size: 0.75em; padding-inline: 0.1em; }
+.markdown-body .md-footnotes { margin-block-start: 2.5rem; padding-block-start: 1rem; border-block-start: 1px solid var(--line); font-size: 13px; color: var(--ink-3); }
+.markdown-body .md-footnotes h2 { font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; margin-block-end: 0.5rem; }
+.markdown-body .md-footnotes p { margin-block: 0.25rem; }
+.markdown-body .md-footnote-back { text-decoration: none; color: var(--primary); }

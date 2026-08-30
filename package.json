@@ -1,0 +1,43 @@
+{
+  "name": "nhcx-landing-web",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "NEXT_DIST_DIR=.next-dev next dev -p 3080",
+    "sync": "node scripts/sync-content.mjs",
+    "sync:strict": "node scripts/sync-content.mjs --strict",
+    "sync:fallback": "node scripts/sync-content.mjs --strict --fallback",
+    "sync:docs": "node scripts/sync-docs.mjs",
+    "sync:dist": "node scripts/sync-dist.mjs",
+    "gen:types": "node scripts/gen-cms-types.mjs",
+    "sync:cms-map": "node scripts/sync-cms-map.mjs",
+    "check": "npm run check:types && npm run check:content",
+    "check:types": "node scripts/gen-cms-types.mjs --check && node scripts/sync-cms-map.mjs --check && tsc --noEmit",
+    "check:content": "node scripts/check-content.mjs",
+    "build": "npm run sync; npm run sync:docs; npm run sync:dist; npm run check && next build",
+    "build:offline": "npm run sync:docs; npm run sync:dist; npm run check && next build",
+    "build:landing": "NEXT_PUBLIC_BASE_PATH=/landing npm run build && node scripts/check-base-path.mjs --base /landing",
+    "build:landing:offline": "NEXT_PUBLIC_BASE_PATH=/landing npm run build:offline && node scripts/check-base-path.mjs --base /landing",
+    "check:base-path": "node scripts/check-base-path.mjs",
+    "serve:static": "npx -y serve out",
+    "lint": "eslint .",
+    "test": "node scripts/build-tests.mjs && node --test test/dist/*.test.mjs"
+  },
+  "dependencies": {
+    "marked": "^18.0.9",
+    "mermaid": "^11.17.0",
+    "next": "^15.4.6",
+    "react": "^19.1.1",
+    "react-dom": "^19.1.1"
+  },
+  "devDependencies": {
+    "@next/eslint-plugin-next": "^15.5.23",
+    "@types/node": "^22.10.0",
+    "@types/react": "^19.1.9",
+    "esbuild": "^0.25.12",
+    "eslint": "^9.39.5",
+    "eslint-plugin-react-hooks": "^5.2.0",
+    "typescript": "^5.7.0",
+    "typescript-eslint": "^8.68.0"
+  }
+}

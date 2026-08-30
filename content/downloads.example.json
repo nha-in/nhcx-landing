@@ -1,0 +1,43 @@
+{
+  "$comment": "Shape of content/downloads.json. Groups render in this order as headed tables on /download/. An item has a title, an optional description, and either a `file` (path under public/files/ — type, size and date are read from the file; a missing file fails the build) or a `url` (hosted elsewhere — set `type` and `size` yourself). `type` overrides the label derived from the extension.",
+  "groups": [
+    {
+      "title": "Circulars and notices",
+      "description": "Official communications from the National Health Authority on NHCX onboarding.",
+      "items": [
+        {
+          "title": "NHCX onboarding circular",
+          "description": "Eligibility, documents required and the review timeline for sandbox access.",
+          "file": "circulars/nhcx-onboarding-circular.pdf"
+        }
+      ]
+    },
+    {
+      "title": "Templates",
+      "items": [
+        {
+          "title": "Claim form",
+          "description": "Pre-authorisation and claim form template, one sheet per workflow.",
+          "file": "templates/claim-form.xlsx"
+        },
+        {
+          "title": "Participant registration sheet",
+          "file": "templates/participant-registration.docx",
+          "type": "Word document"
+        }
+      ]
+    },
+    {
+      "title": "Specifications",
+      "items": [
+        {
+          "title": "HCX protocol specification",
+          "description": "Hosted by the HCX open-source project.",
+          "url": "https://example.org/hcx-protocol-specification.pdf",
+          "type": "PDF",
+          "size": "2.1 MB"
+        }
+      ]
+    }
+  ]
+}
