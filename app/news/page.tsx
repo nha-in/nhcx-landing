@@ -1,16 +1,31 @@
 import type { Metadata } from 'next';
 import { getContent, type Link } from '@/lib/content';
+import { getNewsFile } from '@/lib/local-content';
 import { withBase } from '@/lib/paths';
 import { PageShell } from '@/components/SiteChrome';
 import NewsFeed from '@/components/pages/NewsFeed';
 
 type EventItem = { when: string; title: string };
 
-export function generateMetadata(): Metadata {
-  const { pages } = getContent();
+/**
+ * The page's copy and its feed, from content/news.json — the CMS snapshot is
+ * only a fallback for a checkout that has no file.
+ */
+function newsContent() {
+  const { global, pages, collections } = getContent();
+  const file = getNewsFile(global.devtoolsUrl ?? '');
   return {
-    title: pages.news.seo?.metaTitle ?? 'News — NHCX',
-    description: pages.news.seo?.metaDescription ?? '',
+    global,
+    page: (file?.page ?? pages.news) as typeof pages.news,
+    items: (file?.items ?? collections.newsItems) as unknown[],
+  };
+}
+
+export function generateMetadata(): Metadata {
+  const { page } = newsContent();
+  return {
+    title: page.seo?.metaTitle ?? 'News · NHCX',
+    description: page.seo?.metaDescription ?? '',
   };
 }
 
@@ -20,8 +35,7 @@ export function generateMetadata(): Metadata {
  * reproduces — so it carries no sample-data banner.
  */
 export default function NewsPage() {
-  const { global, pages, collections } = getContent();
-  const page = pages.news;
+  const { global, page, items } = newsContent();
   const events = (page.events as EventItem[]) ?? [];
   const upcomingLink = page.upcomingLink as Link | undefined;
   const featuredUrl = (page.featuredUrl as string | undefined) || '#feed';
@@ -50,7 +64,7 @@ export default function NewsPage() {
       </section>
 
       <section id="feed" className="container news-feed">
-        <NewsFeed items={collections.newsItems} />
+        <NewsFeed items={items} />
 
         <aside className="news-aside">
           <div className="news-aside-card">

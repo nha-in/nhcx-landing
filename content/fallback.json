@@ -1,6 +1,6 @@
 {
   "global": {
-    "ribbonText": "भारत सरकार · Government of India — Ministry of Health and Family Welfare",
+    "ribbonText": "भारत सरकार · Government of India · Ministry of Health and Family Welfare",
     "ribbonLinks": [
       {
         "label": "Screen reader access",
@@ -44,10 +44,6 @@
       {
         "label": "News",
         "url": "/news/"
-      },
-      {
-        "label": "Releases",
-        "url": "/releases/"
       }
     ],
     "applyCta": {
@@ -110,10 +106,6 @@
           {
             "label": "News",
             "url": "/news/"
-          },
-          {
-            "label": "Release notes",
-            "url": "/releases/"
           }
         ]
       },
@@ -164,11 +156,11 @@
         "url": "/"
       }
     ],
-    "devtoolsUrl": "http://localhost:8080"
+    "devtoolsUrl": "https://nhcx.sbxstage.in/dev"
   },
   "landing": {
     "seo": {
-      "metaTitle": "National Health Claim Exchange — HCX Sandbox",
+      "metaTitle": "National Health Claim Exchange · HCX Sandbox",
       "metaDescription": "One claim format. Every payer in India. Build and certify your NHCX claims integration in the free sandbox of the National Health Authority."
     },
     "sections": [
@@ -178,7 +170,7 @@
         "badgeText": "Ayushman Bharat Digital Mission · National Health Authority",
         "badgeAccent": "Sandbox is open →",
         "title": "One claim format. Every payer in India.",
-        "subtitle": "The National Health Claim Exchange connects every hospital, insurer, TPA and government scheme on one protocol — so claims move as structured data, settle in days instead of months, and cost far less to process. Build and certify in the sandbox, free.",
+        "subtitle": "The National Health Claim Exchange connects every hospital, insurer, TPA and government scheme on one protocol, so claims move as structured data, settle in days instead of months, and cost far less to process. Build and certify in the sandbox, free.",
         "primaryCta": {
           "label": "Apply for access",
           "url": "/apply/",
@@ -189,7 +181,7 @@
           "url": "/documentation/",
           "style": "secondary"
         },
-        "windowTitle": "sandbox.hcx — claim workbench",
+        "windowTitle": "sandbox.hcx · claim workbench",
         "providersLabel": "PROVIDERS",
         "providers": [
           {
@@ -240,7 +232,7 @@
           },
           {
             "title": "DevTools console",
-            "description": "The UTI NHCX connector and its local console: simulator, FHIR builder, transaction logs and signed builds.",
+            "description": "DevTools (simulator, FHIR builder, transaction logs) and the NHCX Adapter, the binary that speaks the protocol.",
             "url": "/devtools/"
           },
           {
@@ -283,7 +275,7 @@
         "anchor": "autoadjudication",
         "eyebrow": "STRUCTURED CLAIMS, END TO END",
         "title": "From the hospital's HMIS to auto-adjudication at the payer",
-        "intro": "A claim leaves the hospital as machine-readable FHIR — coded diagnoses, itemised bills, verified identity — so the payer's engine can price and decide it without a human re-keying anything.",
+        "intro": "A claim leaves the hospital as machine-readable FHIR (coded diagnoses, itemised bills, verified identity), so the payer's engine can price and decide it without a human re-keying anything.",
         "sourceTag": "HOSPITAL HMIS",
         "sourceTitle": "Structured at source",
         "sourceCodeLines": [
@@ -292,7 +284,7 @@
           "ChargeItem × 14 ✓",
           "DocumentReference ✓"
         ],
-        "sourceNote": "Discharge summary, bill lines and codes leave the HMIS as a signed FHIR bundle — no PDFs, no re-typing.",
+        "sourceNote": "Discharge summary, bill lines and codes leave the HMIS as a signed FHIR bundle: no PDFs, no re-typing.",
         "leftPacketLabel": "JWE",
         "rightPacketLabel": "FHIR",
         "hubTitle": "NHCX",
@@ -324,7 +316,7 @@
           {
             "value": "Zero",
             "title": "re-keying between systems",
-            "description": "The bill the hospital raised is the bill the payer adjudicates — same codes, same line items."
+            "description": "The bill the hospital raised is the bill the payer adjudicates: same codes, same line items."
           },
           {
             "value": "Fewer",
@@ -410,7 +402,7 @@
               },
               {
                 "title": "Fewer avoidable rejections",
-                "description": "Validation happens at submission, not weeks later — errors surface while the claim is still fixable."
+                "description": "Validation happens at submission, not weeks later: errors surface while the claim is still fixable."
               }
             ]
           },
@@ -440,7 +432,7 @@
         "traits": [
           {
             "title": "Interoperable",
-            "description": "FHIR R4 profiles from the ABDM implementation guide — the same bundle any participant can read."
+            "description": "FHIR R4 profiles from the ABDM implementation guide: the same bundle any participant can read."
           },
           {
             "title": "Machine-readable",
@@ -478,13 +470,13 @@
             "label": "to test and certify"
           }
         ],
-        "asOf": "Figures as published by the exchange on 15 Aug 2026 — updated with each reporting cycle."
+        "asOf": "Figures as published by the exchange on 15 Aug 2026: updated with each reporting cycle."
       },
       {
         "__component": "sections.steps",
         "anchor": "how",
         "title": "From application to production access",
-        "intro": "Four stages from first application to live claims — the sandbox covers the first three, and the certificate you earn opens the fourth.",
+        "intro": "Four stages from first application to live claims: the sandbox covers the first three, and the certificate you earn opens the fourth.",
         "steps": [
           {
             "tag": "STEP 01",
@@ -495,7 +487,7 @@
           {
             "tag": "STEP 02",
             "title": "Integration",
-            "description": "Wire up your system — or drop in the UTI NHCX connector — and map your claim data to the FHIR R4 bundles the protocol expects.",
+            "description": "Wire up your system (or drop in the NHCX Adapter) and map your claim data to the FHIR R4 bundles the protocol expects.",
             "highlighted": false
           },
           {
@@ -520,9 +512,9 @@
       {
         "__component": "sections.devtools",
         "anchor": "devtools",
-        "badgeText": "UTI NHCX CONNECTOR · HCX DEVTOOLS",
-        "title": "The ultimate connector — NHCX-compliant in hours, not quarters",
-        "description": "Integration used to be a two-quarter project: protocol, encryption, callbacks, FHIR mapping, then months of certification cycles. DevTools collapses all of it. Agentic AI skills read your existing HMIS schema, generate the mappings, and drive the compliance suite until every case is green — while your team watches.",
+        "badgeText": "NHCX developer tools",
+        "title": "The ultimate connector: NHCX-compliant in hours, not quarters",
+        "description": "Integration used to be a two-quarter project: protocol, encryption, callbacks, FHIR mapping, then months of certification cycles. DevTools collapses all of it. Agentic AI skills read your existing HMIS schema, generate the mappings, and drive the compliance suite until every case is green, while your team watches.",
         "metricLabel": "TYPICAL TIME TO COMPLIANCE",
         "metricValue": "2–4",
         "metricUnit": "hours",
@@ -531,7 +523,7 @@
           {
             "tag": "STEP 01 · ~20 MIN",
             "title": "Point it at your HMIS",
-            "description": "The agent reads your schema and sample records — tables, codes, bill formats — and proposes a mapping plan you approve.",
+            "description": "The agent reads your schema and sample records (tables, codes, bill formats) and proposes a mapping plan you approve.",
             "highlighted": false
           },
           {
@@ -549,7 +541,7 @@
           {
             "tag": "STEP 04 · SAME DAY",
             "title": "Certified and live",
-            "description": "Download the signed report and take it into production onboarding — the same connector runs there unchanged.",
+            "description": "Download the signed report and take it into production onboarding: the same connector runs there unchanged.",
             "highlighted": false
           }
         ],
@@ -589,25 +581,25 @@
           {
             "topic": "Onboarding",
             "question": "What happens after I submit the application?",
-            "answer": "Applications are verified against the details in the form — a semi-manual step, so expect review latency rather than instant provisioning. Duplicate requests from one participant, participants not registered with any registry, TSPs without a valid website and spam are filtered out. Approved participants are added to the sandbox and issued credentials; follow your application on the Status page.",
+            "answer": "Applications are verified against the details in the form: a semi-manual step, so expect review latency rather than instant provisioning. Duplicate requests from one participant, participants not registered with any registry, TSPs without a valid website and spam are filtered out. Approved participants are added to the sandbox and issued credentials; follow your application on the Status page.",
             "docs": "10.01"
           },
           {
             "topic": "Onboarding",
             "question": "Which registry ID do I use?",
-            "answer": "Providers use the HFR ID generated during ABDM integration. Payers and TPAs use the IRDAI (or respective authority) ID with leading zeros stripped — 0123 is passed as 123. End-user applications may use their client ID. An entity can hold several participant IDs, one per linked HFR ID.",
+            "answer": "Providers use the HFR ID generated during ABDM integration. Payers and TPAs use the IRDAI (or respective authority) ID with leading zeros stripped: 0123 is passed as 123. End-user applications may use their client ID. An entity can hold several participant IDs, one per linked HFR ID.",
             "docs": "10.01"
           },
           {
             "topic": "Onboarding",
             "question": "What are the role and registry codes, and do they differ between sandbox and production?",
-            "answer": "They are the same in both. Roles: PROVIDER 10001, PAYER 10002, AGENCY_TPA 10003, EUA 10009. Registries: HFR/EUA 10001, PAYER/TPA 10004. Note that 10001 means PROVIDER as a role and HFR/EUA as a registry — different enums in different fields. Wrong mapping causes access issues, rejections or misrouting.",
+            "answer": "They are the same in both. Roles: PROVIDER 10001, PAYER 10002, AGENCY_TPA 10003, EUA 10009. Registries: HFR/EUA 10001, PAYER/TPA 10004. Note that 10001 means PROVIDER as a role and HFR/EUA as a registry: different enums in different fields. Wrong mapping causes access issues, rejections or misrouting.",
             "docs": "11.03"
           },
           {
             "topic": "Onboarding",
             "question": "Can I test without a real payer or provider partner?",
-            "answer": "Yes. The sandbox provides a dummy payer, participant 1000003538@hcx, for insurance plan, coverage eligibility, pre-auth, claim, payment notice and communication. You drive its answer yourself — Approve, Reject or Query — through a control endpoint that does not exist in production, so remove it from your code before go-live.",
+            "answer": "Yes. The sandbox provides a dummy payer, participant 1000003538@hcx, for insurance plan, coverage eligibility, pre-auth, claim, payment notice and communication. You drive its answer yourself (Approve, Reject or Query) through a control endpoint that does not exist in production, so remove it from your code before go-live.",
             "docs": "10.02"
           },
           {
@@ -619,13 +611,13 @@
           {
             "topic": "Tokens and access",
             "question": "Why do I get 401 Unauthorized?",
-            "answer": "Three usual causes: the token was sent without the Bearer prefix; it has expired — “Sender is not authorized to execute the operation” is the expiry message, so renew via the session API; or it was minted for the other environment. On a 401 discard the cached token, mint a new one and replay once; a second 401 means the credentials themselves are wrong.",
+            "answer": "Three usual causes: the token was sent without the Bearer prefix; it has expired: “Sender is not authorized to execute the operation” is the expiry message, so renew via the session API; or it was minted for the other environment. On a 401 discard the cached token, mint a new one and replay once; a second 401 means the credentials themselves are wrong.",
             "docs": "03.02"
           },
           {
             "topic": "Encryption",
             "question": "How is the payload protected on the wire?",
-            "answer": "Every request body is a JWE in compact serialization: RSA-OAEP-256 wraps the content key with the recipient’s public certificate and A256GCM encrypts the FHIR bundle. The x-hcx-* routing headers sit in the protected header, so the gateway routes without reading clinical content — the payload is unreadable even to NHCX.",
+            "answer": "Every request body is a JWE in compact serialization: RSA-OAEP-256 wraps the content key with the recipient’s public certificate and A256GCM encrypts the FHIR bundle. The x-hcx-* routing headers sit in the protected header, so the gateway routes without reading clinical content: the payload is unreadable even to NHCX.",
             "docs": "08.01"
           },
           {
@@ -637,13 +629,13 @@
           {
             "topic": "Callbacks",
             "question": "Is any transaction synchronous?",
-            "answer": "No. The gateway never returns a business decision on the same connection. A submission is acknowledged with HTTP 202 and the answer arrives later as a separate inbound call to your on_ endpoint — /preauth/submit is answered on /preauth/on_submit. Every participant is therefore also an HTTP server.",
+            "answer": "No. The gateway never returns a business decision on the same connection. A submission is acknowledged with HTTP 202 and the answer arrives later as a separate inbound call to your on_ endpoint: /preauth/submit is answered on /preauth/on_submit. Every participant is therefore also an HTTP server.",
             "docs": "04.01"
           },
           {
             "topic": "Callbacks",
             "question": "What must my callback endpoint return?",
-            "answer": "HTTP 202 Accepted with the acceptance body, within 30 seconds. Anything else — a 200, a malformed body, an adjudication holding the socket — is treated as an error: the gateway retries the same message up to five times and then deletes the correlation ID. Acknowledge first, adjudicate after, and be idempotent on x-hcx-correlation_id.",
+            "answer": "HTTP 202 Accepted with the acceptance body, within 30 seconds. Anything else (a 200, a malformed body, an adjudication holding the socket) is treated as an error: the gateway retries the same message up to five times and then deletes the correlation ID. Acknowledge first, adjudicate after, and be idempotent on x-hcx-correlation_id.",
             "docs": "08.03"
           },
           {
@@ -661,7 +653,7 @@
           {
             "topic": "Correlation and headers",
             "question": "What is the difference between api_call_id, request_id and correlation_id?",
-            "answer": "All three are 36-character UUIDs. x-hcx-api_call_id is new on every single call; x-hcx-request_id is new per request payload; x-hcx-correlation_id is constant for the whole conversation and is what responders copy back, so persist it against your case before you post. After five failed deliveries the correlation ID is dead — start a fresh cycle with a new one.",
+            "answer": "All three are 36-character UUIDs. x-hcx-api_call_id is new on every single call; x-hcx-request_id is new per request payload; x-hcx-correlation_id is constant for the whole conversation and is what responders copy back, so persist it against your case before you post. After five failed deliveries the correlation ID is dead: start a fresh cycle with a new one.",
             "docs": "04.01"
           },
           {
@@ -673,19 +665,19 @@
           {
             "topic": "Correlation and headers",
             "question": "Which recipient code do I put in the header?",
-            "answer": "The registry participant code, namespaced as code@hcx. For a payer take the processingID from the get/policies response — not the PayerID field, which is one of the most common integration mistakes. Your own code goes in x-hcx-sender_code.",
+            "answer": "The registry participant code, namespaced as code@hcx. For a payer take the processingID from the get/policies response, not the PayerID field, which is one of the most common integration mistakes. Your own code goes in x-hcx-sender_code.",
             "docs": "08.02"
           },
           {
             "topic": "Error codes",
             "question": "What is the difference between NHCX-* and PAYR-* error codes?",
-            "answer": "NHCX-* codes are raised by the exchange gateway — the headers, registration or transport are wrong and the payer never saw the request. PAYR-* codes come from the payer side, either the bridge that validates FHIR or the adjudication engine. PAYR numbers are reused across sheets with different meanings, so match on the description string and log both.",
+            "answer": "NHCX-* codes are raised by the exchange gateway: the headers, registration or transport are wrong and the payer never saw the request. PAYR-* codes come from the payer side, either the bridge that validates FHIR or the adjudication engine. PAYR numbers are reused across sheets with different meanings, so match on the description string and log both.",
             "docs": "09.03"
           },
           {
             "topic": "Error codes",
             "question": "What does NHCX-1006 “Duplicate request” mean?",
-            "answer": "A message with the same correlation ID already exists in the gateway. Correlation IDs are unique per request cycle: reuse one — including after a failed cycle — and the gateway rejects it. Mint a new UUID and resubmit.",
+            "answer": "A message with the same correlation ID already exists in the gateway. Correlation IDs are unique per request cycle: reuse one (including after a failed cycle) and the gateway rejects it. Mint a new UUID and resubmit.",
             "docs": "09.03"
           },
           {
@@ -697,7 +689,7 @@
           {
             "topic": "Certification and go-live",
             "question": "What is tested at sandbox exit?",
-            "answer": "A fixed use-case list — 13 for providers (registry lookups, session, eligibility, insurance plan, pre-auth, communication, claim, search, payment-notice acknowledgement, task, status) and 15 for payers. Every payload must validate against the NRCeS profiles, responses must carry the right correlation and receiver codes, and rejections use a ProtocolResponse.",
+            "answer": "A fixed use-case list: 13 for providers (registry lookups, session, eligibility, insurance plan, pre-auth, communication, claim, search, payment-notice acknowledgement, task, status) and 15 for payers. Every payload must validate against the NRCeS profiles, responses must carry the right correlation and receiver codes, and rejections use a ProtocolResponse.",
             "docs": "10.02"
           },
           {
@@ -728,12 +720,12 @@
   "pages": {
     "devtools": {
       "seo": {
-        "metaTitle": "DevTools — NHCX",
-        "metaDescription": "HCX DevTools — the UTI NHCX connector: protocol, JWE encryption, callbacks and FHIR mapping, with signed builds for every platform."
+        "metaTitle": "DevTools and the NHCX Adapter · NHCX",
+        "metaDescription": "Two developer tools for NHCX: DevTools, which teaches and rehearses the exchange in a browser, and the NHCX Adapter, the binary that carries it in production."
       },
-      "badgeText": "UTI NHCX CONNECTOR · HCX DEVTOOLS",
-      "title": "HCX DevTools",
-      "description": "One drop-in toolkit that speaks the protocol for you: JWE packaging, signature verification, callback handling, retries and FHIR R4 mapping from your HIS or claims system. Install it, point it at your endpoints, and you are exchanging certified e-claims on NHCX.",
+      "badgeText": "NHCX developer tools",
+      "title": "Two tools, one exchange",
+      "description": "One to learn and rehearse the protocol in a browser, one to carry it in production. Nothing else to install, and no third thing to choose between.",
       "primaryCta": {
         "label": "Download DevTools",
         "url": "#downloads",
@@ -758,91 +750,50 @@
           "label": "MIT licence"
         }
       ],
-      "buildLabel": "LATEST BUILD",
-      "buildVersion": "v2.4.1",
-      "buildReleased": "released 12 Aug 2026",
-      "buildSpec": "spec v0.9 · FHIR R4",
+      "buildLabel": "",
+      "buildVersion": "",
+      "buildReleased": "",
+      "buildSpec": "",
       "buildChangelog": {
         "label": "Changelog →",
         "url": "/news/",
         "style": "ghost"
       },
       "flowSource": "Your HIS / claims system",
-      "flowConnector": "UTI NHCX connector",
+      "flowConnector": "NHCX Adapter",
       "flowTarget": "NHCX exchange",
       "features": [
         {
           "icon": "square",
           "title": "Protocol handled",
-          "description": "Headers, correlation IDs, acknowledgements, retries and out-of-order callbacks, out of the box."
+          "description": "Headers, correlation IDs, acknowledgements, retries and out-of-order callbacks: the adapter does them, you post a bundle."
         },
         {
           "icon": "circle",
           "title": "Crypto built in",
-          "description": "JWE encryption, signing and key rotation resolved against the participant registry."
+          "description": "JWE encryption, signing and certificate rotation resolved against the participant registry."
         },
         {
           "icon": "diamond",
-          "title": "FHIR mappers",
-          "description": "Turn billing records into conformant eligibility, pre-auth, claim and payment bundles."
+          "title": "FHIR, checked",
+          "description": "Compose eligibility, pre-auth, claim and payment bundles in DevTools and validate them before you send one."
         },
         {
-          "icon": "pill",
-          "title": "Certification-ready",
-          "description": "Ships passing all 38 sandbox compliance cases on the reference configuration."
+          "icon": "square",
+          "title": "Rehearse, then go live",
+          "description": "Drive a mock payer through every flow in the simulator, then point the same calls at the sandbox."
         }
       ],
       "downloadsTitle": "Downloads",
-      "downloads": [
-        {
-          "name": "UTI NHCX connector",
-          "note": "Binary, console, docs corpus and sample config",
-          "runtime": "Docker 24",
-          "size": "48 MB",
-          "format": "tar.gz",
-          "url": "#downloads"
-        },
-        {
-          "name": "Connector JAR",
-          "note": "Embed in an existing Java service",
-          "runtime": "Java 17+",
-          "size": "22 MB",
-          "format": "jar",
-          "url": "#downloads"
-        },
-        {
-          "name": "Docker image",
-          "note": "nhcx/uti-connector:2.4.1",
-          "runtime": "Docker 24",
-          "size": "186 MB",
-          "format": "pull",
-          "url": "#downloads"
-        },
-        {
-          "name": "FHIR mapper templates",
-          "note": "Editable mappings for common HIS schemas",
-          "runtime": "any",
-          "size": "1.4 MB",
-          "format": "zip",
-          "url": "#downloads"
-        },
-        {
-          "name": "Sample payloads & collection",
-          "note": "All six workflows, request and callback",
-          "runtime": "any",
-          "size": "640 KB",
-          "format": "zip",
-          "url": "#downloads"
-        }
-      ],
-      "runTitle": "Unpack it and run it",
-      "runCode": "tar xzf hcxkit_<version>_<os>_<arch>.tar.gz\ncd hcxkit_<version>_<os>_<arch>\ncp config.sample.json config.json   # participant code, keys, callback URL\n./hcxkit",
-      "runNote": "One static binary — no JVM, no Docker, no installer. It reads config.json, template/ and web/ from the directory you unpacked, serves the console on the host and port in your config, and takes NHCX callbacks on /in/v1/…. On Windows unzip the archive and run hcxkit.exe.",
+      "downloads": [],
+      "runTitle": "",
+      "runCode": "",
+      "runNote": "",
       "checklistTitle": "Before you start",
       "checklistItems": [
         {
           "tag": "01",
-          "title": "A sandbox participant code and key pair — apply for access if you do not have one.",
+          "title": "A sandbox participant code and key pair: apply for access if you do not have one.",
           "description": "",
           "highlighted": false
         },
@@ -866,8 +817,8 @@
           "style": "secondary"
         }
       ],
-      "consoleTitle": "Inside the console",
-      "consoleIntro": "The console runs locally next to the connector. Alongside the transaction workbench it carries the reference material that used to live on this site.",
+      "consoleTitle": "DevTools",
+      "consoleIntro": "Everything the protocol asks of you, in a tab: the endpoint reference with worked requests and responses, a guided path through the exchange, a FHIR builder that validates against the ABDM profiles, a mock payer to run whole flows against, and a decrypted, searchable log of every message. A sandbox account is built in, so nothing installs and no server of ours sits in the path.",
       "consoleTiles": [
         {
           "title": "API catalogue",
@@ -876,7 +827,7 @@
         },
         {
           "title": "Learning path",
-          "description": "Two tracks and fourteen chapters, a short check after each, with progress kept in the console.",
+          "description": "Two tracks and fourteen chapters, a short check after each, with progress kept in DevTools.",
           "url": "devtools:/learn"
         },
         {
@@ -891,15 +842,15 @@
         },
         {
           "title": "Transaction logs",
-          "description": "Every request and callback the connector sent or received, decrypted, searchable and replayable.",
+          "description": "Every request and callback the adapter sent or received, decrypted, searchable and replayable.",
           "url": "devtools:/"
         }
       ]
     },
     "videos": {
       "seo": {
-        "metaTitle": "Videos — NHCX",
-        "metaDescription": "Planned walkthroughs of the NHCX integration — onboarding, DevTools, claim workflows, security and certification — with the outline each recording will follow."
+        "metaTitle": "Videos · NHCX",
+        "metaDescription": "Planned walkthroughs of the NHCX integration (onboarding, DevTools, claim workflows, security and certification) with the outline each recording will follow."
       },
       "eyebrow": "VIDEO LIBRARY",
       "title": "Walkthroughs of the integration, chapter by chapter",
@@ -911,18 +862,18 @@
       },
       "featuredBadge": "Planned · first recording",
       "featuredTitle": "End to end: install DevTools, register a participant, run a coverage eligibility check",
-      "featuredDescription": "The first recording will follow the implementation journey of the learning path — from a fresh install to reading the on_check callback.",
+      "featuredDescription": "The first recording will follow the implementation journey of the learning path, from a fresh install to reading the on_check callback.",
       "featuredMeta": "not yet scheduled",
-      "footNote": "Recordings and webinar materials are announced in the release notes.",
+      "footNote": "Recordings and webinar materials are announced in the news feed.",
       "footLink": {
-        "label": "Release notes →",
-        "url": "/releases/",
+        "label": "News →",
+        "url": "/news/",
         "style": "ghost"
       }
     },
     "news": {
       "seo": {
-        "metaTitle": "News — NHCX",
+        "metaTitle": "News · NHCX",
         "metaDescription": "Milestones of the SBX 2.0 preview site, documentation refreshes, and the NHA and NRCeS material the corpus reproduces."
       },
       "eyebrow": "NEWS",
@@ -931,24 +882,19 @@
       "featuredTag": "Documentation",
       "featuredDate": "22 Aug 2026",
       "featuredTitle": "Documentation corpus refreshed: 64 pages in 12 chapters",
-      "featuredDescription": "The reader and the assistant now run on the corpus built on 22 August 2026 from NHA’s published material — claim flows, FHIR references, protocol headers, codes and troubleshooting.",
+      "featuredDescription": "The reader and the assistant now run on the corpus built on 22 August 2026 from NHA’s published material: claim flows, FHIR references, protocol headers, codes and troubleshooting.",
       "featuredLinkLabel": "Open the documentation →",
       "featuredUrl": "/documentation/",
       "featuredImageNote": "Documentation",
       "upcomingTitle": "Sessions",
       "events": [],
-      "upcomingNote": "No developer sessions are scheduled. When one is, it is announced here and in the release notes.",
-      "upcomingLink": {
-        "label": "Release notes →",
-        "url": "/releases/",
-        "style": "ghost"
-      },
+      "upcomingNote": "No developer sessions are scheduled. When one is, it is announced here.",
       "enquiriesTitle": "Questions about this site",
       "enquiriesText": "This is the SBX 2.0 preview of the sandbox portal. Questions about its content go to the sandbox desk through the application form; the National Health Authority’s own press contacts are published on its official site."
     },
     "apply": {
       "seo": {
-        "metaTitle": "Apply for Sandbox Access — NHCX",
+        "metaTitle": "Apply for Sandbox Access · NHCX",
         "metaDescription": "Apply for access to the National Health Claim Exchange sandbox as a company, LLP, firm, individual or proprietorship."
       },
       "eyebrow": "SANDBOX ACCESS",
@@ -964,7 +910,7 @@
         "Status and search",
         "Notifications and subscriptions"
       ],
-      "documentsNote": "Attach the registration certificate for a company, LLP or firm (CIN or LLPIN), or PAN and address proof for an individual or proprietorship. PDF, PNG or JPG, up to 10 MB each.",
+      "documentsNote": "Attach the registration certificate for a company, LLP or firm (CIN or LLPIN) or PAN and address proof for an individual or proprietorship. PDF, PNG or JPG, up to 10 MB each.",
       "consentText": "I confirm that the details above are accurate, that I am authorised to apply on behalf of the organisation named, and I agree to the sandbox terms of use and privacy policy below.",
       "submitLabel": "Submit application",
       "successTitle": "Application received",
@@ -1174,7 +1120,7 @@
         "tag": "Documentation",
         "tone": "brand",
         "title": "Documentation corpus refreshed: 64 pages in 12 chapters",
-        "body": "Built on 22 August 2026 from NHA’s published material — claim flows, FHIR references, protocol headers, codes and troubleshooting. The reader, the search index and the assistant all read this set.",
+        "body": "Built on 22 August 2026 from NHA’s published material: claim flows, FHIR references, protocol headers, codes and troubleshooting. The reader, the search index and the assistant all read this set.",
         "meta": "documentation · this site",
         "url": "/documentation/",
         "rank": 0
@@ -1194,7 +1140,7 @@
         "tag": "Milestone",
         "tone": "brand",
         "title": "HCX DevTools page: per-platform builds with SHA-256 digests",
-        "body": "The hcxkit command-line kit — simulator, console and the staged corpus — is listed per operating system and architecture with checksums, and the page recommends the build for the machine it is read on.",
+        "body": "The NHCX Adapter release is listed per operating system and architecture with its checksums, and the page recommends the build for the machine it is read on.",
         "meta": "milestone L-A · this site",
         "url": "/devtools/",
         "rank": 2
@@ -1214,7 +1160,7 @@
         "tag": "NHA document",
         "tone": "muted",
         "title": "NHA integrator FAQ v1.1 reproduced in the corpus",
-        "body": "The Commonly Asked Questions for NHCX APIs — registry codes, 401s, header formats, callbacks, the dummy payer and the PMJAY-specific rules — dated 14 August 2026 and marked approval pending in the source.",
+        "body": "The Commonly Asked Questions for NHCX APIs (registry codes, 401s, header formats, callbacks, the dummy payer and the PMJAY-specific rules) dated 14 August 2026 and marked approval pending in the source.",
         "meta": "documentation chapter 11.03",
         "url": "/documentation/?p=11.03",
         "rank": 4
@@ -1234,7 +1180,7 @@
         "tag": "Reference",
         "tone": "muted",
         "title": "The NHA workflow status sheet, mapped to protocol headers",
-        "body": "Every x-hcx-workflow_id — provider-initiated and payer-response codes — with its protocol status and NRCeS outcome.",
+        "body": "Every x-hcx-workflow_id (provider-initiated and payer-response codes) with its protocol status and NRCeS outcome.",
         "meta": "documentation chapter 09.01",
         "url": "/documentation/?p=09.01",
         "rank": 6
@@ -1265,7 +1211,7 @@
         "version": "2.0.0-preview.3",
         "date": "2026-08-25",
         "channel": "sandbox",
-        "title": "Milestone L-C — deployment path, releases, newsletter, dashboard structure",
+        "title": "Milestone L-C: deployment path, releases, newsletter, dashboard structure",
         "summary": "The third preview of the SBX 2.0 site: the export now builds for its production base path, and the content sections stop presenting illustrative material as fact.",
         "highlights": [
           {
@@ -1275,7 +1221,7 @@
             "text": "Release notes page fed by a new release-note collection"
           },
           {
-            "text": "Newsletter sign-up in the footer and on the news page — email, consent and source only; idempotent; honeypot-protected"
+            "text": "Newsletter sign-up in the footer and on the news page: email, consent and source only; idempotent; honeypot-protected"
           },
           {
             "text": "FAQ expanded to 21 questions written from the documentation corpus, grouped by topic and linked to their chapters"
@@ -1303,11 +1249,6 @@
         ],
         "links": [
           {
-            "label": "Release notes",
-            "url": "/releases/",
-            "style": "ghost"
-          },
-          {
             "label": "News",
             "url": "/news/",
             "style": "ghost"
@@ -1318,11 +1259,11 @@
         "version": "2.0.0-preview.2",
         "date": "2026-08-25",
         "channel": "sandbox",
-        "title": "Milestone L-B — learning path, flow animation, site search, CMS hardening",
+        "title": "Milestone L-B: learning path, flow animation, site search, CMS hardening",
         "summary": "Second preview: a guided way through the exchange before building on it, and a build that fails on content drift instead of shipping blanks.",
         "highlights": [
           {
-            "text": "Learning path: two tracks, fourteen chapters, a check after each — now served by the DevTools console, with progress kept there"
+            "text": "Learning path: two tracks, fourteen chapters, a check after each: now served by the DevTools console, with progress kept there"
           },
           {
             "text": "Animated flow diagrams for the transaction chapters"
@@ -1347,7 +1288,7 @@
         "version": "2.0.0-preview.1",
         "date": "2026-08-25",
         "channel": "sandbox",
-        "title": "Milestone L-A — sign-up, API catalogue, playbook, service status",
+        "title": "Milestone L-A: sign-up, API catalogue, playbook, service status",
         "summary": "First preview of the SBX 2.0 sandbox portal: Next.js 15 static export built from a Strapi 5 CMS.",
         "highlights": [
           {

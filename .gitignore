@@ -20,3 +20,6 @@ test/dist/
 
 # built by `npm run build:search` from the docs manifest, the content snapshot and lib/learn/tracks.ts
 public/search-index.json
+
+# written by the CMS before every save (cms/app.py)
+cms/backups/

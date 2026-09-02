@@ -51,7 +51,7 @@ function validate(d: ApplicationDraft, files: File[], consent: boolean): Record<
   }
   if (!d.address.trim()) errors.address = 'Enter the registered address.';
   if (!d.contactName.trim()) errors.contactName = 'Enter the name of the person we should contact.';
-  if (!EMAIL.test(d.email.trim())) errors.email = 'Enter a valid email address — it is used to track the application.';
+  if (!EMAIL.test(d.email.trim())) errors.email = 'Enter a valid email address: it is used to track the application.';
   if (!PHONE.test(d.phone.trim())) errors.phone = 'Enter a phone number with country code, e.g. +91 98765 43210.';
   if (company && !d.designation.trim()) errors.designation = 'Enter the contact person’s designation.';
   if (d.useCases.length === 0) errors.useCases = 'Pick at least one use case you intend to test.';

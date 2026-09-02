@@ -193,22 +193,14 @@ button.btn { font-family: inherit; }
 /* ————— page head (sub-pages) ————— */
 .page-head { display: flex; flex-direction: column; gap: var(--s3); padding-top: var(--s12); padding-bottom: var(--s8); }
 .page-head-row { flex-direction: row; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: var(--s6); }
-.page-head-copy { display: flex; flex-direction: column; gap: var(--s3); min-width: 0; flex: 1 1 520px; }
+.page-head-copy { display: flex; flex-direction: column; gap: var(--s3); min-width: 0; }
+/* The 520px basis is a *width* for the row variant only — in the default
+   column .page-head it would become a height and pad the head with dead space. */
+.page-head-row > .page-head-copy { flex: 1 1 520px; }
 .page-title { max-width: 24ch; }
 .page-intro { font-size: 18px; line-height: 1.55; color: var(--ink-2); max-width: var(--measure); }
 
 /* ————— shared components ————— */
-.tile {
-  position: relative; display: flex; flex-direction: column; gap: var(--s2); height: 100%; padding: var(--s6) var(--s12) var(--s6) var(--s6);
-  border: 1px solid var(--line); border-radius: var(--radius); background: var(--ground); color: var(--ink);
-  transition: border-color 120ms ease, background-color 120ms ease;
-}
-.tile:hover { border-color: var(--primary); color: var(--ink); text-decoration: none; }
-.tile-title { font-size: 17px; font-weight: 600; color: var(--primary); }
-.tile-desc { font-size: 14px; line-height: 1.5; color: var(--ink-2); }
-.tile-arrow { position: absolute; right: var(--s6); top: var(--s6); font-size: 18px; line-height: 1; color: var(--primary); transition: transform 120ms ease; }
-.tile:hover .tile-arrow { transform: translateX(3px); }
-
 .figures { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: var(--s6) var(--s8); border-top: 1px solid var(--line); padding-top: var(--s6); }
 .figure { display: flex; flex-direction: column; gap: var(--s1); }
 .figure dt { display: flex; flex-direction: column; gap: 2px; }
@@ -315,37 +307,120 @@ input[type='checkbox'], input[type='radio'] { accent-color: var(--primary); }
 .kitp-flow-hub { display: inline-flex; align-items: center; padding: var(--s2) var(--s4); border-radius: 6px; background: var(--primary); color: #fff; font-size: 14px; font-weight: 600; }
 .kitp-flow-arrow { position: relative; width: 56px; height: 2px; background: var(--primary-line); flex: none; }
 .kitp-flow-arrow::after { content: ''; position: absolute; right: -1px; top: -4px; width: 8px; height: 8px; border-top: 2px solid var(--primary-line); border-right: 2px solid var(--primary-line); transform: rotate(45deg); }
-.kitp-features { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: var(--s6) var(--s8); margin-top: var(--s12); }
-.kitp-feature { display: flex; flex-direction: column; gap: var(--s2); padding-top: var(--s4); border-top: 1px solid var(--line); }
-.kitp-feature h2 { font-size: 16px; }
-.kitp-feature p { font-size: 14px; line-height: 1.5; color: var(--ink-2); }
-.kitp-section { display: flex; flex-direction: column; gap: var(--s6); margin-top: var(--s16); }
-.console-grid { list-style: none; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--s4); }
+.kitp-section { display: flex; flex-direction: column; gap: var(--s8); margin-top: var(--s16); }
+/* The adapter section closes the DevTools page, so it carries the same
+   breathing room before the footer that .kitp-bottom used to. */
+.kitp-section:last-of-type { margin-bottom: var(--s24); }
 .dlt-table { min-width: 720px; }
-.dlt-group th { background: var(--ground-2); font-size: 13px; font-weight: 700; }
-.dlt-group span { margin-left: var(--s3); font-weight: 400; font-size: 12px; color: var(--ink-3); }
 .dlt-name { display: block; font-weight: 600; }
 .dlt-note { display: block; font-size: 12px; color: var(--ink-3); }
-.dlt-sum { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 220px; }
-.dlt-foot { font-size: 14px; line-height: 1.6; color: var(--ink-2); }
-.dlt-foot code { font-size: 12px; padding: 1px 5px; border-radius: 4px; background: var(--ground-2); }
-.dl-wrap { gap: var(--s12); }
+/* Follows .page-head directly, so no extra top gap; the bottom margin is the
+   same breathing room before the footer every other page has. */
+.dl-wrap { gap: var(--s12); margin-top: 0; margin-bottom: var(--s24); }
 .dl-group { display: flex; flex-direction: column; gap: var(--s6); }
-.dl-table { min-width: 640px; }
+.dl-table { min-width: 460px; }
+/* The row's one action, as a mark: a square target big enough to hit. */
+.dl-get {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 34px; height: 34px; border-radius: var(--radius);
+  border: 1px solid var(--line); background: var(--ground); color: var(--ink-2);
+  transition: border-color var(--motion-fast) ease, color var(--motion-fast) ease, background var(--motion-fast) ease;
+}
+.dl-get:hover { border-color: var(--primary-line); background: var(--primary-tint); color: var(--primary); }
 .dl-empty { padding: var(--s8) var(--s6); border: 1px dashed var(--line); border-radius: var(--radius); font-size: 15px; line-height: 1.6; color: var(--ink-2); }
 .dl-empty code { font-size: 13px; padding: 1px 5px; border-radius: 4px; background: var(--ground-2); }
-.dlt-pick { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s4); padding: var(--s4) var(--s6); border: 1px solid var(--primary-line); border-radius: var(--radius); background: var(--primary-tint); }
-.dlt-pick-copy { display: flex; flex-direction: column; gap: 2px; margin-right: auto; min-width: 0; }
-.dlt-pick-copy b { font-size: 15px; }
-.dlt-pick-copy span { font-size: 14px; color: var(--ink-2); }
-.dlt-pick-meta { font-family: var(--mono); font-size: 13px; color: var(--ink-3); }
 .kit-download-arrow { display: inline-block; width: 8px; height: 8px; border-right: 2px solid currentColor; border-bottom: 2px solid currentColor; transform: rotate(45deg) translate(-1px, -1px); }
-.kitp-bottom { display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: var(--s6); margin-top: var(--s16); margin-bottom: var(--s24); }
-.kitp-card { display: flex; flex-direction: column; gap: var(--s4); padding: var(--s8); border: 1px solid var(--line); border-radius: var(--radius); background: var(--ground); }
-.kitp-card h2 { font-size: 20px; }
-.kitp-checklist { list-style: none; display: flex; flex-direction: column; gap: var(--s3); }
-.kitp-checklist li { display: flex; gap: var(--s3); font-size: 15px; line-height: 1.55; }
-.kitp-check-tag { flex: none; width: 24px; font-family: var(--mono); font-size: 12px; font-weight: 600; color: var(--primary); padding-top: 3px; }
+/* ————— the NHCX Adapter, on the DevTools page ————— */
+/* One card now ("Run it"), so it is capped rather than stretched across the
+   page: five short lines of shell in a full-width box read as an empty box. */
+.adapter-start { display: grid; grid-template-columns: minmax(0, 640px); gap: var(--s6); }
+.adapter-start .kitp-card h3 { font-size: 20px; }
+.lede code { font-family: var(--mono); font-size: 13px; padding: 1px 5px; border-radius: 4px; background: var(--ground-2); }
+.adapter-rel { font-family: var(--mono); font-size: 13px; font-weight: 400; color: var(--ink-3); }
+
+/* Use cases: what someone picks a tool up to do, one card each. The icon sits
+   in a tinted square so the four cards scan as a row of marks, not of text. */
+/* A titled block inside a section: 12px to its own content, the section's gap
+   to the next block, so a heading belongs to what follows it. */
+.blk { display: flex; flex-direction: column; gap: var(--s3); }
+.blk-title { display: flex; flex-wrap: wrap; align-items: baseline; gap: var(--s3); }
+.uc-grid { list-style: none; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--s6) var(--s8); }
+.uc-card {
+  --uc-ink: var(--primary); --uc-tint: var(--primary-tint); --uc-line: var(--primary-line);
+  position: relative; overflow: hidden;
+  display: flex; flex-direction: column; gap: var(--s3);
+  padding: var(--s6); border: 1px solid var(--line); border-radius: var(--radius); background: var(--ground);
+  transition: border-color var(--motion-fast) ease, box-shadow var(--motion-base) ease, transform var(--motion-base) var(--ease-out);
+}
+/* Position decides the accent, so neither grid has to name a colour and the
+   two rows on the page stay in step with each other. */
+.uc-card:nth-child(2) { --uc-ink: var(--green); --uc-tint: var(--green-tint); --uc-line: #B7E6D8; }
+.uc-card:nth-child(3) { --uc-ink: var(--amber); --uc-tint: var(--amber-tint); --uc-line: #F1D3A8; }
+.uc-card::before { content: ''; position: absolute; inset: 0 0 auto 0; height: 3px; background: var(--uc-ink); }
+.uc-card:hover { border-color: var(--uc-line); transform: translateY(-2px); box-shadow: 0 6px 20px rgba(10, 37, 64, 0.07); }
+.uc-head { display: flex; align-items: center; gap: var(--s3); }
+.uc-head b { font-size: 15.5px; line-height: 1.3; }
+.uc-text { font-size: 14px; line-height: 1.55; color: var(--ink-2); }
+.uc-mark {
+  display: inline-flex; align-items: center; justify-content: center; flex: none;
+  width: 36px; height: 36px; border-radius: 9px;
+  border: 1px solid var(--uc-line); background: var(--uc-tint); color: var(--uc-ink);
+}
+.uc-icon { display: block; }
+
+/* One download control, not three stacked boxes: the pick and its button, the
+   two selects, and the archive's facts, divided by hairlines inside one card. */
+.adl { border: 1px solid var(--line); border-radius: var(--radius); background: var(--ground); overflow: hidden; }
+.adl-head { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s4); padding: var(--s4) var(--s6); background: var(--primary-tint); border-bottom: 1px solid var(--primary-line); }
+.adl-head-copy { display: flex; flex-direction: column; gap: 2px; margin-right: auto; min-width: 0; }
+.adl-label { font-family: var(--mono); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-3); }
+.adl-os { font-size: 18px; font-weight: 600; letter-spacing: -0.01em; }
+.adl-note { font-size: 14px; color: var(--ink-2); }
+.adl-get { flex: none; }
+.adl-choose { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--s4); padding: var(--s4) var(--s6); }
+.adl-field { display: flex; flex-direction: column; gap: var(--s2); font-size: 13px; font-weight: 600; color: var(--ink-2); }
+.adl-field select {
+  height: 42px; padding: 0 var(--s4); border-radius: var(--radius); border: 1px solid var(--line);
+  background: var(--ground); color: var(--ink); font-family: inherit; font-size: 15px; font-weight: 400;
+}
+.adl-field select:focus-visible { outline: 2px solid var(--primary); outline-offset: 1px; }
+/* The archive, its size and its digest: what the table's other columns said. */
+.adl-meta { list-style: none; display: flex; flex-wrap: wrap; gap: var(--s3) var(--s8); padding: var(--s4) var(--s6); border-top: 1px solid var(--line); background: var(--ground-2); }
+.adl-meta li { display: flex; align-items: baseline; gap: var(--s2); min-width: 0; }
+.adl-meta span { font-family: var(--mono); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-3); }
+.adl-meta b { font-weight: 400; font-size: 13px; color: var(--ink-2); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+/* "Run it" is a terminal, so it is dark and carries its own shell switch. */
+/* Full width, like every other block in the section. */
+.term { border-radius: var(--radius-lg); overflow: hidden; background: var(--navy-2); color: #E6ECFF; }
+.term-bar { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s3); padding: var(--s3) var(--s4); border-bottom: 1px solid rgba(255, 255, 255, 0.1); }
+.term-title { margin-right: auto; font-size: 15px; font-weight: 500; color: #fff; }
+.term-shells { display: inline-flex; flex-wrap: wrap; gap: 3px; padding: 3px; border-radius: 8px; background: rgba(255, 255, 255, 0.07); }
+.term-shell {
+  display: inline-flex; align-items: baseline; gap: var(--s2);
+  padding: 5px 10px; border: none; border-radius: 6px; background: none;
+  font-family: inherit; font-size: 13px; font-weight: 500; color: rgba(203, 213, 245, 0.72); cursor: pointer;
+  transition: background var(--motion-fast) ease, color var(--motion-fast) ease;
+}
+.term-shell span { font-size: 11px; color: rgba(203, 213, 245, 0.5); }
+.term-shell:hover { color: #fff; }
+.term-shell.on { background: rgba(255, 255, 255, 0.14); color: #fff; }
+.term-shell.on span { color: rgba(230, 236, 255, 0.7); }
+.term-copy {
+  height: 28px; padding: 0 10px; border-radius: 6px; cursor: pointer;
+  border: 1px solid rgba(255, 255, 255, 0.22); background: none;
+  font-family: inherit; font-size: 12px; font-weight: 600; color: rgba(230, 236, 255, 0.85);
+}
+.term-copy:hover { border-color: #fff; color: #fff; }
+.term-code { margin: 0; padding: var(--s4) var(--s6); overflow-x: auto; font-size: 13px; line-height: 1.75; color: #C7D6F5; }
+.term-line { display: block; white-space: pre; }
+/* Highlighting: the program, its subcommands, flags, paths, and the comment. */
+.tk-cmd { color: #8FA0FF; }
+.tk-sub { color: #FFFFFF; }
+.tk-flag { color: #FFB37A; }
+.tk-path { color: #4FD1B5; }
+.tk-comment { color: rgba(203, 213, 245, 0.45); font-style: italic; }
+
 
 /* ————— videos ————— */
 .vid-featured { display: grid; grid-template-columns: minmax(300px, 1.25fr) minmax(260px, 1fr); margin-bottom: var(--s6); border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; background: var(--ground); color: var(--ink); }
@@ -495,7 +570,14 @@ a.vid-card:hover { text-decoration: none; color: var(--ink); }
   .nav-tools { order: 2; margin-left: auto; padding: var(--s2) 0; }
   .nav-links { order: 3; width: 100%; min-height: 44px; margin: 0 calc(-1 * var(--s6)); padding: 0 var(--s6); width: calc(100% + 2 * var(--s6)); border-top: 1px solid var(--line-2); }
   .brand-marks img, .brand-marks .mark-nha img { height: 26px; }
-  .console-grid, .checklist, .kit-steps { grid-template-columns: 1fr; }
+  .checklist, .kit-steps, .uc-grid, .adl-choose { grid-template-columns: 1fr; }
+  .adl-head, .term-bar { gap: var(--s3); }
+  /* The three tabs do not fit a phone with their OS notes, and a clipped tab
+     cannot be tapped: drop the notes and let the strip take the full row. */
+  .term-shells { width: 100%; }
+  .term-shell { flex: 1 1 auto; justify-content: center; }
+  .term-shell span { display: none; }
+  .adl-get { width: 100%; }
   .figure-value { font-size: 28px; }
   .footer-grid { grid-template-columns: 1fr 1fr; }
   .page-head { padding-top: var(--s8); }
@@ -508,4 +590,185 @@ a.vid-card:hover { text-decoration: none; color: var(--ink); }
   .rn-side { flex-direction: row; flex-wrap: wrap; align-items: center; gap: var(--s3); }
   .vid-featured, .news-featured { grid-template-columns: 1fr; }
   .vid-featured.planned .vid-thumb { border-right: none; border-bottom: 1px dashed var(--line); }
+}
+
+/* ————— DevTools hero: the two tools, dark ————— */
+.dtx-hero {
+  position: relative; isolation: isolate; overflow: hidden;
+  background: var(--navy-2); color: #E6ECFF;
+  padding: var(--s16) 0 var(--s12);
+}
+/* Two slow drifting lights, so the band is not a flat rectangle. */
+.dtx-aurora {
+  position: absolute; inset: -40% -20%; z-index: -2; pointer-events: none;
+  background:
+    radial-gradient(38% 46% at 22% 30%, rgba(62, 91, 255, 0.42), transparent 70%),
+    radial-gradient(34% 40% at 78% 62%, rgba(79, 209, 181, 0.24), transparent 70%),
+    radial-gradient(30% 36% at 60% 12%, rgba(255, 163, 93, 0.16), transparent 70%);
+  animation: dtx-drift 22s ease-in-out infinite alternate;
+}
+.dtx-grid {
+  position: absolute; inset: 0; z-index: -1; pointer-events: none; opacity: 0.5;
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.045) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.045) 1px, transparent 1px);
+  background-size: 64px 64px;
+  mask-image: radial-gradient(120% 80% at 50% 0%, #000 30%, transparent 78%);
+}
+@keyframes dtx-drift {
+  from { transform: translate3d(-3%, -2%, 0) scale(1); }
+  to   { transform: translate3d(3%, 3%, 0) scale(1.08); }
+}
+
+.dtx-hero-inner { display: flex; flex-direction: column; gap: var(--s4); }
+.dtx-eyebrow {
+  display: inline-flex; align-items: center; gap: var(--s2); align-self: flex-start;
+  font-family: var(--mono); font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase;
+  color: rgba(203, 213, 245, 0.66);
+}
+.dtx-eyebrow::before { content: ''; width: 1px; height: 12px; background: var(--primary-soft); }
+.dtx-title {
+  margin: 0; max-width: 16em;
+  font-size: clamp(34px, 5.2vw, 60px); font-weight: 500; letter-spacing: -0.03em; line-height: 1.06; color: #fff;
+}
+.dtx-title span { color: var(--primary-soft); }
+.dtx-intro { max-width: 56ch; font-size: 17px; line-height: 1.6; color: rgba(203, 213, 245, 0.82); text-wrap: pretty; }
+
+.dtx-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: var(--s4); margin-top: var(--s6); }
+.dtx-card {
+  display: flex; flex-direction: column; gap: var(--s3);
+  padding: var(--s6); border-radius: var(--radius-lg);
+  border: 1px solid rgba(255, 255, 255, 0.1); background: rgba(255, 255, 255, 0.045);
+  backdrop-filter: blur(2px);
+  transition: transform var(--motion-base) var(--ease-out), border-color var(--motion-base) ease, background var(--motion-base) ease;
+}
+.dtx-card:hover { transform: translateY(-3px); }
+/* One colour per tool, taken from the dot in its tag: DevTools is the live,
+   teal thing you can open now, the adapter the indigo one you deploy. */
+.dtx-card.is-tools {
+  border-color: rgba(79, 209, 181, 0.3);
+  background: linear-gradient(155deg, rgba(79, 209, 181, 0.22), rgba(79, 209, 181, 0.07) 55%, rgba(255, 255, 255, 0.03));
+}
+.dtx-card.is-tools:hover { border-color: rgba(79, 209, 181, 0.62); }
+.dtx-card.is-adapter {
+  border-color: rgba(143, 160, 255, 0.32);
+  background: linear-gradient(155deg, rgba(62, 91, 255, 0.26), rgba(62, 91, 255, 0.08) 55%, rgba(255, 255, 255, 0.03));
+}
+.dtx-card.is-adapter:hover { border-color: rgba(143, 160, 255, 0.65); }
+.dtx-card h2 { margin: 0; font-size: 26px; font-weight: 500; letter-spacing: -0.02em; color: #fff; }
+.dtx-card-tag {
+  display: inline-flex; align-items: center; gap: var(--s2);
+  font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.12em; text-transform: uppercase;
+  color: rgba(203, 213, 245, 0.62);
+}
+.dtx-card-copy { font-size: 15px; line-height: 1.6; color: rgba(203, 213, 245, 0.8); }
+.dtx-card-meta { list-style: none; display: flex; flex-wrap: wrap; gap: var(--s2) var(--s3); margin-top: auto; font-family: var(--mono); font-size: 11.5px; color: rgba(203, 213, 245, 0.55); }
+.dtx-card-meta li { display: inline-flex; align-items: center; gap: var(--s3); }
+.dtx-card-meta li + li::before { content: ''; width: 3px; height: 3px; border-radius: 50%; background: rgba(203, 213, 245, 0.35); }
+.dtx-card-actions { display: flex; flex-wrap: wrap; gap: var(--s3); padding-top: var(--s2); }
+
+.dtx-btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: var(--s2);
+  padding: 0 var(--s4); height: 38px; border-radius: var(--radius);
+  border: 1px solid rgba(255, 255, 255, 0.22); color: #E6ECFF;
+  font-size: 14px; font-weight: 500; text-decoration: none; white-space: nowrap;
+  transition: border-color var(--motion-fast) ease, background var(--motion-fast) ease, color var(--motion-fast) ease;
+}
+.dtx-btn:hover { border-color: #fff; background: rgba(255, 255, 255, 0.08); color: #fff; text-decoration: none; }
+.dtx-btn-primary { border-color: transparent; background: var(--primary); color: #fff; }
+.dtx-btn-primary:hover { background: var(--primary-2); border-color: transparent; }
+
+/* A green dot that breathes: the console is a live thing you can open now. */
+.dtx-live, .dtx-dot { width: 7px; height: 7px; border-radius: 50%; flex: none; }
+.dtx-live { background: #4FD1B5; box-shadow: 0 0 0 0 rgba(79, 209, 181, 0.55); animation: dtx-pulse 2.4s ease-out infinite; }
+.dtx-dot { background: var(--primary-soft); }
+@keyframes dtx-pulse {
+  0% { box-shadow: 0 0 0 0 rgba(79, 209, 181, 0.5); }
+  70% { box-shadow: 0 0 0 8px rgba(79, 209, 181, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(79, 209, 181, 0); }
+}
+
+/* Where the adapter sits: one glowing signal runs your system → adapter →
+   NHCX and then all the way back, which is what the adapter actually does —
+   it carries the request out and the callback home. Two wires, one relay: the
+   left wire lights first, hands over to the right, and the return leg walks
+   the same path in reverse. The nodes flare as the signal reaches them. */
+.dtx-flow {
+  --dtx-cycle: 5.6s;
+  display: flex; flex-wrap: wrap; align-items: center; gap: var(--s3);
+  margin-top: var(--s8); padding: var(--s4) var(--s6);
+  border: 1px solid rgba(255, 255, 255, 0.1); border-radius: var(--radius-lg);
+  background: rgba(255, 255, 255, 0.03);
+}
+.dtx-flow-node {
+  padding: 7px var(--s4); border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.14); background: rgba(255, 255, 255, 0.05);
+  font-size: 13px; color: rgba(230, 236, 255, 0.9); white-space: nowrap;
+  animation: dtx-node var(--dtx-cycle) ease-in-out infinite;
+}
+.dtx-flow-node:first-child { animation-delay: calc(var(--dtx-cycle) * -0.02); }
+.dtx-flow-node:last-child { animation-delay: calc(var(--dtx-cycle) * -0.52); }
+.dtx-flow-node.is-mid {
+  border-color: rgba(143, 160, 255, 0.6); background: rgba(62, 91, 255, 0.22); color: #fff;
+  font-size: 13px; letter-spacing: 0.01em;
+  animation: dtx-node-mid var(--dtx-cycle) ease-in-out infinite;
+}
+
+/* The wire is a 14px lane so the glow can bloom without being clipped to the
+   2px track, which is drawn by the pseudo-element. */
+.dtx-wire { position: relative; flex: 1 1 60px; min-width: 60px; height: 14px; overflow: hidden; }
+.dtx-wire::before {
+  content: ''; position: absolute; left: 0; right: 0; top: 50%;
+  height: 2px; margin-top: -1px; border-radius: 2px; background: rgba(255, 255, 255, 0.12);
+}
+.dtx-wire i {
+  position: absolute; top: 50%; left: 0; width: 38px; height: 6px; margin-top: -3px;
+  transform: translateX(-50%); border-radius: 999px;
+  background: linear-gradient(90deg, transparent, var(--primary-soft) 35%, #eaf0ff 50%, var(--primary-soft) 65%, transparent);
+  box-shadow: 0 0 14px 2px rgba(124, 148, 255, 0.5);
+}
+.dtx-wire.is-a i { animation: dtx-glow-a var(--dtx-cycle) ease-in-out infinite; }
+.dtx-wire.is-b i { animation: dtx-glow-b var(--dtx-cycle) ease-in-out infinite; }
+
+/* Out: 0–25% along the first wire, 25–50% along the second.
+   Back: 50–75% down the second, 75–100% down the first. */
+@keyframes dtx-glow-a {
+  0%   { left: 0%;   opacity: 0; }
+  5%   { opacity: 1; }
+  22%  { opacity: 1; }
+  25%  { left: 100%; opacity: 0; }
+  75%  { left: 100%; opacity: 0; }
+  78%  { opacity: 1; }
+  95%  { opacity: 1; }
+  100% { left: 0%;   opacity: 0; }
+}
+@keyframes dtx-glow-b {
+  0%   { left: 0%;   opacity: 0; }
+  25%  { left: 0%;   opacity: 0; }
+  30%  { opacity: 1; }
+  50%  { left: 100%; opacity: 1; }
+  70%  { opacity: 1; }
+  75%  { left: 0%;   opacity: 0; }
+  100% { left: 0%;   opacity: 0; }
+}
+/* Each node brightens as the signal reaches it. */
+@keyframes dtx-node {
+  0%, 12%, 100% { border-color: rgba(255, 255, 255, 0.14); background: rgba(255, 255, 255, 0.05); color: rgba(230, 236, 255, 0.9); }
+  3% { border-color: rgba(143, 160, 255, 0.7); background: rgba(143, 160, 255, 0.16); color: #fff; }
+}
+@keyframes dtx-node-mid {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(143, 160, 255, 0); }
+  25%, 75% { box-shadow: 0 0 18px 1px rgba(143, 160, 255, 0.45); }
+  40%, 90% { box-shadow: 0 0 0 0 rgba(143, 160, 255, 0); }
+}
+
+@media (max-width: 720px) {
+  .dtx-hero { padding-top: var(--s12); }
+  .dtx-flow { gap: var(--s2); }
+  .dtx-wire { flex-basis: 24px; min-width: 24px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .dtx-aurora, .dtx-live, .dtx-wire i, .dtx-flow-node { animation: none !important; }
+  .dtx-wire i { left: 50%; opacity: 0.85; }
+  .dtx-card { transition: none; }
 }

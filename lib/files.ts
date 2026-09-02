@@ -1,12 +1,13 @@
 import fs from 'node:fs';
 import path from 'node:path';
+import { readContentFile } from './local-content';
 
 /**
  * The downloads section — any file the programme wants to hand out: a PDF
  * circular, a spreadsheet template, a sample bundle, an archive.
  *
  * What is listed, in what order, with what title and description, is
- * `content/downloads.json` (see content/downloads.example.json for the shape):
+ * `content/download.json` (see content/download.example.json for the shape):
  *
  *     {
  *       "groups": [
@@ -74,7 +75,8 @@ interface RawManifest {
 }
 
 const FILES_DIR = ['public', 'files'];
-const MANIFEST = ['content', 'downloads.json'];
+/** The download list, by the name of the page it feeds. */
+const MANIFEST = 'download.json';
 
 const KINDS: Record<string, string> = {
   pdf: 'PDF',
@@ -149,22 +151,19 @@ function slug(title: string): string {
 }
 
 function readManifest(): RawManifest {
-  const file = path.join(process.cwd(), ...MANIFEST);
-  if (!fs.existsSync(file)) return {};
-  const parsed = JSON.parse(fs.readFileSync(file, 'utf8')) as RawManifest;
-  return parsed && typeof parsed === 'object' ? parsed : {};
+  return readContentFile<RawManifest>([MANIFEST]) ?? {};
 }
 
 function resolveItem(raw: RawItem, where: string): DownloadItem {
   const title = raw.title?.trim();
-  if (!title) throw new Error(`content/downloads.json: ${where} has no title`);
+  if (!title) throw new Error(`content/download.json: ${where} has no title`);
   const description = raw.description?.trim() || undefined;
 
   if (raw.file) {
     const rel = raw.file.replace(/^\/+/, '');
     const abs = path.join(process.cwd(), ...FILES_DIR, rel);
     if (!abs.startsWith(path.join(process.cwd(), ...FILES_DIR) + path.sep) || !fs.existsSync(abs) || !fs.statSync(abs).isFile()) {
-      throw new Error(`content/downloads.json: "${title}" points at public/files/${rel}, which does not exist`);
+      throw new Error(`content/download.json: "${title}" points at public/files/${rel}, which does not exist`);
     }
     const stat = fs.statSync(abs);
     const ext = extOf(rel);
@@ -194,10 +193,10 @@ function resolveItem(raw: RawItem, where: string): DownloadItem {
     };
   }
 
-  throw new Error(`content/downloads.json: "${title}" has neither a "file" nor a "url"`);
+  throw new Error(`content/download.json: "${title}" has neither a "file" nor a "url"`);
 }
 
-/** The groups and items of content/downloads.json, in authored order. */
+/** The groups and items of content/download.json, in authored order. */
 export function getDownloadGroups(): DownloadGroup[] {
   const manifest = readManifest();
   const groups: DownloadGroup[] = [];

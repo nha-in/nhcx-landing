@@ -166,20 +166,20 @@ export default function Tools({ consoleUrl }: { consoleUrl: string }) {
 
           {/* 3 · Open-source gateway + checklist */}
           <div className="lp-tool">
-            <Shot title="nhcx-gateway" sub="Open-source connector between your HMIS and the exchange, with the go-live checklist">
+            <Shot title="nhcx-adapter" sub="Open-source adapter between your HMIS and the exchange, with the go-live checklist">
               <div className="lp-pane dark">
                 <div className="lp-pane-row">
                   <span className="lp-pane-title">Terminal</span>
                   <span className="lp-valid">open source</span>
                 </div>
                 <pre className="lp-code">
-                  <span className="k">$</span> git clone https://github.com/NHA-ABDM/nhcx-gateway{'\n'}
-                  <span className="k">$</span> cp config.sample.json config.json{'\n'}
-                  <span className="k">$</span> ./hcxkit{'\n'}
+                  <span className="k">$</span> tar xzf nhcx-adapter_v1.0.1_linux_amd64.tar.gz{'\n'}
+                  <span className="k">$</span> ./nhcx-adapter config edit{'\n'}
+                  <span className="k">$</span> ./nhcx-adapter serve{'\n'}
                   <span className="s">✓</span> participant code <span className="v">HOSP-4471</span> loaded{'\n'}
                   <span className="s">✓</span> keys verified · JWE ready{'\n'}
                   <span className="s">✓</span> callback https://hospital.example/in/v1/ reachable{'\n'}
-                  <span className="s">✓</span> console on http://localhost:8080
+                  <span className="s">✓</span> panel on http://127.0.0.1:8090/panel
                 </pre>
               </div>
               <div className="lp-pane">
@@ -203,8 +203,8 @@ export default function Tools({ consoleUrl }: { consoleUrl: string }) {
               </div>
             </Shot>
             <div className="lp-tool-foot">
-              <p>One static binary — no JVM, no Docker — that signs, encrypts and routes every message, and tells you exactly what is left before you go live.</p>
-              <a href={withBase('/devtools/')}>Get the gateway →</a>
+              <p>One static binary (no JVM, no Docker) that signs, encrypts and routes every message, and tells you exactly what is left before you go live.</p>
+              <a href={withBase('/devtools/#adapter')}>Get nhcx-adapter →</a>
             </div>
           </div>
 
@@ -266,7 +266,7 @@ export default function Tools({ consoleUrl }: { consoleUrl: string }) {
                   <div className="lp-agent-step">
                     <em className="ok" />
                     <span>
-                      <code>Condition.code</code> was free text — mapped to <code>ICD-10 I21.0</code>
+                      <code>Condition.code</code> was free text: mapped to <code>ICD-10 I21.0</code>
                     </span>
                   </div>
                   <div className="lp-agent-step">
@@ -311,7 +311,7 @@ export default function Tools({ consoleUrl }: { consoleUrl: string }) {
               </div>
             </Shot>
             <div className="lp-tool-foot">
-              <p>Point it at a claim from your HMIS and it maps, fixes and validates the bundle against the specification — explaining each change.</p>
+              <p>Point it at a claim from your HMIS and it maps, fixes and validates the bundle against the specification: explaining each change.</p>
               <a href={docs}>Ask the assistant in the documentation →</a>
             </div>
           </div>

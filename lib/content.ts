@@ -52,7 +52,16 @@ const DEVTOOLS_SCHEME = 'devtools:';
  * the components render plain hrefs and never learn about the convention.
  */
 export function resolveDevtoolsLinks<T extends SiteContent>(content: T): T {
-  const root = (content.global?.devtoolsUrl || 'http://localhost:8080').replace(/\/$/, '');
+  return resolveDevtoolsIn(content, content.global?.devtoolsUrl || 'http://localhost:8080');
+}
+
+/**
+ * The same rewrite for content that is not the snapshot — the page files under
+ * `content/` (lib/local-content.ts), which carry the same `devtools:` links but
+ * no `global` to read the console's address from, so it is passed in.
+ */
+export function resolveDevtoolsIn<T>(content: T, devtoolsUrl: string): T {
+  const root = (devtoolsUrl || 'http://localhost:8080').replace(/\/$/, '');
   const walk = (value: unknown): unknown => {
     if (typeof value === 'string') {
       return value.startsWith(DEVTOOLS_SCHEME) ? `${root}${value.slice(DEVTOOLS_SCHEME.length)}` : value;

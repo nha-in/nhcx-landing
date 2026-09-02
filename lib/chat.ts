@@ -28,11 +28,22 @@
 
 import { useSyncExternalStore } from 'react';
 
-/** Where the NHCX chat service listens. Baked in at build time. */
-const ASSISTANT_URL = (process.env.NEXT_PUBLIC_ASSISTANT_URL ?? 'http://127.0.0.1:8000').replace(
-  /\/$/,
-  '',
-);
+/**
+ * Where the NHCX chat service answers. Baked in at build time.
+ *
+ * The default is the same-origin path nginx serves it on — `/chatbot/` proxies
+ * to the service, so the browser makes a same-origin request: no CORS to
+ * configure, no port to reach, and the site's own basic auth is carried by the
+ * browser as it is for every other request. Point
+ * `NEXT_PUBLIC_ASSISTANT_URL` at an absolute address only when the service is
+ * somewhere else (a developer running it on 127.0.0.1:8000, say), and then the
+ * service must allow this origin in NHCX_CORS_ORIGINS.
+ *
+ * This is a root-absolute path on purpose and never goes through `withBase()`:
+ * the export can be served under /landing, but the assistant stays at
+ * /chatbot.
+ */
+const ASSISTANT_URL = (process.env.NEXT_PUBLIC_ASSISTANT_URL ?? '/chatbot').replace(/\/$/, '');
 
 /**
  * Sent as `Authorization: Bearer` when the service sets NHCX_API_KEYS.
@@ -79,9 +90,6 @@ interface ChatState {
   isStreaming: boolean;
   mode: ChatMode;
   model: string;
-  /** Why the assistant is unavailable, and what to do about it. */
-  reason: string;
-  hint: string;
 }
 
 const STORAGE_KEY = 'nhcx_docs_chat_history';
@@ -91,7 +99,7 @@ const GREETING: ChatMessage = {
   id: 'greeting',
   role: 'assistant',
   content:
-    'Ask me about NHCX — claim settlement, the transaction flows, FHIR payloads, protocol headers, workflow and error codes, or why an exchange failed. Every answer is grounded in this documentation set and cites the pages it came from.',
+    'Hi! 👋 Ask me anything about NHCX. I answer from the documentation on this page and link the pages I used.',
   timestamp: 0,
 };
 
@@ -117,8 +125,6 @@ let state: ChatState = {
   isStreaming: false,
   mode: 'unknown',
   model: '',
-  reason: '',
-  hint: '',
 };
 
 const listeners = new Set<() => void>();
@@ -182,55 +188,55 @@ export async function refreshChatStatus(force = false): Promise<void> {
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     const body = (await res.json()) as { status?: string; model?: string };
     if (body.status && body.status !== 'ok' && body.status !== 'ready') {
-      setState({
-        mode: 'unavailable',
-        reason: `the NHCX assistant is running but reports "${body.status}"`,
-        hint: 'check its corpus at NHCX_DOCS',
-      });
+      setUnavailable(`the NHCX assistant is running but reports "${body.status}"`);
       return;
     }
-    setState({ mode: 'ready', model: body.model ?? '', reason: '', hint: '' });
+    setState({ mode: 'ready', model: body.model ?? '' });
   } catch {
     // Unreachable, or the browser blocked the request as cross-origin.
-    setState({
-      mode: 'unavailable',
-      reason: `the NHCX assistant is not answering at ${ASSISTANT_URL}`,
-      hint: `start it: python -m nhcx_service serve --port ${assistantPort()} (and allow this origin in NHCX_CORS_ORIGINS)`,
-    });
-  }
-}
-
-function assistantPort(): string {
-  try {
-    return new URL(ASSISTANT_URL).port || '8000';
-  } catch {
-    return '8000';
+    setUnavailable(`the NHCX assistant is not answering at ${ASSISTANT_URL}`);
   }
 }
 
 /**
- * A rejection from the service, as a line someone can act on. A caller block
- * (429) is the service telling this site to back off, which is worth saying
- * plainly.
+ * Go offline, and say why to the console.
+ *
+ * Nothing on the page repeats this: the panel tells a visitor the assistant is
+ * unavailable and leaves it there, because which address failed, which unit to
+ * restart and which variable to set are all the operator's business. The
+ * console line is where that operator finds it.
+ */
+function setUnavailable(reason: string): void {
+  setState({ mode: 'unavailable' });
+  console.info(`[nhcx-assistant] ${reason}`);
+}
+
+/**
+ * A rejection from the service, as a line a *reader* can act on.
+ *
+ * The status codes here are operational — a key the service would not accept,
+ * a corpus it has not loaded — and naming the variable behind one on a public
+ * page helps nobody who can see it. So the transcript says what it means for
+ * the question just asked; the code itself is logged for whoever runs the
+ * service.
  */
 function failureMessage(status: number, retryAfter: string): string {
   switch (status) {
     case 401:
     case 403:
-      return 'The NHCX assistant rejected this site’s API key. Check NEXT_PUBLIC_ASSISTANT_API_KEY against the service’s NHCX_API_KEYS.';
+      return 'The assistant is not available to this site at the moment.';
     case 429:
       return (
-        'The NHCX assistant has rate-limited this caller after repeated blocked attempts.' +
-        (retryAfter ? ` Try again in ${retryAfter}s.` : '')
+        'Too many questions have been asked at once.' + (retryAfter ? ` Try again in ${retryAfter}s.` : ' Try again shortly.')
       );
     case 503:
-      return 'The NHCX assistant is running but not ready — check its corpus at NHCX_DOCS.';
+      return 'The assistant is still starting up. Try again in a moment.';
     case 422:
-      return 'The NHCX assistant rejected the question as invalid.';
+      return 'The assistant could not read that question. Try rephrasing it.';
     default:
       return status >= 500
-        ? `The NHCX assistant failed (HTTP ${status}).`
-        : `The NHCX assistant refused the request (HTTP ${status}).`;
+        ? 'The assistant could not answer just now. Try again in a moment.'
+        : 'The assistant could not answer that request.';
   }
 }
 
@@ -264,10 +270,8 @@ function finishLast(patch: Partial<ChatMessage>): void {
 }
 
 /** The message shown when the service cannot be reached. */
-function unavailableMessage(reason: string, hint: string): string {
-  const lines = [reason || 'The NHCX assistant is not reachable.'];
-  if (hint) lines.push('', hint);
-  return lines.join('\n');
+function unavailableMessage(reason: string): string {
+  return reason || 'The assistant is not reachable right now.';
 }
 
 /**
@@ -337,8 +341,8 @@ export async function sendMessage(text: string): Promise<void> {
     if (!res.ok || !res.body) {
       const message = failureMessage(res.status, res.headers.get('Retry-After')?.trim() ?? '');
       if (res.status === 503) {
-        setState({ mode: 'unavailable', reason: message, hint: '' });
-        finishLast({ content: unavailableMessage(message, ''), error: true });
+        setState({ mode: 'unavailable' });
+        finishLast({ content: unavailableMessage(message), error: true });
         return;
       }
       finishLast({ content: message, error: true });
@@ -422,7 +426,7 @@ export async function sendMessage(text: string): Promise<void> {
       return;
     }
     if (!state.messages[state.messages.length - 1]?.content) {
-      finishLast({ content: 'The assistant returned an empty response.', error: true });
+      finishLast({ content: 'The assistant returned an empty answer. Try asking again.', error: true });
       return;
     }
     finishLast({ blocked });
@@ -432,9 +436,10 @@ export async function sendMessage(text: string): Promise<void> {
       finishLast({});
       return;
     }
-    const reason = `the NHCX assistant is not answering at ${ASSISTANT_URL}`;
-    setState({ mode: 'unavailable', reason, hint: '' });
-    finishLast({ content: unavailableMessage(reason, ''), error: true });
+    // The diagnosis goes to the console and the offline panel; the transcript
+    // gets the sentence a reader can do something with.
+    setUnavailable(`the NHCX assistant stopped answering at ${ASSISTANT_URL}`);
+    finishLast({ content: 'The assistant is unavailable right now. Try again in a moment.', error: true });
   } finally {
     controller = null;
   }
@@ -463,8 +468,6 @@ export function useChatStore() {
     isStreaming: snapshot.isStreaming,
     mode: snapshot.mode,
     model: snapshot.model,
-    reason: snapshot.reason,
-    hint: snapshot.hint,
     sendMessage,
     stopStreaming,
     clearHistory,

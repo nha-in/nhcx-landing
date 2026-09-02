@@ -44,6 +44,11 @@ function componentUids() {
 }
 
 const KNOWN_SECTIONS = componentUids();
+/** Without a CMS checkout the schema-level checks are skipped; the structural ones still run. */
+const HAVE_SCHEMAS = KNOWN_SECTIONS.size > 0;
+if (!HAVE_SCHEMAS) {
+  console.log(`– No CMS schemas under ${path.relative(ROOT, CMS)}; checking structure only`);
+}
 
 /** Fields the schema marks required but the content omits. */
 function missingRequired(uid, entity, label) {
@@ -75,7 +80,7 @@ function checkFile(file) {
     errors.push('landing.sections is missing or empty');
   } else {
     for (const [i, section] of sections.entries()) {
-      if (!KNOWN_SECTIONS.has(section.__component)) {
+      if (HAVE_SCHEMAS && !KNOWN_SECTIONS.has(section.__component)) {
         errors.push(`landing.sections[${i}] uses "${section.__component}", which no CMS component defines`);
       }
     }

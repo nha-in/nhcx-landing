@@ -77,7 +77,7 @@ export function ChatSources({ sources, docs, onOpen }: Props) {
               key={item.key}
               href={item.href}
               className="chat-chip chat-chip-link"
-              title={item.detail ? `${item.detail} — open in the reader` : 'Open in the reader'}
+              title={item.detail ? `${item.detail}: open in the reader` : 'Open in the reader'}
               onClick={(event) => {
                 if (event.metaKey || event.ctrlKey) return;
                 event.preventDefault();

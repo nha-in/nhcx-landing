@@ -2,7 +2,7 @@ import { withBase } from '@/lib/paths';
 
 function Check() {
   return (
-    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="#FFA35D" strokeWidth="1.5" strokeLinecap="round" aria-hidden="true">
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="#0B7A62" strokeWidth="1.5" strokeLinecap="round" aria-hidden="true">
       <circle cx="8" cy="8" r="6.6" />
       <path pathLength="1" d="M5.3 8.2l1.9 1.9 3.5-4" />
     </svg>
@@ -61,7 +61,7 @@ export default function Benefits() {
 
         <div className="lp-bgrid">
           {/* Standardisation */}
-          <article className="lp-card warm" data-reveal="" data-delay="120" tabIndex={0} aria-label="Standardisation — every claim speaks the same language">
+          <article className="lp-card warm" data-reveal="" data-delay="120" tabIndex={0} aria-label="Standardisation: every claim speaks the same language">
             <div className="lp-card-base">
               <div className="lp-card-title">Standardisation</div>
               <div className="lp-card-sub">
@@ -108,7 +108,7 @@ export default function Benefits() {
                           <span>3 days</span>
                         </div>
                       </div>
-                      <div className="lp-phone-btn">Submit bundle</div>
+                      <div className="lp-phone-btn">Submit</div>
                     </div>
                   </div>
                 </div>
@@ -120,7 +120,7 @@ export default function Benefits() {
               </h3>
               <p>
                 NHCX uses FHIR-based standards and internationally accepted coding practices, so provider and payer systems can
-                exchange health information in a common, machine-readable format — without losing its meaning across systems.
+                exchange health information in a common, machine-readable format, without losing its meaning across systems.
               </p>
               <a href={docs} className="btn btn-secondary">
                 Explore documentation →
@@ -137,7 +137,7 @@ export default function Benefits() {
 
           <div className="lp-bstack">
             {/* Structured data */}
-            <article className="lp-card cool" data-reveal="" data-delay="180" tabIndex={0} aria-label="Structured data — data a system can read, not a page to re-type">
+            <article className="lp-card cool" data-reveal="" data-delay="180" tabIndex={0} aria-label="Structured data: data a system can read, not a page to re-type">
               <div className="lp-card-base">
                 <div className="lp-card-title">Structured data</div>
                 <div className="lp-card-sub">
@@ -171,13 +171,13 @@ export default function Benefits() {
                 <h3>
                   Data a system can <strong>read</strong>, not a page to re-type
                 </h3>
-                <p>Diagnoses, procedures, drugs and bill lines travel as coded values — priced and checked automatically instead of opened and read.</p>
+                <p>Diagnoses, procedures, drugs and bill lines travel as coded values: priced and checked automatically instead of opened and read.</p>
                 <Points items={[{ title: 'Coded at source' }, { title: 'Nothing lost in transit' }, { title: 'Signed and audit-ready' }]} />
               </div>
             </article>
 
             {/* Automation */}
-            <article className="lp-card mint" data-reveal="" data-delay="240" tabIndex={0} aria-label="Automation and AI assistance — fewer queries, faster decisions">
+            <article className="lp-card mint" data-reveal="" data-delay="240" tabIndex={0} aria-label="Automation and AI assistance: fewer queries, faster decisions">
               <div className="lp-card-base">
                 <div className="lp-card-title">Automation &amp; AI assistance</div>
                 <div className="lp-card-sub">

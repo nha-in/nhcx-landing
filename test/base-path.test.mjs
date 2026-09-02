@@ -23,7 +23,6 @@ import DevToolsPage from '@/app/devtools/page';
 import DownloadPage from '@/app/download/page';
 import DocumentationPage from '@/app/documentation/page';
 import ApplyPage from '@/app/apply/page';
-import ReleasesPage from '@/app/releases/page';
 
 const BASE = '/landing';
 /** href/src that starts with "/" but not with the base path. */
@@ -67,7 +66,6 @@ for (const [route, Page] of [
   ['/download/', DownloadPage],
   ['/documentation/', DocumentationPage],
   ['/apply/', ApplyPage],
-  ['/releases/', ReleasesPage],
 ]) {
   test(`${route} renders with every internal link under ${BASE}/`, async () => {
     assertPrefixed(await render(Page), route);

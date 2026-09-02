@@ -1,24 +1,18 @@
-import fs from 'node:fs';
-import path from 'node:path';
-
 /**
- * The HCX DevTools release builds, staged into `public/downloads` at build
- * time by `npm run sync:dist` from the hcxkit project's `dist/` directory.
+ * The shape of a downloadable release: one row per platform build, grouped by
+ * operating system.
  *
- *     /downloads/manifest.json                          every build
- *     /downloads/hcxkit_<version>_darwin_arm64.tar.gz   one archive
- *
- * The manifest is read at build time — the DevTools page is statically
- * exported, so the download table is baked into the HTML. When the artifacts
- * have not been staged the page falls back to the download rows in the CMS
- * content.
+ * nhcx-adapter is the release the site lists (lib/adapter.ts, filled by
+ * `npm run sync:adapter` from its GitHub releases); these types and helpers are
+ * what its download table is built on, and are deliberately not tied to where
+ * the archives are hosted — `url` may be a staged path or an absolute URL.
  */
 
-/** One platform build, as described by public/downloads/manifest.json. */
+/** One platform build in a release. */
 export interface DistBuild {
-  /** Archive filename, e.g. `hcxkit_v2.4.1_darwin_arm64.tar.gz`. */
+  /** Archive filename, e.g. `nhcx-adapter_v1.0.1_darwin_arm64.tar.gz`. */
   file: string;
-  /** URL of the staged archive, e.g. `/downloads/hcxkit_…tar.gz`. */
+  /** Where the archive is downloaded from — a staged path or an absolute URL. */
   url: string;
   version: string;
   /** Go's GOOS — `darwin`, `linux`, `windows`, `freebsd`. */
@@ -53,18 +47,6 @@ export interface DistPlatform {
   os: string;
   label: string;
   builds: DistBuild[];
-}
-
-/** The staged release manifest, or null when nothing has been staged. */
-export function getDistManifest(): DistManifest | null {
-  const file = path.join(process.cwd(), 'public', 'downloads', 'manifest.json');
-  if (!fs.existsSync(file)) return null;
-  try {
-    const manifest = JSON.parse(fs.readFileSync(file, 'utf8')) as DistManifest;
-    return manifest?.builds?.length ? manifest : null;
-  } catch {
-    return null;
-  }
 }
 
 /** The manifest's builds grouped by operating system, order preserved. */

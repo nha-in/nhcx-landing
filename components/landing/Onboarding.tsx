@@ -9,7 +9,7 @@ import { withBase } from '@/lib/paths';
 const steps = () => [
   {
     title: 'Register on the ABDM sandbox',
-    text: 'Fill in the sandbox registration form and you can start building. ABHA verification is not required in the sandbox — you only need it for production, where beneficiaries are authenticated for real.',
+    text: 'Fill in the sandbox registration form and you can start building. ABHA verification is not required in the sandbox: you only need it for production, where beneficiaries are authenticated for real.',
     link: { label: 'Sandbox registration', href: 'https://sandbox.abdm.gov.in/sandbox/v3/sandbox-registration' },
   },
   {
@@ -24,7 +24,7 @@ const steps = () => [
   },
   {
     title: 'Apply for production',
-    text: 'Share the functional and security certificates. NHCX assigns your role in production, provisions credentials and registers you as a participant — then you go live.',
+    text: 'Share the functional and security certificates. NHCX assigns your role in production, provisions credentials and registers you as a participant, then you go live.',
     link: { label: 'Apply for sandbox access here', href: withBase('/apply/') },
   },
 ];
@@ -64,7 +64,7 @@ export default function Onboarding() {
           <div>
             <b>Facility registry</b>
             <span>
-              Hospitals register their facility in the ABDM Health Facility Registry first —{' '}
+              Hospitals register their facility in the ABDM Health Facility Registry first:{' '}
               <a href="https://facility.abdm.gov.in/">facility.abdm.gov.in</a>, queries to <a href="mailto:facility@nha.gov.in">facility@nha.gov.in</a>.
             </span>
           </div>

@@ -21,7 +21,6 @@ import DevToolsPage, { generateMetadata as devtoolsMetadata } from '@/app/devtoo
 import DownloadPage, { generateMetadata as downloadMetadata } from '@/app/download/page';
 import VideosPage, { generateMetadata as videosMetadata } from '@/app/videos/page';
 import NewsPage, { generateMetadata as newsMetadata } from '@/app/news/page';
-import ReleasesPage, { generateMetadata as releasesMetadata } from '@/app/releases/page';
 import ApplyPage, { generateMetadata as applyMetadata } from '@/app/apply/page';
 import { getContent } from '@/lib/content';
 
@@ -58,7 +57,6 @@ const ROUTES = [
   ['/download/', DownloadPage, downloadMetadata],
   ['/videos/', VideosPage, videosMetadata],
   ['/news/', NewsPage, newsMetadata],
-  ['/releases/', ReleasesPage, releasesMetadata],
   ['/apply/', ApplyPage, applyMetadata],
 ];
 
@@ -101,11 +99,14 @@ test('the home page points at the DevTools console for the catalogue and the lea
   assert.ok(html.includes('hcx.integration@nha.gov.in'), 'no integration support contact');
 });
 
-test('/devtools/ lists what is inside the console', async () => {
+test('/devtools/ lists what is inside DevTools', async () => {
   const html = await render(DevToolsPage);
-  assert.ok(html.includes('Inside the console'), '/devtools/: no console section');
-  for (const item of ['API catalogue', 'Learning path', 'FHIR builder', 'Simulator', 'Transaction logs']) {
-    assert.ok(html.includes(item), `/devtools/: console list lacks ${item}`);
+  assert.ok(html.includes('id="console-title"'), '/devtools/: no DevTools section');
+  assert.ok(html.includes('NHCX Adapter'), '/devtools/: the adapter is not named');
+  assert.ok(/<a[^>]+github\.com[^>]+target="_blank"/.test(html), '/devtools/: GitHub links do not open in a new tab');
+  assert.ok(!html.includes('console-grid'), '/devtools/: the console tile list is still rendered');
+  for (const item of ['Starting from zero', 'Preparing your first claim', 'Put an existing system on NHCX']) {
+    assert.ok(html.includes(item), `/devtools/: use cases lack ${item}`);
   }
 });
 
@@ -113,7 +114,8 @@ test('/download/ lists the items of content/downloads.json, or says there are no
   const html = await render(DownloadPage);
   assert.ok(html.includes('dl-table') || html.includes('dl-empty'), '/download/: neither a file table nor the empty state');
   assert.ok(html.includes('nhcx.abdm.gov.in'), '/download/: the NHCX specification links are missing');
-  assert.ok(!/>\.in\/</.test(html) && html.includes('>Download</a>'), '/download/: buttons should read "Download"');
+  assert.ok(html.includes('class="dl-get"'), '/download/: rows have no get link');
+  assert.ok(!html.includes('<th scope="col">Type</th>'), '/download/: the Type column is still rendered');
   assert.ok(!html.includes('gov-tricolour'), 'the tricolour rule is still rendered');
 });
 
@@ -131,13 +133,6 @@ test('/videos/ says "Recording coming soon" for entries without a URL', async ()
   assert.ok(!html.includes('href="#playlists"'), '/videos/: a planned recording still links to a fake player');
 });
 
-test('/releases/ lists every release note newest first', async () => {
-  const html = await render(ReleasesPage);
-  const versions = [...html.matchAll(/class="rn-version">([^<]+)</g)].map((m) => m[1]);
-  assert.ok(versions.length >= 1, '/releases/: no entries');
-  assert.deepEqual(versions, [...versions].sort().reverse(), '/releases/: not newest first');
-});
-
 test('the landing FAQ has at least 15 questions in topic groups with documentation links', async () => {
   const html = await render(Home);
   const questions = (html.match(/<summary>/g) ?? []).length;
@@ -150,4 +145,37 @@ test('renders the root layout', () => {
   const html = renderToString(RootLayout({ children: 'body' }));
   assert.ok(html.includes('<html lang="en">'));
   assert.ok(html.includes('family=Inter') && html.includes('IBM+Plex+Mono'), 'the layout does not load Inter and IBM Plex Mono');
+});
+
+test('a ```mermaid fence renders as a drawable md-mermaid figure', async () => {
+  const { renderMarkdown } = await import('@/lib/markdown');
+  const doc = renderMarkdown(
+    '# Flow\n\n```mermaid\nflowchart LR\n  A[HMIS] -->|claim| B[NHCX]\n```\n',
+  );
+  // The renderer marks the source up for lib/mermaid.ts to draw client-side;
+  // the sanitiser must let the figure, its class and its state through.
+  assert.ok(doc.html.includes('<figure class="md-mermaid" data-state="pending">'), 'no md-mermaid figure');
+  assert.ok(doc.html.includes('class="md-mermaid-source"'), 'diagram source not kept in the figure');
+  assert.ok(doc.html.includes('flowchart LR'), 'diagram text lost');
+  // An ordinary fence must keep the plain code path.
+  const code = renderMarkdown('```json\n{ "a": 1 }\n```\n');
+  assert.ok(code.html.includes('<figure class="md-code"'), 'plain fence no longer renders as code');
+});
+
+test('a page image is resolved against the page, not the reader route', async () => {
+  const { renderMarkdown } = await import('@/lib/markdown');
+  // The corpus embeds images relative to the markdown file. The reader lives
+  // at /documentation/, so an unresolved source would point at /assets/… and
+  // 404 — every doc image did until the document's URL was passed in.
+  const src = '![figure 1](../assets/images/documents/flow/flow-01.png)';
+  const page = renderMarkdown(src, { baseUrl: '/docs/06-pmjay-flow/03-integration-overview.md' });
+  assert.ok(
+    page.html.includes('src="/docs/assets/images/documents/flow/flow-01.png"'),
+    `relative image not resolved: ${page.html}`,
+  );
+  // No base URL, no rewriting: the chat transcript renders the same function.
+  assert.ok(renderMarkdown(src).html.includes('src="../assets/images/'), 'image rewritten without a base');
+  // An absolute source is left alone.
+  const remote = renderMarkdown('![x](https://example.test/a.png)', { baseUrl: '/docs/a/b.md' });
+  assert.ok(remote.html.includes('src="https://example.test/a.png"'), 'absolute image source rewritten');
 });

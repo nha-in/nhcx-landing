@@ -10,7 +10,7 @@ export default function Hero({ applyHref }: { applyHref: string }) {
           <span className="accent">Health Claims</span>
         </h1>
         <p>
-          NHCX brings India&rsquo;s healthcare ecosystem together with standardised, interoperable claim data — enabling
+          NHCX brings India&rsquo;s healthcare ecosystem together with standardised, interoperable claim data: enabling
           seamless, transparent and efficient exchange across systems.
         </p>
         <div className="lp-hero-cta">

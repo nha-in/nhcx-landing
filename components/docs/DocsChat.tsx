@@ -18,13 +18,6 @@ import { ChatSources } from '@/components/docs/ChatSources';
  * than on its own.
  */
 
-const SUGGESTIONS = [
-  'What does workflow code 24 mean?',
-  'Walk me through the pre-authorisation flow.',
-  'Which x-hcx headers go in the JWE protected header?',
-  'My on_check callback returns 401 — what should I check?',
-];
-
 interface Props {
   docs: DocsIndex | null;
   /** Open a `?p=<code>#<anchor>` citation in the reader. */
@@ -34,13 +27,14 @@ interface Props {
 }
 
 export function DocsChat({ docs, onOpenCitation, open, onToggle }: Props) {
-  const { messages, isStreaming, mode, reason, hint, sendMessage, stopStreaming, clearHistory, refreshChatStatus } =
+  const { messages, isStreaming, mode, sendMessage, stopStreaming, clearHistory, refreshChatStatus } =
     useChatStore();
 
   const [draft, setDraft] = useState('');
-  // The bubble opens to a comfortable reading width; 'wide' gives an answer
-  // with a table or a diagram in it room to breathe without leaving the page.
-  const [wide, setWide] = useState(false);
+  // The bubble opens docked beside the reader; expanding takes the whole page,
+  // for a long answer with tables or a diagram in it and for reading a
+  // conversation back. The transcript keeps a measured column either way.
+  const [full, setFull] = useState(false);
   const scrollRef = useRef<HTMLDivElement | null>(null);
   const inputRef = useRef<HTMLTextAreaElement | null>(null);
   const pinnedRef = useRef(true);
@@ -48,6 +42,23 @@ export function DocsChat({ docs, onOpenCitation, open, onToggle }: Props) {
   useEffect(() => {
     if (open) void refreshChatStatus();
   }, [open, refreshChatStatus]);
+
+  // Full page covers the reader, so the page behind it must not scroll, and
+  // Escape has to bring it back: that is what a reader expects of anything
+  // taking the whole screen.
+  useEffect(() => {
+    const covering = open && full;
+    document.documentElement.classList.toggle('chat-full', covering);
+    if (!covering) return;
+    const onKey = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') setFull(false);
+    };
+    document.addEventListener('keydown', onKey);
+    return () => {
+      document.removeEventListener('keydown', onKey);
+      document.documentElement.classList.remove('chat-full');
+    };
+  }, [open, full]);
 
   // Follow the reply as it streams, unless the reader scrolled up.
   useEffect(() => {
@@ -120,7 +131,13 @@ export function DocsChat({ docs, onOpenCitation, open, onToggle }: Props) {
   }
 
   return (
-    <aside className="chat-panel" data-size={wide ? 'wide' : 'normal'} aria-label="NHCX assistant">
+    <aside
+      className="chat-panel"
+      data-size={full ? 'full' : 'normal'}
+      role={full ? 'dialog' : undefined}
+      aria-modal={full || undefined}
+      aria-label="NHCX assistant"
+    >
       <div className="chat-head">
         <div className="chat-head-title">
           <span className="chat-launcher-dot" data-mode={mode} />
@@ -133,11 +150,12 @@ export function DocsChat({ docs, onOpenCitation, open, onToggle }: Props) {
           </button>
           <button
             type="button"
-            onClick={() => setWide((w) => !w)}
-            aria-label={wide ? 'Shrink the assistant' : 'Expand the assistant'}
-            title={wide ? 'Shrink' : 'Expand'}
+            onClick={() => setFull((f) => !f)}
+            aria-expanded={full}
+            aria-label={full ? 'Leave full page' : 'Open the assistant full page'}
+            title={full ? 'Exit full page (Esc)' : 'Full page'}
           >
-            {wide ? '⤡' : '⤢'}
+            {full ? '⤡' : '⤢'}
           </button>
           <button type="button" onClick={onToggle} aria-label="Close the assistant" title="Close">
             ✕
@@ -173,25 +191,14 @@ export function DocsChat({ docs, onOpenCitation, open, onToggle }: Props) {
             </div>
           ),
         )}
-
-        {messages.length <= 1 && (
-          <div className="chat-suggestions">
-            {SUGGESTIONS.map((suggestion) => (
-              <button key={suggestion} type="button" onClick={() => submit(suggestion)}>
-                {suggestion}
-              </button>
-            ))}
-          </div>
-        )}
       </div>
 
       <div className="chat-composer">
         {mode === 'unavailable' && (
           <div className="chat-offline">
             <div>
-              <b>The NHCX assistant is not answering.</b>
-              {reason && <p>{reason}</p>}
-              {hint && <code>{hint}</code>}
+              <b>The assistant is unavailable right now.</b>
+              <p>Try again in a moment. The documentation beside it is complete without it.</p>
             </div>
             <button type="button" onClick={() => void refreshChatStatus(true)}>
               Retry

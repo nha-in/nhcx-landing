@@ -11,6 +11,7 @@
 import { Lexer, Marked, type RendererObject, type TokenizerAndRendererExtension, type Tokens } from 'marked';
 import { escapeHtml, highlight, isHighlightable } from './highlight';
 import { isSafeUrl, sanitizeHtml } from './sanitize';
+import { withBase } from '../paths';
 
 export interface DocHeading {
   id: string;
@@ -27,6 +28,39 @@ export interface RenderedDoc {
   title?: string;
   /** Plain text of the whole document, for search. */
   plainText: string;
+}
+
+export interface RenderOptions {
+  /**
+   * The URL the document itself was loaded from. Relative image sources are
+   * resolved against it, because the markdown is fetched from one place
+   * (`/docs/06-pmjay-flow/03-integration-overview.md`) and rendered in
+   * another (`/documentation/`) — the browser would otherwise resolve
+   * `../assets/images/x.png` against the reader's route and get nothing.
+   *
+   * Only images are resolved. Cross-page links are rewritten to `?p=<code>`
+   * by scripts/sync-docs.mjs and must stay query-only for the reader to read.
+   */
+  baseUrl?: string;
+}
+
+/**
+ * Resolve `href` against `baseUrl`, keeping the result origin-relative when
+ * the base is itself a path. Returns the href untouched when it cannot be
+ * resolved, so a malformed source degrades to what the author wrote.
+ */
+function resolveAgainst(href: string, baseUrl: string | undefined): string {
+  if (!baseUrl) return href;
+  // Absolute URLs, root-absolute paths, data: and fragments resolve to
+  // themselves; only a genuinely relative source needs the document's URL.
+  if (/^[a-z][a-z0-9+.-]*:/i.test(href) || href.startsWith('/') || href.startsWith('#')) return href;
+  try {
+    const origin = 'http://docs.invalid';
+    const url = new URL(href, new URL(baseUrl, origin));
+    return url.origin === origin ? `${url.pathname}${url.search}${url.hash}` : url.href;
+  } catch {
+    return href;
+  }
 }
 
 const ALERT_LABELS: Record<string, string> = {
@@ -70,7 +104,7 @@ interface FootnoteEntry {
   refs: number;
 }
 
-export function renderMarkdown(source: string): RenderedDoc {
+export function renderMarkdown(source: string, options: RenderOptions = {}): RenderedDoc {
   const markdown = typeof source === 'string' ? source : '';
   if (!markdown.trim()) {
     return { html: '', headings: [], plainText: '' };
@@ -277,7 +311,13 @@ export function renderMarkdown(source: string): RenderedDoc {
     },
 
     image(token: Tokens.Image) {
-      const src = isSafeUrl(token.href) || token.href.startsWith('data:image/') ? token.href : '';
+      // A staged page's images sit beside it under /docs, not under the
+      // reader's route, so a relative source is resolved against the document
+      // before anything else looks at it. withBase() then covers an export
+      // served under a path prefix; it is idempotent, so a source that already
+      // carries the prefix is left alone.
+      const resolved = withBase(resolveAgainst(token.href, options.baseUrl));
+      const src = isSafeUrl(resolved) || resolved.startsWith('data:image/') ? resolved : '';
       if (!src) return escapeHtml(token.text);
       const img =
         `<img src="${attr(src)}" alt="${attr(token.text ?? '')}" loading="lazy" decoding="async">`;

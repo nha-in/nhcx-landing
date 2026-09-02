@@ -100,7 +100,13 @@ export async function drawDiagrams(root: HTMLElement | null): Promise<void> {
   for (const figure of figures) {
     // The source stays in the figure so a redraw has something to draw from.
     const source = figure.querySelector<HTMLElement>('.md-mermaid-source')?.textContent ?? '';
-    if (!source.trim()) continue;
+    // An empty fence has nothing to draw, but it must still leave the pending
+    // state or the figure sits under "Drawing diagram…" for good.
+    if (!source.trim()) {
+      figure.dataset.drawn = 'true';
+      figure.dataset.state = 'drawn';
+      continue;
+    }
 
     figure.dataset.drawn = 'true';
     const diagram = normalise(source);

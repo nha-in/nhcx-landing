@@ -33,7 +33,7 @@ const FIGURES = [
 const PARTICIPANTS: Array<{ title: string; who: string }> = [
   {
     title: "Providers",
-    who: "Hospitals, nursing homes, diagnostic centres and clinics — and the HMIS or TMS vendors that build for them.",
+    who: "Hospitals, nursing homes, diagnostic centres and clinics, and the HMIS or TMS vendors that build for them.",
   },
   {
     title: "Payers",

@@ -6,7 +6,7 @@ import ApplyForm from '@/components/pages/ApplyForm';
 export function generateMetadata(): Metadata {
   const { pages } = getContent();
   return {
-    title: pages.apply.seo?.metaTitle ?? 'Apply for Sandbox Access — NHCX',
+    title: pages.apply.seo?.metaTitle ?? 'Apply for Sandbox Access · NHCX',
     description: pages.apply.seo?.metaDescription ?? '',
   };
 }

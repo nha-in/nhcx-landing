@@ -1,20 +1,34 @@
 import type { Metadata } from 'next';
 import { getContent, type Link } from '@/lib/content';
+import { getVideosFile } from '@/lib/local-content';
 import { withBase } from '@/lib/paths';
 import { PageShell } from '@/components/SiteChrome';
 import VideoLibrary from '@/components/pages/VideoLibrary';
 
-export function generateMetadata(): Metadata {
-  const { pages } = getContent();
+/**
+ * The page's copy and its library, from content/videos.json — the CMS snapshot
+ * is only a fallback for a checkout that has no file.
+ */
+function videosContent() {
+  const { global, pages, collections } = getContent();
+  const file = getVideosFile(global.devtoolsUrl ?? '');
   return {
-    title: pages.videos.seo?.metaTitle ?? 'Videos — NHCX',
-    description: pages.videos.seo?.metaDescription ?? '',
+    global,
+    page: (file?.page ?? pages.videos) as typeof pages.videos,
+    videos: (file?.videos ?? collections.videos) as typeof collections.videos,
+  };
+}
+
+export function generateMetadata(): Metadata {
+  const { page } = videosContent();
+  return {
+    title: page.seo?.metaTitle ?? 'Videos · NHCX',
+    description: page.seo?.metaDescription ?? '',
   };
 }
 
 export default function VideosPage() {
-  const { global, pages, collections } = getContent();
-  const page = pages.videos;
+  const { global, page, videos } = videosContent();
   const channelCta = page.channelCta as Link | undefined;
   const featuredUrl = (page.featuredUrl as string | undefined) || '';
   const featuredBody = (
@@ -55,7 +69,7 @@ export default function VideosPage() {
       </section>
 
       <VideoLibrary
-        videos={collections.videos}
+        videos={videos}
         footNote={page.footNote as string}
         footLink={page.footLink as Link | undefined}
       />

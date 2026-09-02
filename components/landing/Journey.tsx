@@ -15,7 +15,7 @@ const STEPS = [
   { tag: '02 · In transit', title: 'Schema-checked and signed', text: 'Validated against the specification and signed on both sides, leaving an immutable trail.', tick: 'In transit' },
   { tag: '03 · NHCX', title: 'Route and deliver', text: 'The exchange identifies the payer and delivers the claim. One integration, every payer.', tick: 'NHCX' },
   { tag: '04 · Payer engine', title: 'Auto-adjudicated', text: 'Policy active, member verified. Package rate matched. Duplicate and abuse checks clear.', tick: 'Payer engine' },
-  { tag: '05 · The return leg', title: 'Back to the provider', text: 'The decision travels the same path in reverse and lands in the HMIS — a round trip, not a one-way pipe.', tick: 'Return leg' },
+  { tag: '05 · The return leg', title: 'Back to the provider', text: 'The decision travels the same path in reverse and lands in the HMIS: a round trip, not a one-way pipe.', tick: 'Return leg' },
 ];
 
 const NODES: Array<[number, number]> = [

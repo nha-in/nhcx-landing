@@ -55,18 +55,28 @@ html.lp-armed [data-reveal].is-in { opacity: 1; transform: none; }
 .lp-tab:hover span, .lp-tab:focus-visible span { color: var(--ink); }
 
 /* ————— benefits ————— */
-.lp-benefits { position: relative; background: linear-gradient(180deg, #FFFFFF 0%, #FBFCFE 42%, var(--peach) 78%, var(--peach-2) 100%); padding: clamp(56px, 7vw, 92px) 0 clamp(48px, 6vw, 84px); }
+/* The band's own tint, scoped here rather than taken from --peach/--peach-2:
+   those still carry the warm accents elsewhere (the "coming soon" pill,
+   marked text), and only this section reads green. */
+.lp-benefits {
+  --band: #E8F7F1;
+  --band-2: #A6DFCC;
+  --check: #0B7A62;
+  position: relative;
+  background: linear-gradient(180deg, #FFFFFF 0%, #FBFCFE 42%, var(--band) 78%, var(--band-2) 100%);
+  padding: clamp(56px, 7vw, 92px) 0 clamp(48px, 6vw, 84px);
+}
 .lp-benefits h2 { margin-top: 14px; max-width: 26em; font-size: clamp(22px, 2.5vw, 31px); font-weight: 500; letter-spacing: -0.024em; line-height: 1.26; color: var(--navy-2); }
 .lp-benefits h2 span { color: #9AA6B8; }
 .lp-bgrid { margin-top: clamp(28px, 3.5vw, 44px); display: grid; grid-template-columns: minmax(0, 1.7fr) minmax(0, 1fr); gap: 10px; }
 .lp-bstack { display: grid; gap: 10px; height: 100%; }
 .lp-card { position: relative; display: grid; border-radius: var(--radius); border: 1px solid var(--line); box-shadow: var(--shadow-card); height: 100%; overflow: hidden; transition: box-shadow 400ms ease; }
-.lp-card.warm { background: linear-gradient(158deg, #FFFFFF 58%, #FFF6EE 100%); }
+.lp-card.warm { background: linear-gradient(158deg, #FFFFFF 58%, #EDFAF3 100%); }
 .lp-card.cool { background: linear-gradient(150deg, #FFFFFF 52%, #EFF2FF 100%); }
 .lp-card.mint { background: linear-gradient(150deg, #FFFFFF 52%, #EBF7F2 100%); }
 .lp-card > * { grid-area: 1 / 1; }
 .lp-card-base { padding: clamp(18px, 2vw, 26px); display: flex; flex-direction: column; gap: 14px; transition: opacity 400ms var(--ease-out), transform 400ms var(--ease-out); }
-.lp-card-over { padding: clamp(18px, 2vw, 26px); display: flex; flex-direction: column; justify-content: center; gap: 13px; background: linear-gradient(150deg, #FFFFFF 38%, #FFF2E4 100%); opacity: 0; transform: translateY(10px); pointer-events: none; transition: opacity 400ms var(--ease-out), transform 400ms var(--ease-out); }
+.lp-card-over { padding: clamp(18px, 2vw, 26px); display: flex; flex-direction: column; justify-content: center; gap: 13px; background: linear-gradient(150deg, #FFFFFF 38%, #E4F6ED 100%); opacity: 0; transform: translateY(10px); pointer-events: none; transition: opacity 400ms var(--ease-out), transform 400ms var(--ease-out); }
 .lp-card:hover, .lp-card:focus-within { box-shadow: var(--shadow-lift); }
 .lp-card:hover .lp-card-base, .lp-card:focus-within .lp-card-base { opacity: 0; transform: translateY(-6px); }
 .lp-card:hover .lp-card-over, .lp-card:focus-within .lp-card-over { opacity: 1; transform: none; pointer-events: auto; }
@@ -79,7 +89,8 @@ html.lp-armed [data-reveal].is-in { opacity: 1; transform: none; }
 .lp-card-over .btn-secondary { align-self: flex-start; height: 34px; padding: 0 14px; font-size: 12.5px; }
 .lp-points { display: grid; gap: 12px; }
 .lp-points li { display: grid; grid-template-columns: 16px minmax(0, 1fr); gap: 10px; align-items: start; list-style: none; }
-.lp-points svg { margin-top: 1px; }
+/* Dark green, to sit with the band this section is drawn on. */
+.lp-points svg { margin-top: 1px; stroke: var(--check, #0B7A62); }
 .lp-points b { display: block; font-size: 12.5px; font-weight: 600; letter-spacing: -0.005em; color: var(--navy-2); }
 .lp-points span { display: block; font-size: 12px; line-height: 1.5; color: #667085; }
 .lp-card.stack { display: grid; }
@@ -218,14 +229,18 @@ html.lp-armed [data-reveal].is-in { opacity: 1; transform: none; }
 .lp-car-btns { display: flex; gap: 8px; }
 .lp-car-btn { width: 38px; height: 38px; display: grid; place-items: center; border: 1px solid #E3E8EE; border-radius: var(--radius); background: #fff; color: var(--ink-2); font-size: 16px; cursor: pointer; }
 .lp-car-btn:hover { border-color: var(--primary-line); color: var(--primary); }
-.lp-track { margin-top: clamp(24px, 3vw, 36px); display: flex; gap: 16px; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; padding-bottom: 4px; }
+/* One shared two-row grid — screen, then caption — so every card's screen is
+   the height of the tallest screen and every caption the height of the tallest
+   caption, at any width. Without this the screens ended wherever their own
+   content did and the carousel stepped through five different heights. */
+.lp-track { margin-top: clamp(24px, 3vw, 36px); display: grid; grid-auto-flow: column; grid-auto-columns: min(880px, 92%); grid-template-rows: 1fr auto; gap: 16px; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; padding-bottom: 4px; }
 .lp-track::-webkit-scrollbar { display: none; }
-.lp-tool { flex: none; width: min(880px, 92%); scroll-snap-align: start; }
-.lp-shot { border-radius: var(--radius); background: var(--navy-3); border: 1px solid rgba(255, 255, 255, 0.08); overflow: hidden; }
+.lp-tool { display: grid; grid-row: span 2; grid-template-rows: subgrid; row-gap: 14px; min-width: 0; scroll-snap-align: start; }
+.lp-shot { display: flex; flex-direction: column; min-height: 0; border-radius: var(--radius); background: var(--navy-3); border: 1px solid rgba(255, 255, 255, 0.08); overflow: hidden; }
 .lp-shot-head { padding: 14px 18px; display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 6px 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.06); }
 .lp-shot-head b { font-size: 14px; font-weight: 500; color: #fff; }
 .lp-shot-head i { font-style: normal; font-family: var(--mono); font-size: 9.5px; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(203, 213, 245, 0.5); }
-.lp-shot-body { padding: 16px; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 16px; }
+.lp-shot-body { flex: 1; padding: 16px; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 16px; }
 .lp-shot-body.single { grid-template-columns: minmax(0, 1fr); gap: 10px; }
 .lp-pane { background: rgba(255, 255, 255, 0.035); border: 1px solid rgba(255, 255, 255, 0.07); border-radius: var(--radius); padding: 14px; display: grid; gap: 10px; align-content: start; }
 .lp-pane.dark { background: #071426; }
@@ -259,8 +274,8 @@ html.lp-armed [data-reveal].is-in { opacity: 1; transform: none; }
 .lp-hop.now em { background: #93A4FF; }
 .lp-hop.next { background: rgba(255, 255, 255, 0.02); }
 .lp-hop.next em { background: rgba(255, 255, 255, 0.25); }
-.lp-tool-foot { margin-top: 14px; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px 20px; }
-.lp-tool-foot p { max-width: 62ch; font-size: 14.5px; line-height: 1.6; color: var(--ink-2); }
+.lp-tool-foot { display: flex; align-content: center; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px 20px; }
+.lp-tool-foot p { flex: 1 1 340px; max-width: 62ch; font-size: 14.5px; line-height: 1.6; color: var(--ink-2); }
 .lp-tool-foot a { font-size: 14px; font-weight: 500; white-space: nowrap; }
 
 /* ————— developer integration ————— */
@@ -374,6 +389,11 @@ html.lp-armed [data-reveal].is-in { opacity: 1; transform: none; }
 .lp-specs-col a { font-size: 14px; font-weight: 500; color: var(--ink); }
 .lp-specs-col a:hover { color: var(--primary); text-decoration: none; }
 .lp-specs-col span { font-size: 12px; color: var(--ink-3); }
+.lp-specs-lede { margin-top: 12px; max-width: 62ch; font-size: 15px; line-height: 1.6; color: var(--ink-2); text-wrap: pretty; }
+/* The published original, under the chapter that reproduces it. */
+.lp-specs-src { justify-self: start; margin-top: 3px; font-size: 11.5px; font-weight: 500; color: var(--ink-3); }
+.lp-specs-col a.lp-specs-src::after { content: ' ↗'; font-size: 10px; }
+.lp-specs-col a.lp-specs-src:hover { color: var(--primary); text-decoration: none; }
 
 @media (max-width: 900px) {
   .lp-figures { grid-template-columns: repeat(2, minmax(0, 1fr)); }
@@ -397,7 +417,7 @@ html:not(.lp-armed) .lp-tab svg path, html:not(.lp-armed) .lp-tab svg circle:not
 .lp-card:hover .lp-points svg path, .lp-card:focus-within .lp-points svg path { animation: lp-draw var(--motion-slow) var(--ease-out) forwards; }
 .lp-card:hover .lp-points li:nth-child(2) svg path, .lp-card:focus-within .lp-points li:nth-child(2) svg path { animation-delay: 90ms; }
 .lp-card:hover .lp-points li:nth-child(3) svg path, .lp-card:focus-within .lp-points li:nth-child(3) svg path { animation-delay: 180ms; }
-.lp-card:hover .lp-points svg circle, .lp-card:focus-within .lp-points svg circle { fill: var(--peach); }
+.lp-card:hover .lp-points svg circle, .lp-card:focus-within .lp-points svg circle { fill: var(--band, #E8F7F1); }
 .lp-count { font-variant-numeric: tabular-nums; }
 .lp-figure-value { transition: color var(--motion-base) ease; }
 .lp-figures.is-in .lp-figure-value { color: var(--primary); }

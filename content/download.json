@@ -72,18 +72,18 @@
       "items": [
         {
           "title": "ABDM sandbox registration",
-          "description": "Register your organisation on the ABDM sandbox — the first step before NHCX integration.",
+          "description": "Register your organisation on the ABDM sandbox: the first step before NHCX integration.",
           "url": "https://sandbox.abdm.gov.in/sandbox/v3/sandbox-registration",
           "type": "Web page"
         },
         {
-          "title": "ABDM sandbox — getting started",
+          "title": "ABDM sandbox: getting started",
           "url": "https://sandbox.abdm.gov.in/sandbox/v3/new-documentation?doc=getting-started",
           "type": "Web page"
         },
         {
           "title": "Milestone M1 (ABHA) integration",
-          "description": "Beneficiary authentication through ABHA — needed for production, not for sandbox testing.",
+          "description": "Beneficiary authentication through ABHA: needed for production, not for sandbox testing.",
           "url": "https://sandbox.abdm.gov.in/sandbox/v3/new-documentation?doc=Milestone_one",
           "type": "Web page"
         },

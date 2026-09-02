@@ -42,6 +42,13 @@ const output =
     2,
   ) + '\n';
 
+if (CHECK && !fs.existsSync(path.join(CMS, 'src'))) {
+  // No CMS checkout beside this project (a standalone build of the site):
+  // there is no copy to compare against, and nothing here to keep honest.
+  console.log(`– No CMS project at ${path.relative(ROOT, CMS)}; skipping the cms-map.json drift check`);
+  process.exit(0);
+}
+
 if (CHECK) {
   const current = fs.existsSync(OUT) ? fs.readFileSync(OUT, 'utf8') : '';
   if (current !== output) {

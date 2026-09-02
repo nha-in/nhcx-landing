@@ -2,7 +2,7 @@
 
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { renderMarkdown, type DocHeading } from '@/lib/markdown';
-import { fetchDocsManifest, fetchDocsPage, type DocsManifest, type DocsManifestPage } from '@/lib/docs';
+import { docsFileUrl, fetchDocsManifest, fetchDocsPage, type DocsManifest, type DocsManifestPage } from '@/lib/docs';
 import { useDocsIndex } from '@/lib/citations';
 import { useMermaid } from '@/lib/mermaid';
 import { DocsChat } from '@/components/docs/DocsChat';
@@ -247,7 +247,16 @@ export function DocsReader() {
   }, [query, bodiesComplete, allPages]);
 
   const activeBody = activePage ? bodies[activePage.path] : undefined;
-  const doc = useMemo(() => (activeBody ? renderMarkdown(activeBody) : null), [activeBody]);
+  // The page's own URL goes with it: its images are staged beside it under
+  // /docs, and a relative source would otherwise be resolved by the browser
+  // against /documentation/ — where there is nothing to find.
+  const doc = useMemo(
+    () =>
+      activeBody && activePage
+        ? renderMarkdown(activeBody, { baseUrl: docsFileUrl(activePage.path) })
+        : null,
+    [activeBody, activePage],
+  );
 
   // ```mermaid fences arrive as their source; they are drawn once the page's
   // HTML is in the DOM.
@@ -419,8 +428,6 @@ export function DocsReader() {
     window.setTimeout(() => setCopiedPage(false), 1600);
   }, []);
 
-  const corpus = manifest?.source?.corpus;
-
   return (
     <div className="docs-shell">
       {/* Chapter navigation */}
@@ -478,12 +485,6 @@ export function DocsReader() {
             </p>
           )}
         </nav>
-
-        {corpus && (
-          <p className="docs-nav-foot">
-            {allPages.length} pages · {corpus}
-          </p>
-        )}
       </aside>
 
       {/* Reader */}
@@ -541,7 +542,7 @@ export function DocsReader() {
                     </p>
                     <p>
                       The site reads its documentation from the docs project. Stage it with{' '}
-                      <code>npm run sync:docs</code> — it copies the current build into{' '}
+                      <code>npm run sync:docs</code>: it copies the current build into{' '}
                       <code>public/docs</code>.
                     </p>
                   </>
@@ -551,7 +552,7 @@ export function DocsReader() {
                     <p>
                       <b>Documentation unavailable.</b>
                     </p>
-                    <p>The corpus could not be fetched — reload, or rebuild the site.</p>
+                    <p>The corpus could not be fetched: reload, or rebuild the site.</p>
                   </>
                 )}
                 {state === 'ready' && <p>No document content available.</p>}

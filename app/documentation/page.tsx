@@ -21,9 +21,9 @@ import '@/styles/docs.css';
 
 export function generateMetadata(): Metadata {
   return {
-    title: 'Documentation — NHCX',
+    title: 'Documentation · NHCX',
     description:
-      'The NHCX documentation set — claim flows, endpoint specifications, JWE header keys and mapping rules — with an assistant that answers from it.',
+      'The NHCX documentation set (claim flows, endpoint specifications, JWE header keys and mapping rules) with an assistant that answers from it.',
   };
 }
 
