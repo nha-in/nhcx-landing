@@ -39,7 +39,16 @@ export function getContent(): SiteContent {
   throw new Error('No content found: expected content/snapshot.json or content/fallback.json');
 }
 
-const DEVTOOLS_SCHEME = 'devtools:';
+/**
+ * The link schemes content is authored in.
+ *
+ * Neither the console nor the documentation lives on this site, and both move
+ * between a laptop and a deployment, so content writes `devtools:/apis` and
+ * `docs:/` instead of a host. The two addresses are set once, in the build
+ * config, and every string carrying a scheme is rewritten here, so components
+ * render plain hrefs and never learn about the convention.
+ */
+const SCHEMES = { 'devtools:': 'devtoolsUrl', 'docs:': 'docsUrl' } as const;
 
 /**
  * Resolves the `devtools:` link scheme against `global.devtoolsUrl`.
@@ -52,19 +61,36 @@ const DEVTOOLS_SCHEME = 'devtools:';
  * the components render plain hrefs and never learn about the convention.
  */
 export function resolveDevtoolsLinks<T extends SiteContent>(content: T): T {
-  return resolveDevtoolsIn(content, content.global?.devtoolsUrl || 'http://localhost:8080');
+  return resolveLinksIn(content, {
+    devtoolsUrl: content.global?.devtoolsUrl,
+    docsUrl: (content.global as { docsUrl?: string } | undefined)?.docsUrl,
+  });
 }
+
+/** Where the documentation lives when the build config does not say. */
+export const DEFAULT_DOCS_URL = 'https://nhcx.abdm.gov.in/documentation';
 
 /**
  * The same rewrite for content that is not the snapshot — the page files under
  * `content/` (lib/local-content.ts), which carry the same `devtools:` links but
  * no `global` to read the console's address from, so it is passed in.
  */
-export function resolveDevtoolsIn<T>(content: T, devtoolsUrl: string): T {
-  const root = (devtoolsUrl || 'http://localhost:8080').replace(/\/$/, '');
+export function resolveDevtoolsIn<T>(content: T, devtoolsUrl: string, docsUrl?: string): T {
+  return resolveLinksIn(content, { devtoolsUrl, docsUrl });
+}
+
+/** Both schemes at once, each against its own configured address. */
+export function resolveLinksIn<T>(content: T, urls: { devtoolsUrl?: string; docsUrl?: string }): T {
+  const roots: Record<string, string> = {
+    devtoolsUrl: (urls.devtoolsUrl || 'http://localhost:8080').replace(/\/$/, ''),
+    docsUrl: (urls.docsUrl || DEFAULT_DOCS_URL).replace(/\/$/, ''),
+  };
   const walk = (value: unknown): unknown => {
     if (typeof value === 'string') {
-      return value.startsWith(DEVTOOLS_SCHEME) ? `${root}${value.slice(DEVTOOLS_SCHEME.length)}` : value;
+      for (const [scheme, key] of Object.entries(SCHEMES)) {
+        if (value.startsWith(scheme)) return `${roots[key]}${value.slice(scheme.length)}`;
+      }
+      return value;
     }
     if (Array.isArray(value)) return value.map(walk);
     if (value && typeof value === 'object') {

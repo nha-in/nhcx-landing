@@ -1,0 +1,63 @@
+/*
+ * Get started — the role question and the route it reveals.
+ *
+ * Light surfaces and the shared primitives in globals.css (.container,
+ * .eyebrow, .lede, .btn); only the choice cards and the numbered route are
+ * this page's own.
+ */
+
+.gs-hero { padding: var(--s16) 0 var(--s8); background: linear-gradient(180deg, var(--ground) 0%, var(--ground-2) 100%); border-bottom: 1px solid var(--line); }
+.gs-hero h1 { margin-top: var(--s3); max-width: 14em; font-size: clamp(32px, 4.2vw, 50px); line-height: 1.06; }
+.gs-hero .lede { margin-top: var(--s4); }
+
+/* ————— the question ————— */
+
+.gs-choose { padding: var(--s12) 0 0; }
+.gs-question { font-size: clamp(20px, 2.2vw, 26px); font-weight: 500; letter-spacing: -0.02em; color: var(--ink); }
+.gs-roles { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--s4); margin-top: var(--s6); }
+/* A button, not a link: choosing changes what this page shows rather than
+   where the reader is. */
+.gs-role {
+  display: flex; flex-direction: column; gap: 6px; text-align: left;
+  padding: var(--s6); border: 1px solid var(--line); border-radius: var(--radius);
+  background: var(--ground); font-family: inherit; cursor: pointer;
+  transition: border-color var(--motion-fast) ease, box-shadow var(--motion-base) ease, transform var(--motion-base) var(--ease-out);
+}
+.gs-role:hover { border-color: var(--primary-line); transform: translateY(-2px); box-shadow: var(--shadow-card); }
+.gs-role.is-current { border-color: var(--primary); box-shadow: 0 0 0 1px var(--primary); }
+.gs-role-label { font-size: 18px; font-weight: 600; letter-spacing: -0.012em; color: var(--ink); }
+.gs-role.is-current .gs-role-label { color: var(--primary); }
+.gs-role-note { font-size: 14px; line-height: 1.55; color: var(--ink-2); }
+.gs-change {
+  margin-top: var(--s4); padding: 0; border: 0; background: none; font-family: inherit;
+  font-size: 13.5px; color: var(--primary); cursor: pointer; text-decoration: underline; text-underline-offset: 0.16em;
+}
+
+/* ————— the route ————— */
+
+.gs-flow { padding: var(--s12) 0 0; }
+.gs-flow-title { font-size: clamp(20px, 2.2vw, 26px); font-weight: 500; letter-spacing: -0.02em; color: var(--navy-2); }
+.gs-steps { list-style: none; display: flex; flex-direction: column; margin-top: var(--s6); }
+.gs-step { display: grid; grid-template-columns: 56px minmax(0, 1fr); gap: var(--s4); padding: var(--s6) 0; border-top: 1px solid var(--line); }
+.gs-step:first-child { border-top: 0; padding-top: 0; }
+.gs-step-num { font-family: var(--mono); font-size: 13px; color: var(--primary); padding-top: 3px; }
+.gs-step-body { display: flex; flex-direction: column; gap: 6px; }
+.gs-step-body h3 { font-size: 17px; font-weight: 600; color: var(--ink); }
+.gs-step-body p { font-size: 15px; line-height: 1.6; color: var(--ink-2); max-width: var(--measure); }
+.gs-step-link { align-self: flex-start; margin-top: 2px; font-size: 13.5px; font-weight: 500; }
+
+/* ————— true either way ————— */
+
+.gs-both { padding: var(--s12) 0 var(--s16); }
+.gs-both h2 { font-size: clamp(20px, 2.2vw, 26px); font-weight: 500; letter-spacing: -0.02em; color: var(--ink); }
+.gs-both-list { list-style: none; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--s4); margin-top: var(--s6); }
+.gs-both-list li { padding-top: var(--s4); border-top: 2px solid var(--primary-line); font-size: 14.5px; line-height: 1.6; color: var(--ink-2); }
+.gs-cta { display: flex; flex-wrap: wrap; gap: var(--s3); margin-top: var(--s8); }
+
+@media (max-width: 860px) {
+  .gs-roles, .gs-both-list { grid-template-columns: minmax(0, 1fr); }
+  .gs-step { grid-template-columns: 40px minmax(0, 1fr); gap: var(--s3); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .gs-role { transition: none; }
+}

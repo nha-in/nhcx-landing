@@ -11,48 +11,97 @@ html.lp-armed [data-reveal].is-in { opacity: 1; transform: none; }
 .lp-eyebrow { display: flex; align-items: center; gap: 10px; font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-3); }
 .lp-eyebrow::before { content: ''; width: 1px; height: 12px; background: var(--ink-4); }
 .lp-eyebrow.on-dark { color: var(--primary-soft); }
-.lp-eyebrow.on-dark::before { background: rgba(143, 160, 255, 0.6); }
+.lp-eyebrow.on-dark::before { background: rgba(142, 154, 233, 0.6); }
 .lp-eyebrow.bare::before { display: none; }
-.lp-mono { font-family: var(--mono); }
 
 /* ————— hero ————— */
 .lp-hero { position: relative; background: var(--ground); overflow-x: clip; }
 .lp-hero-grid { position: absolute; inset: 0; pointer-events: none; background-image: linear-gradient(var(--ground-2) 1px, transparent 1px), linear-gradient(90deg, var(--ground-2) 1px, transparent 1px); background-size: 72px 72px; background-position: center top; }
-.lp-hero-inner { position: relative; text-align: center; padding: clamp(56px, 8vw, 104px) 24px clamp(44px, 6vw, 72px); }
-.lp-hero h1 { margin: 0 auto; max-width: 15em; font-size: clamp(32px, 5vw, 54px); font-weight: 400; letter-spacing: -0.03em; line-height: 1.1; color: var(--ink); opacity: 0; animation: nhcx-rise 800ms var(--ease-out) 80ms forwards; }
+/* Copy on the left, the mark on the right, the way .pj-hero-inner sets out
+   the PM-JAY page. It was centred with the mark stacked underneath; a mark
+   that only appears after the fold is not doing the job of a hero. */
+.lp-hero-inner { position: relative; display: grid; grid-template-columns: minmax(0, 1fr) 520px; gap: clamp(28px, 4vw, 56px); align-items: center; padding: clamp(48px, 7vw, 92px) 24px clamp(44px, 6vw, 72px); }
+.lp-hero-copy { display: flex; flex-direction: column; align-items: flex-start; }
+.lp-hero h1 { margin: 0; max-width: 15em; font-size: clamp(32px, 5vw, 54px); font-weight: 400; letter-spacing: -0.03em; line-height: 1.1; color: var(--ink); opacity: 0; animation: nhcx-rise 800ms var(--ease-out) 80ms forwards; }
 .lp-hero h1 span { display: block; }
 .lp-hero h1 .accent { color: var(--primary); font-weight: 500; }
-.lp-hero p { margin: clamp(18px, 2vw, 26px) auto 0; max-width: 62ch; font-size: clamp(14.5px, 1.1vw, 16px); line-height: 1.65; color: #667085; opacity: 0; animation: nhcx-rise 800ms var(--ease-out) 220ms forwards; }
+.lp-hero p { margin: clamp(18px, 2vw, 26px) 0 0; max-width: 54ch; font-size: clamp(14.5px, 1.1vw, 16px); line-height: 1.65; color: #667085; opacity: 0; animation: nhcx-rise 800ms var(--ease-out) 220ms forwards; }
 .lp-hero-cta { margin-top: clamp(24px, 3vw, 34px); opacity: 0; animation: nhcx-rise 800ms var(--ease-out) 340ms forwards; }
+/* The exchange mark, last in the hero's cascade. It stood in a band of its own
+   under the hero, which was previously a navy card carrying four blurred CSS
+   cloud layers, a scroll-parallax variable, a pointer light and a client
+   component to drive them; the mark says what the heading says and costs one
+   <img>, so all of that went with it. The glow is .pj-hero-glow from the
+   PM-JAY page, which is the pattern this is borrowing. */
+.lp-hero-mark { position: relative; display: grid; place-items: center; width: 100%; max-width: 520px; justify-self: center; opacity: 0; animation: nhcx-rise 800ms var(--ease-out) 460ms forwards; }
+/* The light behind the mark, blurred rather than graduated.
 
-/* ————— sessions banner ————— */
-.lp-banner-section { padding: 0 0 clamp(56px, 7vw, 92px); }
-.lp-banner { position: relative; width: 100%; aspect-ratio: 1092 / 340; min-height: 220px; border-radius: var(--radius); overflow: hidden; background: var(--navy-2); }
-.lp-banner-art { position: absolute; inset: 0; background:
-  radial-gradient(60% 90% at 78% 40%, rgba(62, 91, 255, 0.55) 0%, transparent 60%),
-  radial-gradient(50% 70% at 92% 85%, rgba(255, 163, 93, 0.5) 0%, transparent 55%),
-  radial-gradient(40% 60% at 60% 100%, rgba(78, 104, 255, 0.35) 0%, transparent 60%),
-  linear-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
-  background-size: auto, auto, auto, 48px 48px, 48px 48px; }
-.lp-banner-shade { position: absolute; inset: 0; pointer-events: none; background: linear-gradient(100deg, rgba(6, 27, 49, 0.92) 0%, rgba(6, 27, 49, 0.66) 42%, rgba(6, 27, 49, 0.05) 78%); }
-.lp-banner-copy { position: absolute; left: clamp(20px, 3vw, 44px); top: clamp(20px, 3vw, 44px); right: 40%; }
-.lp-banner-copy h2 { font-size: clamp(20px, 2.6vw, 36px); font-weight: 400; letter-spacing: -0.028em; line-height: 1.14; color: #fff; }
-.lp-banner-copy .btn { margin-top: clamp(14px, 2vw, 24px); }
-.lp-banner-tag { position: absolute; right: clamp(18px, 2.4vw, 32px); bottom: clamp(16px, 2.2vw, 28px); font-family: var(--mono); font-size: clamp(11px, 1.2vw, 15px); letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255, 255, 255, 0.9); }
+   It was a radial-gradient before, and a gradient still has a stop: the eye
+   finds where the colour stops changing and reads a circle there, however
+   gently it was faded. A flat shape put through `filter: blur()` has no stop
+   to find — the falloff is the blur kernel, which is smooth all the way out —
+   so what is left is light on the page rather than a disc the diagram is
+   sitting on.
 
-/* ————— what NHCX guarantees ————— */
-.lp-guarantees { padding: 0 0 clamp(64px, 8vw, 104px); }
-.lp-guarantees h2 { text-align: center; font-size: clamp(18px, 1.9vw, 23px); font-weight: 500; letter-spacing: -0.018em; color: var(--ink); }
-.lp-guarantees h2 span { color: var(--primary); }
-.lp-tabs { margin-top: clamp(24px, 3vw, 38px); display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px; }
-.lp-tab { display: grid; justify-items: center; gap: 14px; padding: 26px 16px; border: 0; border-radius: var(--radius); background: transparent; cursor: default; transition: background 300ms ease, box-shadow 300ms ease; }
-.lp-tab svg { stroke: var(--ink-3); transition: stroke 300ms ease; }
-.lp-tab svg [data-dot] { fill: var(--ink-3); transition: fill 300ms ease; }
-.lp-tab span { font-size: 13.5px; font-weight: 500; letter-spacing: -0.005em; color: var(--ink-3); transition: color 300ms ease; text-align: center; }
-.lp-tab:hover, .lp-tab:focus-visible { background: var(--ground); box-shadow: 0 14px 32px -22px rgba(16, 42, 67, 0.4); }
-.lp-tab:hover svg, .lp-tab:focus-visible svg { stroke: var(--primary); }
-.lp-tab:hover svg [data-dot], .lp-tab:focus-visible svg [data-dot] { fill: var(--primary); }
-.lp-tab:hover span, .lp-tab:focus-visible span { color: var(--ink); }
+   Sized and blurred so it stays inside the mark's own box: the blob spans the
+   middle 48% of the width, and a 44px blur reaches about three times its
+   radius, which lands at the box edge rather than washing across the gap into
+   the headline.
+
+   Kept faint. Blurring spreads the colour rather than removing it, so the
+   alpha that reads as a wash unblurred reads as a stain once it is smeared
+   over three times the area. */
+.lp-hero-glow {
+  position: absolute; inset: 16% 26%; border-radius: 50%; pointer-events: none;
+  background: rgba(61, 82, 218, 0.11);
+  filter: blur(44px);
+}
+.lp-hero-mark img { position: relative; display: block; width: 100%; height: auto; }
+
+/* ————— NHCX statistics ————— */
+/* A card per measure, both sectors inside it. As a two-row table the numbers
+   a reader wants to compare — 46,442 hospitals against 842 — sat at opposite
+   ends of a horizontal scroll on a phone; stacked in a card they are under
+   each other, and four cards fit a page with no scroller at all.
+
+   Figures are `tabular-nums` so a digit changing in a climbing counter cannot
+   change the width of the number underneath it. */
+.lp-stats { background: var(--ground); padding: 0 0 clamp(48px, 6vw, 80px); }
+.lp-stats h2 { margin-top: 14px; max-width: 20em; font-size: clamp(22px, 2.5vw, 31px); font-weight: 500; letter-spacing: -0.024em; line-height: 1.26; color: var(--navy-2); }
+
+.lp-stat-cards { list-style: none; margin-top: clamp(24px, 3vw, 36px); display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; }
+.lp-stat-card { display: flex; flex-direction: column; gap: 14px; padding: 20px 22px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--ground-3); }
+/* Flat black, not --ink: --ink is the navy the rest of the page is set in, and
+   the card titles are meant to sit harder than the body around them. */
+.lp-stat-measure { font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.12em; text-transform: uppercase; color: #000000; }
+.lp-stat-figures { display: flex; flex-direction: column; gap: 12px; flex: 1 1 auto; }
+.lp-stat-figure { display: flex; flex-direction: column; gap: 2px; }
+.lp-stat-figure dt { font-size: 12px; line-height: 1.4; color: var(--ink-3); }
+.lp-stat-figure dd { font-size: clamp(19px, 2vw, 26px); line-height: 1.1; font-weight: 500; letter-spacing: -0.03em; color: var(--ink); font-variant-numeric: tabular-nums; }
+/* The larger sector reads as the primary; the smaller keeps the ink colour so
+   the pair is a comparison rather than a ranking. */
+.lp-stat-figure:last-child dd { color: var(--primary); }
+
+/* Digits that fall into place, staggered left to right. The number is whole
+   in the markup and every digit sits in a fixed-width, `tabular-nums` cell,
+   so the fall cannot change the figure's width or nudge the column — and a
+   reader with reduced motion, or no JavaScript, simply gets the number.
+   Separators never move: a comma jumping around makes a long figure hard to
+   read at the moment it is arriving. */
+.fc { display: inline-flex; font-variant-numeric: tabular-nums; }
+.fc-d, .fc-sep { display: inline-block; }
+.fc-d { min-width: 0.62em; text-align: center; }
+.fc-sep { padding: 0 0.02em; }
+/* Per digit, not per figure: the reveal falls all of them left to right, a
+   tick falls only the ones that moved and does it with no delay, so the last
+   digit — the one that moves most — is the one that responds fastest. The
+   delay is set inline by the component. */
+.fc-d.is-falling { animation: fc-fall 620ms var(--ease-out) both; animation-delay: var(--fc-delay, 0ms); }
+@keyframes fc-fall {
+  0%   { transform: translateY(-0.55em); opacity: 0; }
+  55%  { opacity: 1; }
+  100% { transform: translateY(0); opacity: 1; }
+}
 
 /* ————— benefits ————— */
 /* The band's own tint, scoped here rather than taken from --peach/--peach-2:
@@ -72,7 +121,7 @@ html.lp-armed [data-reveal].is-in { opacity: 1; transform: none; }
 .lp-bstack { display: grid; gap: 10px; height: 100%; }
 .lp-card { position: relative; display: grid; border-radius: var(--radius); border: 1px solid var(--line); box-shadow: var(--shadow-card); height: 100%; overflow: hidden; transition: box-shadow 400ms ease; }
 .lp-card.warm { background: linear-gradient(158deg, #FFFFFF 58%, #EDFAF3 100%); }
-.lp-card.cool { background: linear-gradient(150deg, #FFFFFF 52%, #EFF2FF 100%); }
+.lp-card.cool { background: linear-gradient(150deg, #FFFFFF 52%, #EFF0FC 100%); }
 .lp-card.mint { background: linear-gradient(150deg, #FFFFFF 52%, #EBF7F2 100%); }
 .lp-card > * { grid-area: 1 / 1; }
 .lp-card-base { padding: clamp(18px, 2vw, 26px); display: flex; flex-direction: column; gap: 14px; transition: opacity 400ms var(--ease-out), transform 400ms var(--ease-out); }
@@ -138,7 +187,7 @@ html.lp-armed [data-reveal].is-in { opacity: 1; transform: none; }
 
 /* ————— how NHCX works (dark) ————— */
 .lp-how { position: relative; background: var(--navy); color: #fff; padding: clamp(56px, 8vw, 100px) 0; overflow: hidden; }
-.lp-how-glow { position: absolute; inset: 0; pointer-events: none; background: radial-gradient(50% 60% at 50% 100%, rgba(62, 91, 255, 0.22) 0%, transparent 70%); }
+.lp-how-glow { position: absolute; inset: 0; pointer-events: none; background: radial-gradient(50% 60% at 50% 100%, rgba(61, 82, 218, 0.22) 0%, transparent 70%); }
 .lp-how-inner { position: relative; }
 .lp-how p.lp-statement { margin-top: 16px; max-width: 34em; font-size: clamp(17px, 1.8vw, 22px); font-weight: 400; letter-spacing: -0.014em; line-height: 1.45; color: #fff; }
 .lp-how p.lp-statement span { color: var(--primary-soft); }
@@ -151,36 +200,31 @@ html.lp-armed [data-reveal].is-in { opacity: 1; transform: none; }
 .lp-net-grid { display: grid; row-gap: 10px; }
 .lp-net-side.left .lp-net-grid { grid-template-columns: minmax(0, 1fr) 48px; }
 .lp-net-side.right .lp-net-grid { grid-template-columns: 48px minmax(0, 1fr); }
-.lp-node { padding: 9px 12px; border: 1px solid rgba(147, 164, 255, 0.32); border-radius: var(--radius); background: rgba(147, 164, 255, 0.06); font-size: 12.5px; color: #E6ECFF; text-align: center; white-space: nowrap; }
+.lp-node { padding: 9px 12px; border: 1px solid rgba(146, 158, 234, 0.32); border-radius: var(--radius); background: rgba(146, 158, 234, 0.06); font-size: 12.5px; color: #E6ECFF; text-align: center; white-space: nowrap; }
 .lp-stub { position: relative; display: flex; align-items: center; }
-.lp-stub::before { content: ''; flex: 1 1 auto; border-top: 1px dotted rgba(147, 164, 255, 0.45); }
-.lp-stub::after { content: ''; position: absolute; top: 0; bottom: -10px; border-left: 1px solid rgba(147, 164, 255, 0.45); }
+.lp-stub::before { content: ''; flex: 1 1 auto; border-top: 1px dotted rgba(146, 158, 234, 0.45); }
+.lp-stub::after { content: ''; position: absolute; top: 0; bottom: -10px; border-left: 1px solid rgba(146, 158, 234, 0.45); }
 .lp-net-side.left .lp-stub::after { right: 0; }
 .lp-net-side.right .lp-stub::after { left: 0; }
 .lp-stub.first::after { top: 50%; }
 .lp-stub.last::after { bottom: 50%; }
 .lp-wire { flex: 1 1 120px; min-width: 70px; align-self: center; position: relative; height: 2px; }
-.lp-wire-line { position: absolute; inset: 0; height: 2px; background-image: repeating-linear-gradient(to right, rgba(147, 164, 255, 0.75) 0 2px, transparent 2px 8px); background-size: 8px 2px; animation: nhcx-march 1.5s linear infinite; }
+.lp-wire-line { position: absolute; inset: 0; height: 2px; background-image: repeating-linear-gradient(to right, rgba(146, 158, 234, 0.75) 0 2px, transparent 2px 8px); background-size: 8px 2px; animation: nhcx-march 1.5s linear infinite; }
 .lp-packet { position: absolute; top: -11px; left: 0; opacity: 0; animation: lp-p1 7s cubic-bezier(0.37, 0, 0.63, 1) infinite both; }
 .lp-packet.d2 { animation-delay: 0.35s; }
-.lp-packet.back { animation-name: lp-p3; }
-.lp-packet i { display: block; width: 26px; height: 19px; border-radius: 4px; background: var(--navy); border: 1.5px solid var(--primary); position: relative; box-shadow: 0 8px 18px -8px rgba(62, 91, 255, 0.8); }
-.lp-packet i::before, .lp-packet i::after { content: ''; position: absolute; left: 3px; height: 1.5px; background: #4E68FF; }
+.lp-packet i { display: block; width: 26px; height: 19px; border-radius: 4px; background: var(--navy); border: 1.5px solid var(--primary); position: relative; box-shadow: 0 8px 18px -8px rgba(61, 82, 218, 0.8); }
+.lp-packet i::before, .lp-packet i::after { content: ''; position: absolute; left: 3px; height: 1.5px; background: #5063DE; }
 .lp-packet i::before { right: 3px; top: 5px; }
-.lp-packet i::after { right: 9px; top: 10px; background: rgba(78, 104, 255, 0.55); }
-.lp-packet.back i { border-color: rgba(147, 164, 255, 0.75); box-shadow: none; }
-.lp-packet.back i::before { background: rgba(147, 164, 255, 0.7); }
-.lp-packet.back i::after { background: rgba(147, 164, 255, 0.4); }
+.lp-packet i::after { right: 9px; top: 10px; background: rgba(80, 99, 222, 0.55); }
 @keyframes lp-p1 { 0%, 4% { opacity: 0; left: 0%; } 10% { opacity: 1; left: 8%; } 44% { opacity: 1; left: calc(100% - 26px); } 50%, 100% { opacity: 0; left: calc(100% - 26px); } }
-@keyframes lp-p3 { 0%, 54% { opacity: 0; left: calc(100% - 26px); } 60% { opacity: 1; left: calc(92% - 26px); } 94% { opacity: 1; left: 0%; } 99%, 100% { opacity: 0; left: 0%; } }
 .lp-doc { flex: none; align-self: center; padding: 0 6px; display: flex; }
-.lp-hub { flex: none; align-self: center; width: 66px; height: 66px; border-radius: var(--radius); background: linear-gradient(155deg, #4E68FF 0%, #3E5BFF 48%, #2437B8 100%); display: grid; place-items: center; box-shadow: 0 20px 44px -18px rgba(62, 91, 255, 0.85); font-size: 13.5px; font-weight: 600; letter-spacing: -0.005em; color: #fff; }
+.lp-hub { flex: none; align-self: center; width: 66px; height: 66px; border-radius: var(--radius); background: linear-gradient(155deg, #5063DE 0%, #3D52DA 48%, #2031A2 100%); display: grid; place-items: center; box-shadow: 0 20px 44px -18px rgba(61, 82, 218, 0.85); font-size: 13.5px; font-weight: 600; letter-spacing: -0.005em; color: #fff; }
 .lp-net-stack { display: none; margin-top: 36px; gap: 14px; justify-items: center; }
 .lp-net-stack .lp-net-label { padding: 0; }
 .lp-net-stack .lp-net-grid { grid-template-columns: 1fr 1fr; gap: 8px; width: 100%; }
 .lp-net-stack .lp-node { font-size: 12px; }
 .lp-net-stack .lp-hub { width: auto; height: auto; padding: 12px 22px; box-shadow: none; }
-.lp-net-stack .lp-vwire { width: 0; height: 26px; border-left: 2px dashed rgba(147, 164, 255, 0.6); }
+.lp-net-stack .lp-vwire { width: 0; height: 26px; border-left: 2px dashed rgba(146, 158, 234, 0.6); }
 
 /* ————— journey (pinned scroll story) ————— */
 .lp-journey { background: linear-gradient(160deg, #0A2540 0%, #14265C 55%, #1B2F70 100%); color: #fff; position: relative; }
@@ -213,9 +257,9 @@ html.lp-armed [data-reveal].is-in { opacity: 1; transform: none; }
 .lp-journey-list h2 { margin: 12px 0 28px; max-width: 20em; font-size: clamp(28px, 8vw, 42px); }
 .lp-step { display: grid; grid-template-columns: 28px 1fr; gap: 0 4px; padding-bottom: 28px; }
 .lp-step-rail { display: grid; justify-items: center; grid-template-rows: auto 1fr; gap: 6px; }
-.lp-step-dot { width: 11px; height: 11px; border-radius: 50%; background: var(--primary); box-shadow: 0 0 0 5px rgba(62, 91, 255, 0.18); }
+.lp-step-dot { width: 11px; height: 11px; border-radius: 50%; background: var(--primary); box-shadow: 0 0 0 5px rgba(61, 82, 218, 0.18); }
 .lp-step-dot.hub { width: 15px; height: 15px; background: #fff; box-shadow: 0 0 0 6px rgba(255, 255, 255, 0.14); }
-.lp-step-line { width: 2px; height: 100%; background: linear-gradient(var(--primary), rgba(62, 91, 255, 0.25)); }
+.lp-step-line { width: 2px; height: 100%; background: linear-gradient(var(--primary), rgba(61, 82, 218, 0.25)); }
 .lp-step-line.dashed { background: repeating-linear-gradient(var(--primary-soft) 0 6px, transparent 6px 14px); }
 .lp-step-up { font-size: 15px; line-height: 1; color: var(--primary-soft); }
 .lp-step b { display: block; margin-top: 6px; font-size: 21px; font-weight: 600; letter-spacing: -0.02em; color: #fff; }
@@ -250,7 +294,7 @@ html.lp-armed [data-reveal].is-in { opacity: 1; transform: none; }
 .lp-field label em { font-style: normal; color: rgba(203, 213, 245, 0.35); margin-left: 4px; }
 .lp-field label .req { color: #FF7A7A; margin-left: 3px; }
 .lp-input { height: 26px; border-radius: var(--radius); border: 1px solid rgba(255, 255, 255, 0.12); background: rgba(255, 255, 255, 0.04); display: flex; align-items: center; justify-content: space-between; padding: 0 9px; font-family: var(--mono); font-size: 9px; color: rgba(230, 236, 255, 0.8); }
-.lp-input.focus { border-color: rgba(62, 91, 255, 0.6); background: rgba(62, 91, 255, 0.1); }
+.lp-input.focus { border-color: rgba(61, 82, 218, 0.6); background: rgba(61, 82, 218, 0.1); }
 .lp-input.muted { color: rgba(203, 213, 245, 0.5); }
 .lp-input .caret { color: rgba(203, 213, 245, 0.5); }
 .lp-two { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
@@ -260,20 +304,11 @@ html.lp-armed [data-reveal].is-in { opacity: 1; transform: none; }
 .lp-code .n { color: rgba(203, 213, 245, 0.35); display: inline-block; width: 16px; }
 .lp-code .k { color: #7FE0C4; }
 .lp-code .s { color: #FFB37B; }
-.lp-code .v { color: #93A4FF; }
+.lp-code .v { color: #929EEA; }
 .lp-log { display: grid; gap: 7px; }
 .lp-log div { display: flex; justify-content: space-between; gap: 10px; padding: 8px 10px; border-radius: var(--radius); background: rgba(255, 255, 255, 0.04); font-family: var(--mono); font-size: 9px; color: rgba(230, 236, 255, 0.85); }
 .lp-log .ok { color: #4FD1B5; }
 .lp-log .warn { color: #FFB37B; }
-.lp-hop { display: grid; grid-template-columns: 1fr auto auto; align-items: center; gap: 12px; padding: 9px 12px; border-radius: var(--radius); background: rgba(255, 255, 255, 0.04); font-family: var(--mono); }
-.lp-hop b { font-weight: 400; font-size: 9.5px; color: #E6ECFF; }
-.lp-hop i { font-style: normal; font-size: 9px; color: rgba(203, 213, 245, 0.5); }
-.lp-hop em { width: 7px; height: 7px; border-radius: 50%; background: #4FD1B5; }
-.lp-hop.now { background: rgba(62, 91, 255, 0.14); border: 1px solid rgba(62, 91, 255, 0.35); }
-.lp-hop.now b { color: #fff; }
-.lp-hop.now em { background: #93A4FF; }
-.lp-hop.next { background: rgba(255, 255, 255, 0.02); }
-.lp-hop.next em { background: rgba(255, 255, 255, 0.25); }
 .lp-tool-foot { display: flex; align-content: center; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px 20px; }
 .lp-tool-foot p { flex: 1 1 340px; max-width: 62ch; font-size: 14.5px; line-height: 1.6; color: var(--ink-2); }
 .lp-tool-foot a { font-size: 14px; font-weight: 500; white-space: nowrap; }
@@ -302,7 +337,7 @@ html.lp-armed [data-reveal].is-in { opacity: 1; transform: none; }
 .lp-int-art .lp-code .k { color: var(--green); }
 .lp-int-art .lp-code .s { color: var(--amber); }
 .lp-int-art .lp-code .v { color: var(--primary); }
-.lp-int-art-glow { position: absolute; inset: auto -20% -30% -20%; height: 60%; background: radial-gradient(50% 60% at 50% 100%, rgba(62, 91, 255, 0.18) 0%, transparent 70%); pointer-events: none; }
+.lp-int-art-glow { position: absolute; inset: auto -20% -30% -20%; height: 60%; background: radial-gradient(50% 60% at 50% 100%, rgba(61, 82, 218, 0.18) 0%, transparent 70%); pointer-events: none; }
 
 /* ————— sandbox cta ————— */
 .lp-sandbox { background: var(--ground-2); padding: clamp(56px, 8vw, 100px) 0; text-align: center; }
@@ -329,40 +364,67 @@ html.lp-armed [data-reveal].is-in { opacity: 1; transform: none; }
   .lp-int-grid { grid-template-columns: minmax(0, 1fr); }
 }
 @media (max-width: 620px) {
-  .lp-tabs { grid-template-columns: repeat(2, 1fr); }
   .lp-shot-body { grid-template-columns: minmax(0, 1fr); }
   .lp-mock-wrap { padding-right: 0; }
   .lp-phone { display: none; }
-  .lp-banner-copy { right: 12%; }
+  .lp-hero-inner { grid-template-columns: minmax(0, 1fr); gap: clamp(28px, 5vw, 44px); }
+  .lp-hero-mark { max-width: 400px; justify-self: flex-start; }
   .lp-tools-head { flex-direction: column; align-items: flex-start; }
 }
-
-/* ————— at a glance ————— */
-.lp-glance { background: var(--ground); padding: 0 0 clamp(48px, 6vw, 80px); }
-.lp-figures { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; }
-.lp-figure { display: flex; flex-direction: column; gap: 10px; padding: 20px 22px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--ground-3); }
-.lp-figure dt { display: flex; flex-direction: column; gap: 6px; }
-.lp-figure-value { font-size: 34px; line-height: 1; font-weight: 500; letter-spacing: -0.03em; color: var(--ink); font-variant-numeric: tabular-nums; }
-.lp-figure-label { font-size: 13.5px; line-height: 1.45; font-weight: 500; color: var(--ink-2); }
-.lp-figure dd { font-family: var(--mono); font-size: 10px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-4); line-height: 1.5; }
 
 /* ————— understand NHCX ————— */
 .lp-understand { background: var(--ground); padding: clamp(56px, 8vw, 100px) 0 clamp(40px, 5vw, 64px); }
 .lp-understand h2 { margin-top: 14px; max-width: 24em; font-size: clamp(22px, 2.5vw, 31px); font-weight: 500; letter-spacing: -0.024em; line-height: 1.26; color: var(--navy-2); }
 .lp-understand-intro { margin-top: 16px; max-width: 72ch; font-size: 15.5px; line-height: 1.65; color: var(--ink-2); }
-.lp-understand-grid { margin-top: clamp(28px, 3.5vw, 44px); display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
-.lp-und-col { padding: 22px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--ground); display: flex; flex-direction: column; gap: 14px; }
-.lp-und-col h3 { font-size: 13px; font-weight: 600; letter-spacing: -0.005em; color: var(--ink); padding-bottom: 12px; border-bottom: 1px solid var(--line-2); }
-.lp-und-list { list-style: none; display: grid; gap: 12px; }
-.lp-und-list li { display: grid; gap: 3px; }
-.lp-und-list b { font-size: 13.5px; font-weight: 600; color: var(--navy-2); }
-.lp-und-list span { font-size: 13px; line-height: 1.55; color: var(--ink-2); }
-.lp-und-apis { list-style: none; display: grid; gap: 8px; }
-.lp-und-apis li { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 2px 10px; padding: 9px 11px; border-radius: var(--radius); background: var(--ground-2); }
-.lp-und-apis b { font-size: 13px; font-weight: 600; color: var(--ink); }
-.lp-und-apis code { grid-column: 2; grid-row: 1; font-family: var(--mono); font-size: 10px; color: var(--ink-3); white-space: nowrap; }
-.lp-und-apis span { grid-column: 1 / -1; font-size: 12px; line-height: 1.5; color: var(--ink-2); }
-.lp-und-note { font-size: 12.5px; line-height: 1.55; color: var(--ink-2); }
+/* ————— the definitions, as cards that turn over —————
+   Thirteen of them: four kinds of participant, five things that move, four
+   reasons it matters. As three columns of prose that was a wall; as cards it
+   is thirteen short labels a reader scans, turning over only the ones they do
+   not already know.
+
+   The flip is `:hover, :focus-within` on the card itself with tabIndex 0, so
+   a pointer, a keyboard and a tap on a touch screen all reach it — the same
+   affordance the benefit cards on this page already use. Both faces are in
+   the markup and neither is hidden from assistive technology: read straight
+   through, a card is its name followed by what it means. */
+.lp-und-block { margin-top: clamp(28px, 3.5vw, 44px); }
+.lp-und-block h3 { font-size: 13px; font-weight: 600; letter-spacing: 0.02em; text-transform: uppercase; color: var(--ink-3); font-family: var(--mono); }
+/* Three at most. Four across left the cards too narrow for a name to sit
+   on one line, and a row of five read as a toolbar rather than a set. */
+.lp-flips { list-style: none; margin-top: 14px; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+
+.lp-flip { perspective: 900px; min-height: 152px; cursor: default; }
+.lp-flip:focus-visible { outline: 2px solid var(--primary); outline-offset: 3px; border-radius: var(--radius); }
+.lp-flip-inner {
+  position: relative; width: 100%; height: 100%; min-height: inherit;
+  transform-style: preserve-3d; transition: transform 520ms var(--ease-out);
+}
+.lp-flip:hover .lp-flip-inner, .lp-flip:focus-within .lp-flip-inner { transform: rotateY(180deg); }
+.lp-flip-face, .lp-flip-back {
+  position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: center; gap: 6px;
+  padding: 18px 20px; border: 1px solid var(--line); border-radius: var(--radius);
+  backface-visibility: hidden; -webkit-backface-visibility: hidden;
+}
+.lp-flip-face { background: var(--ground-3); justify-content: flex-end; }
+/* The drawing first: a row is something to look at before it is something to
+   read. Stroke only, no fill, so it takes the card's colour and needs no
+   second palette. */
+.lp-flip-icon {
+  width: 30px; height: 30px; margin-bottom: auto;
+  fill: none; stroke: var(--primary); stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round;
+}
+.lp-flip-face b { font-size: 15px; font-weight: 600; letter-spacing: -0.01em; color: var(--ink); }
+.lp-flip-face code { font-family: var(--mono); font-size: 10.5px; color: var(--primary); }
+.lp-flip-back { background: var(--primary); border-color: var(--primary); transform: rotateY(180deg); }
+.lp-flip-back span { font-size: 13.5px; line-height: 1.6; color: #fff; }
+/* A hint that there is a back, without a word for it. */
+.lp-flip-face::after {
+  content: ''; position: absolute; right: 12px; bottom: 12px; width: 7px; height: 7px;
+  border-right: 1.5px solid var(--primary-line); border-bottom: 1.5px solid var(--primary-line);
+  transform: rotate(-45deg);
+}
+
+.lp-und-note { margin-top: 14px; max-width: 78ch; font-size: 13px; line-height: 1.6; color: var(--ink-2); }
 .lp-und-note code { font-family: var(--mono); font-size: 11px; padding: 1px 4px; border-radius: 3px; background: var(--ground-2); }
 
 /* ————— onboarding ————— */
@@ -391,38 +453,32 @@ html.lp-armed [data-reveal].is-in { opacity: 1; transform: none; }
 .lp-specs-col span { font-size: 12px; color: var(--ink-3); }
 .lp-specs-lede { margin-top: 12px; max-width: 62ch; font-size: 15px; line-height: 1.6; color: var(--ink-2); text-wrap: pretty; }
 /* The published original, under the chapter that reproduces it. */
-.lp-specs-src { justify-self: start; margin-top: 3px; font-size: 11.5px; font-weight: 500; color: var(--ink-3); }
-.lp-specs-col a.lp-specs-src::after { content: ' ↗'; font-size: 10px; }
-.lp-specs-col a.lp-specs-src:hover { color: var(--primary); text-decoration: none; }
 
 @media (max-width: 900px) {
-  .lp-figures { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .lp-understand-grid, .lp-specs-grid { grid-template-columns: minmax(0, 1fr); }
-  .lp-onboard-steps { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .lp-flips { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .lp-specs-grid { grid-template-columns: minmax(0, 1fr); }
+  .lp-onboard-steps, .lp-stat-cards { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .lp-flips { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 @media (max-width: 620px) {
-  .lp-figures, .lp-onboard-steps, .lp-support { grid-template-columns: minmax(0, 1fr); }
+  .lp-onboard-steps, .lp-support { grid-template-columns: minmax(0, 1fr); }
+  .lp-stat-cards { grid-template-columns: minmax(0, 1fr); }
 }
 
 /* ————— motion: drawn strokes and counters ————— */
 @keyframes lp-draw { to { stroke-dashoffset: 0; } }
-.lp-tab svg path, .lp-tab svg circle:not([data-dot]) { stroke-dasharray: 1; stroke-dashoffset: 1; }
-html:not(.lp-armed) .lp-tab svg path, html:not(.lp-armed) .lp-tab svg circle:not([data-dot]) { stroke-dashoffset: 0; }
-.lp-tabs.is-in .lp-tab svg path, .lp-tabs.is-in .lp-tab svg circle:not([data-dot]) { animation: lp-draw var(--motion-slow) var(--ease-out) forwards; }
-.lp-tabs.is-in .lp-tab:nth-child(2) svg * { animation-delay: 80ms; }
-.lp-tabs.is-in .lp-tab:nth-child(3) svg * { animation-delay: 160ms; }
-.lp-tabs.is-in .lp-tab:nth-child(4) svg * { animation-delay: 240ms; }
 .lp-points svg path { stroke-dasharray: 1; stroke-dashoffset: 1; }
 .lp-points svg circle { stroke-dasharray: 1; stroke-dashoffset: 0; transition: fill var(--motion-base) ease; }
 .lp-card:hover .lp-points svg path, .lp-card:focus-within .lp-points svg path { animation: lp-draw var(--motion-slow) var(--ease-out) forwards; }
 .lp-card:hover .lp-points li:nth-child(2) svg path, .lp-card:focus-within .lp-points li:nth-child(2) svg path { animation-delay: 90ms; }
 .lp-card:hover .lp-points li:nth-child(3) svg path, .lp-card:focus-within .lp-points li:nth-child(3) svg path { animation-delay: 180ms; }
 .lp-card:hover .lp-points svg circle, .lp-card:focus-within .lp-points svg circle { fill: var(--band, #E8F7F1); }
-.lp-count { font-variant-numeric: tabular-nums; }
-.lp-figure-value { transition: color var(--motion-base) ease; }
-.lp-figures.is-in .lp-figure-value { color: var(--primary); }
 @media (prefers-reduced-motion: reduce) {
-  .lp-tab svg path, .lp-tab svg circle, .lp-points svg path { stroke-dashoffset: 0 !important; animation: none !important; }
+  .lp-points svg path { stroke-dashoffset: 0 !important; animation: none !important; }
+  /* The back still arrives, it just does not turn to get here. */
+  .lp-flip-inner { transition: opacity var(--motion-fast) ease; transform: none !important; }
+  .lp-flip-back { transform: none; opacity: 0; transition: opacity var(--motion-fast) ease; }
+  .lp-flip:hover .lp-flip-back, .lp-flip:focus-within .lp-flip-back { opacity: 1; }
 }
 
 /* ————— tool screens: ecosystem, checklist, playbook, agent ————— */
@@ -443,24 +499,17 @@ html:not(.lp-armed) .lp-tab svg path, html:not(.lp-armed) .lp-tab svg circle:not
 .lp-play-n { font-family: var(--mono); font-size: 9px; letter-spacing: 0.08em; color: rgba(203, 213, 245, 0.4); }
 .lp-play li.done { color: #E6ECFF; }
 .lp-play li.done .lp-play-n { color: #4FD1B5; }
-.lp-play li.now { color: #fff; background: rgba(62, 91, 255, 0.14); border-color: rgba(62, 91, 255, 0.35); }
-.lp-play li.now .lp-play-n { color: #93A4FF; }
+.lp-play li.now { color: #fff; background: rgba(61, 82, 218, 0.14); border-color: rgba(61, 82, 218, 0.35); }
+.lp-play li.now .lp-play-n { color: #929EEA; }
 .lp-concept { font-size: 10.5px; line-height: 1.6; color: rgba(203, 213, 245, 0.75); }
 .lp-concept code { font-family: var(--mono); font-size: 9.5px; color: #7FE0C4; }
 .lp-concept-tags { display: flex; flex-wrap: wrap; gap: 5px; }
 .lp-concept-tags span { padding: 3px 7px; border-radius: 4px; border: 1px solid rgba(255, 255, 255, 0.12); background: rgba(255, 255, 255, 0.04); font-family: var(--mono); font-size: 8.5px; letter-spacing: 0.06em; color: rgba(230, 236, 255, 0.8); }
-.lp-agent { display: grid; gap: 7px; }
-.lp-agent-msg { display: grid; gap: 2px; padding: 8px 10px; border-radius: var(--radius); background: rgba(62, 91, 255, 0.12); border: 1px solid rgba(62, 91, 255, 0.3); }
-.lp-agent-msg i { font-style: normal; font-family: var(--mono); font-size: 8.5px; letter-spacing: 0.1em; text-transform: uppercase; color: #93A4FF; }
-.lp-agent-msg span { font-size: 10.5px; line-height: 1.5; color: #fff; }
-.lp-agent-step { display: grid; grid-template-columns: 8px minmax(0, 1fr); align-items: start; gap: 8px; padding: 2px 10px; font-size: 10px; line-height: 1.5; color: rgba(203, 213, 245, 0.75); }
-.lp-agent-step em { margin-top: 5px; width: 7px; height: 7px; border-radius: 50%; background: #4FD1B5; }
-.lp-agent-step code { font-family: var(--mono); font-size: 9px; color: #7FE0C4; }
 .lp-pane.dark .lp-bars { padding: 0; }
 .lp-pane .lp-bars { padding: 0; }
 .lp-pane .lp-bar-label { color: rgba(203, 213, 245, 0.6); }
 .lp-pane .lp-bar-label b { color: #E6ECFF; }
 .lp-pane .lp-bar { background: rgba(255, 255, 255, 0.08); }
 .lp-pane .lp-bar i.teal { background: #4FD1B5; }
-.lp-pane .lp-bar i { background: #93A4FF; }
+.lp-pane .lp-bar i { background: #929EEA; }
 .lp-pane .lp-mock-note { background: rgba(255, 255, 255, 0.03); border-color: rgba(255, 255, 255, 0.08); color: rgba(203, 213, 245, 0.6); }

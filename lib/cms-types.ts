@@ -509,6 +509,8 @@ export interface Global {
   legalLinks: ElementsLink[];
   subFooterLinks: ElementsLink[];
   devtoolsUrl?: string;
+  /** Where the documentation site lives; the `docs:` scheme resolves here. */
+  docsUrl?: string;
   logoUrl: string;
   nhaLogoUrl: string;
   abdmLogoUrl: string;

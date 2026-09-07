@@ -5,7 +5,10 @@ import tseslint from 'typescript-eslint';
 
 export default tseslint.config(
   {
-    ignores: ['.next/**', '.next-dev/**', 'out/**', 'node_modules/**', 'public/**', 'test/dist/**', 'next-env.d.ts', 'lib/cms-types.ts'],
+    // Any `NEXT_DIST_DIR=.next-*` build output, not just the two the npm
+    // scripts name: a scratch build directory is generated code and linting
+    // it buries the real findings under thousands of errors.
+    ignores: ['.next*/**', 'out/**', 'node_modules/**', 'public/**', 'test/dist/**', 'next-env.d.ts', 'lib/cms-types.ts'],
   },
   ...tseslint.configs.recommended,
   {

@@ -1,4 +1,4 @@
-import { withBase } from '@/lib/paths';
+import type { BenefitCard, HomeCopy } from '@/lib/site-copy';
 
 function Check() {
   return (
@@ -9,7 +9,7 @@ function Check() {
   );
 }
 
-function Points({ items }: { items: Array<{ title: string; text?: string }> }) {
+function Points({ items }: { items: BenefitCard['points'] }) {
   return (
     <ul className="lp-points">
       {items.map((p) => (
@@ -35,189 +35,153 @@ function Dots() {
   );
 }
 
-const CLAIMS: Array<[string, 'ok' | 'review' | 'query', string]> = [
-  ['CLM-40912', 'ok', 'Approved'],
-  ['CLM-40913', 'review', 'In review'],
-  ['CLM-40915', 'ok', 'Approved'],
-  ['CLM-40921', 'query', 'Query'],
-  ['CLM-40928', 'ok', 'Approved'],
-  ['CLM-40931', 'review', 'In review'],
-  ['CLM-40934', 'ok', 'Approved'],
-  ['CLM-40940', 'ok', 'Approved'],
-];
+/** The face of a card: the illustration differs per card, the frame does not. */
+function Face({ card }: { card: BenefitCard }) {
+  return (
+    <div className="lp-card-base">
+      <div className="lp-card-title">{card.tag}</div>
+      <div className="lp-card-sub">
+        {card.sub.lead} <span>{card.sub.accent}</span>
+        {card.sub.tail}
+      </div>
+
+      {card.register && card.phone && (
+        <div className="lp-mock-wrap" aria-hidden="true">
+          <div className="lp-mock">
+            <div className="lp-mock-bar">
+              <Dots />
+              <span className="lp-mock-url">{card.register.url}</span>
+            </div>
+            <div className="lp-mock-head">
+              <b>{card.register.title}</b>
+              <i>{card.register.standard}</i>
+            </div>
+            <div className="lp-rows">
+              {card.register.rows.map((row) => (
+                <div className="lp-row" key={row.id}>
+                  <code>{row.id}</code>
+                  <span className={`lp-pill ${row.tone}`}>{row.label}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+          <div className="lp-phone">
+            <div className="lp-phone-screen">
+              <div className="lp-phone-notch">
+                <span />
+              </div>
+              <div className="lp-phone-body">
+                <div className="lp-phone-label">{card.phone.label}</div>
+                <div className="lp-phone-amount">{card.phone.amount}</div>
+                <div className="lp-phone-facts">
+                  {card.phone.facts.map((fact) => (
+                    <div key={fact.label}>
+                      <span>{fact.label}</span>
+                      <span>{fact.value}</span>
+                    </div>
+                  ))}
+                </div>
+                <div className="lp-phone-btn">{card.phone.button}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {card.table && (
+        <div className="lp-mock" aria-hidden="true">
+          <div className="lp-mock-bar">
+            <Dots />
+          </div>
+          <div className="lp-table">
+            <div className="lp-table-head">
+              {card.table.head.map((h) => (
+                <span key={h}>{h}</span>
+              ))}
+            </div>
+            {card.table.rows.map((row) => (
+              <div className="lp-table-row" key={row.label}>
+                <span>{row.label}</span>
+                <code>{row.code}</code>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {card.bars && (
+        <div className="lp-mock" aria-hidden="true">
+          <div className="lp-mock-bar">
+            <Dots />
+          </div>
+          <div className="lp-bars">
+            {card.bars.items.map((bar) => (
+              <div key={bar.label}>
+                <div className="lp-bar-label">
+                  <span>{bar.label}</span>
+                  <b>{bar.percent}%</b>
+                </div>
+                <div className="lp-bar">
+                  <i className={bar.tone || undefined} style={{ width: `${bar.percent}%` }} />
+                </div>
+              </div>
+            ))}
+            <div className="lp-mock-note">{card.bars.note}</div>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+/** What the card says once it flips: the claim, the reasoning and the proof points. */
+function Over({ card }: { card: BenefitCard }) {
+  return (
+    <div className="lp-card-over">
+      <h3>
+        {card.over.before}
+        <strong>{card.over.strong}</strong>
+        {card.over.after}
+      </h3>
+      <p>{card.text}</p>
+      <Points items={card.points} />
+    </div>
+  );
+}
 
 /** "Why does this benefit" — three cards that flip to their explanation on hover or focus. */
-export default function Benefits() {
-  const docs = withBase('/documentation/');
+export default function Benefits({ copy }: { copy: HomeCopy['benefits'] }) {
+  const [lead, ...rest] = copy.cards;
   return (
     <section id="benefits" className="lp-benefits" aria-labelledby="benefits-title">
       <div className="lp-wrap">
         <p className="lp-eyebrow" data-reveal="">
-          Why does this benefit
+          {copy.eyebrow}
         </p>
         <h2 id="benefits-title" data-reveal="" data-delay="60">
-          Powering businesses of all sizes. <span>Run your business on a reliable platform that adapts your needs.</span>
+          {copy.title} <span>{copy.titleAccent}</span>
         </h2>
 
         <div className="lp-bgrid">
-          {/* Standardisation */}
-          <article className="lp-card warm" data-reveal="" data-delay="120" tabIndex={0} aria-label="Standardisation: every claim speaks the same language">
-            <div className="lp-card-base">
-              <div className="lp-card-title">Standardisation</div>
-              <div className="lp-card-sub">
-                One standard for every <span>claim</span>
-              </div>
-              <div className="lp-mock-wrap" aria-hidden="true">
-                <div className="lp-mock">
-                  <div className="lp-mock-bar">
-                    <Dots />
-                    <span className="lp-mock-url">nhcx.abdm.gov.in/claims</span>
-                  </div>
-                  <div className="lp-mock-head">
-                    <b>Claim register</b>
-                    <i>FHIR R4</i>
-                  </div>
-                  <div className="lp-rows">
-                    {CLAIMS.map(([id, tone, label]) => (
-                      <div className="lp-row" key={id}>
-                        <code>{id}</code>
-                        <span className={`lp-pill ${tone}`}>{label}</span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-                <div className="lp-phone">
-                  <div className="lp-phone-screen">
-                    <div className="lp-phone-notch">
-                      <span />
-                    </div>
-                    <div className="lp-phone-body">
-                      <div className="lp-phone-label">Pre-auth</div>
-                      <div className="lp-phone-amount">₹48,600</div>
-                      <div className="lp-phone-facts">
-                        <div>
-                          <span>Package</span>
-                          <span>HBP 2.0</span>
-                        </div>
-                        <div>
-                          <span>Room</span>
-                          <span>Semi-private</span>
-                        </div>
-                        <div>
-                          <span>Stay</span>
-                          <span>3 days</span>
-                        </div>
-                      </div>
-                      <div className="lp-phone-btn">Submit</div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className="lp-card-over">
-              <h3>
-                Every <strong>claim</strong> speaks the same language
-              </h3>
-              <p>
-                NHCX uses FHIR-based standards and internationally accepted coding practices, so provider and payer systems can
-                exchange health information in a common, machine-readable format, without losing its meaning across systems.
-              </p>
-              <a href={docs} className="btn btn-secondary">
-                Explore documentation →
-              </a>
-              <Points
-                items={[
-                  { title: 'One common structure', text: 'Health information follows a consistent FHIR-based format.' },
-                  { title: 'Zero ambiguity', text: 'Standardised codes preserve the meaning of clinical information.' },
-                  { title: 'Works across systems', text: 'Different technology stacks exchange the same information seamlessly.' },
-                ]}
-              />
-            </div>
+          <article className={`lp-card ${lead.tone}`} data-reveal="" data-delay="120" tabIndex={0} aria-label={lead.ariaLabel}>
+            <Face card={lead} />
+            <Over card={lead} />
           </article>
 
           <div className="lp-bstack">
-            {/* Structured data */}
-            <article className="lp-card cool" data-reveal="" data-delay="180" tabIndex={0} aria-label="Structured data: data a system can read, not a page to re-type">
-              <div className="lp-card-base">
-                <div className="lp-card-title">Structured data</div>
-                <div className="lp-card-sub">
-                  Send <span>data</span>, not documents
-                </div>
-                <div className="lp-mock" aria-hidden="true">
-                  <div className="lp-mock-bar">
-                    <Dots />
-                  </div>
-                  <div className="lp-table">
-                    <div className="lp-table-head">
-                      <span>Field</span>
-                      <span>Coded value</span>
-                    </div>
-                    <div className="lp-table-row">
-                      <span>Diagnosis</span>
-                      <code>ICD-10 · I21.0</code>
-                    </div>
-                    <div className="lp-table-row">
-                      <span>Procedure</span>
-                      <code>SNOMED · 232717009</code>
-                    </div>
-                    <div className="lp-table-row">
-                      <span>Drug</span>
-                      <code>NDHM-DR · 4180</code>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div className="lp-card-over">
-                <h3>
-                  Data a system can <strong>read</strong>, not a page to re-type
-                </h3>
-                <p>Diagnoses, procedures, drugs and bill lines travel as coded values: priced and checked automatically instead of opened and read.</p>
-                <Points items={[{ title: 'Coded at source' }, { title: 'Nothing lost in transit' }, { title: 'Signed and audit-ready' }]} />
-              </div>
-            </article>
-
-            {/* Automation */}
-            <article className="lp-card mint" data-reveal="" data-delay="240" tabIndex={0} aria-label="Automation and AI assistance: fewer queries, faster decisions">
-              <div className="lp-card-base">
-                <div className="lp-card-title">Automation &amp; AI assistance</div>
-                <div className="lp-card-sub">
-                  More accuracy, <span>less</span> resistance
-                </div>
-                <div className="lp-mock" aria-hidden="true">
-                  <div className="lp-mock-bar">
-                    <Dots />
-                  </div>
-                  <div className="lp-bars">
-                    <div>
-                      <div className="lp-bar-label">
-                        <span>Auto-adjudicated</span>
-                        <b>78%</b>
-                      </div>
-                      <div className="lp-bar">
-                        <i style={{ width: '78%' }} />
-                      </div>
-                    </div>
-                    <div>
-                      <div className="lp-bar-label">
-                        <span>Queries raised</span>
-                        <b>9%</b>
-                      </div>
-                      <div className="lp-bar">
-                        <i className="teal" style={{ width: '9%' }} />
-                      </div>
-                    </div>
-                    <div className="lp-mock-note">Bundle checked against payer rules before it leaves the hospital.</div>
-                  </div>
-                </div>
-              </div>
-              <div className="lp-card-over">
-                <h3>
-                  Fewer queries, <strong>faster</strong> decisions
-                </h3>
-                <p>Validated claims let payer engines price routine cases straight through, and let hospitals catch gaps before a claim ever leaves.</p>
-                <Points items={[{ title: 'Straight-through pricing' }, { title: 'Checks before submission' }, { title: 'Insight across claims' }]} />
-              </div>
-            </article>
+            {rest.map((card, i) => (
+              <article
+                key={card.tag}
+                className={`lp-card ${card.tone}`}
+                data-reveal=""
+                data-delay={String(180 + i * 60)}
+                tabIndex={0}
+                aria-label={card.ariaLabel}
+              >
+                <Face card={card} />
+                <Over card={card} />
+              </article>
+            ))}
           </div>
         </div>
       </div>

@@ -118,10 +118,7 @@ export default function ApplyForm({ page }: { page: ApplyPage }) {
             <span className="ap-success-id">{done.applicationId}</span>
             <p>{page.successText}</p>
             <div className="doc-ctas">
-              <a href={withBase('/documentation/')} className="btn btn-md btn-primary">
-                Read the documentation
-              </a>
-              <a href={withBase('/devtools/')} className="btn btn-md btn-secondary">
+              <a href={withBase('/devtools/')} className="btn btn-md btn-primary">
                 Set up the DevTools console
               </a>
             </div>

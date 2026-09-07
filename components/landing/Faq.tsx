@@ -1,11 +1,11 @@
 import type { ElementsQa } from '@/lib/content';
-import { docsHref } from '@/lib/links';
+import type { HomeCopy } from '@/lib/site-copy';
 
-/** Items grouped by topic, in first-seen order; untagged items go under "General". */
-function groupByTopic(items: ElementsQa[]): Array<{ topic: string; items: ElementsQa[] }> {
+/** Items grouped by topic, in first-seen order; untagged items go under the general heading. */
+function groupByTopic(items: ElementsQa[], general: string): Array<{ topic: string; items: ElementsQa[] }> {
   const groups: Array<{ topic: string; items: ElementsQa[] }> = [];
   for (const item of items) {
-    const topic = item.topic?.trim() || 'General';
+    const topic = item.topic?.trim() || general;
     const group = groups.find((g) => g.topic === topic);
     if (group) group.items.push(item);
     else groups.push({ topic, items: [item] });
@@ -14,8 +14,8 @@ function groupByTopic(items: ElementsQa[]): Array<{ topic: string; items: Elemen
 }
 
 /** The FAQ: the CMS questions (grouped by topic) in the accordion style of the design. */
-export default function Faq({ title, items }: { title: string; items: ElementsQa[] }) {
-  const groups = groupByTopic(items);
+export default function Faq({ copy, title, items }: { copy: HomeCopy['faq']; title: string; items: ElementsQa[] }) {
+  const groups = groupByTopic(items, copy.generalTopic);
   let n = 0;
   return (
     <section id="faq" className="lp-faq" aria-labelledby="faq-title">
@@ -29,7 +29,6 @@ export default function Faq({ title, items }: { title: string; items: ElementsQa
               {groups.length > 1 && <div className="lp-faq-topic">{group.topic}</div>}
               <div className="lp-acc">
                 {group.items.map((item) => {
-                  const docs = docsHref(item.docs);
                   const first = n++ === 0;
                   return (
                     <details key={item.question} open={first}>
@@ -37,13 +36,6 @@ export default function Faq({ title, items }: { title: string; items: ElementsQa
                       <div className="lp-acc-body">
                         <div>
                           <p>{item.answer}</p>
-                          {docs ? (
-                            <a href={docs} className="faq-docs">
-                              Read chapter {item.docs} in the documentation →
-                            </a>
-                          ) : (
-                            <span style={{ display: 'block', height: 18 }} />
-                          )}
                         </div>
                       </div>
                     </details>

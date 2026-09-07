@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useState } from 'react';
 import type { DistBuild } from '@/lib/downloads';
+import type { DevToolsCopy } from '@/lib/site-copy';
 import { groupByPlatform, shortSha } from '@/lib/downloads';
 import { withBase } from '@/lib/paths';
 
@@ -90,7 +91,7 @@ function macIsAppleSilicon(): boolean {
   }
 }
 
-export default function AdapterDownload({ builds }: { builds: DistBuild[] }) {
+export default function AdapterDownload({ copy, builds }: { copy: DevToolsCopy['download']; builds: DistBuild[] }) {
   const platforms = useMemo(() => groupByPlatform(builds), [builds]);
   const [os, setOs] = useState(builds[0]?.os ?? '');
   const [arch, setArch] = useState(builds[0]?.arch ?? '');
@@ -147,25 +148,25 @@ export default function AdapterDownload({ builds }: { builds: DistBuild[] }) {
     <div className="adl">
       <div className="adl-head">
         <div className="adl-head-copy">
-          <p className="adl-label">{detected ? 'Recommended for this machine' : 'Selected build'}</p>
+          <p className="adl-label">{detected ? copy.recommendedLabel : copy.selectedLabel}</p>
           <p className="adl-os">
             {build.osLabel} · {build.archLabel}
           </p>
           {build.archNote && <p className="adl-note">{build.archNote}</p>}
         </div>
-        <a href={withBase(build.url)} download className="btn btn-md btn-primary adl-get">
+        <a href={withBase(build.url)} download className="dk-btn dk-btn-primary adl-get">
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
             <path d="M12 3v12" />
             <path d="M7 10l5 5 5-5" />
             <path d="M4 20h16" />
           </svg>
-          Download {build.version}
+          {copy.getLabel} {build.version}
         </a>
       </div>
 
       <div className="adl-choose">
         <label className="adl-field">
-          <span>Operating system</span>
+          <span>{copy.osLabel}</span>
           <select value={os} onChange={(event) => chooseOs(event.target.value)}>
             {platforms.map((platform) => (
               <option key={platform.os} value={platform.os}>
@@ -175,7 +176,7 @@ export default function AdapterDownload({ builds }: { builds: DistBuild[] }) {
           </select>
         </label>
         <label className="adl-field">
-          <span>Architecture</span>
+          <span>{copy.archLabel}</span>
           <select
             value={build.arch}
             onChange={(event) => {
@@ -195,17 +196,17 @@ export default function AdapterDownload({ builds }: { builds: DistBuild[] }) {
 
       <ul className="adl-meta">
         <li>
-          <span>Archive</span>
+          <span>{copy.archiveLabel}</span>
           <b className="mono">{build.file}</b>
         </li>
         <li>
-          <span>Size</span>
+          <span>{copy.sizeLabel}</span>
           <b className="mono">
             {build.size} · {build.format}
           </b>
         </li>
         <li>
-          <span>SHA-256</span>
+          <span>{copy.shaLabel}</span>
           <b className="mono" title={build.sha256}>
             {shortSha(build.sha256)}
           </b>

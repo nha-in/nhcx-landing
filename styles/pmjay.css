@@ -1,0 +1,113 @@
+/*
+ * The PM-JAY page.
+ *
+ * A programme page, so it keeps the site's light surfaces and the shared
+ * primitives in globals.css (.section, .section-head, .eyebrow, .lede, .btn);
+ * only the hero, the fact row, the two-column split and the one dark band
+ * are its own. The band is built on styles/dark.css, which the page imports
+ * before this sheet.
+ */
+
+/* ————— hero ————— */
+
+.pj-hero {
+  position: relative; overflow: hidden;
+  padding: var(--s16) 0 var(--s16);
+  background: linear-gradient(180deg, var(--ground) 0%, var(--peach) 100%);
+  border-bottom: 1px solid var(--line);
+}
+.pj-hero-inner { display: grid; grid-template-columns: minmax(0, 1fr) 300px; gap: var(--s12); align-items: center; }
+.pj-hero-copy { display: flex; flex-direction: column; gap: var(--s4); align-items: flex-start; }
+.pj-hero h1 { max-width: 15em; font-size: clamp(34px, 4.6vw, 54px); line-height: 1.06; }
+.pj-hero h1 span { display: block; color: var(--saffron); }
+.pj-cta { display: flex; flex-wrap: wrap; gap: var(--s3); padding-top: var(--s2); }
+
+/* The roundel at the size the header no longer gives it, on its own light. */
+.pj-hero-mark { position: relative; display: grid; place-items: center; }
+.pj-hero-mark img { position: relative; display: block; width: 100%; max-width: 300px; height: auto; }
+.pj-hero-glow {
+  position: absolute; inset: -6% -12%; border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 163, 93, 0.35), transparent 68%);
+}
+
+/* ————— what the scheme is ————— */
+
+.pj-facts { list-style: none; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--s6); margin-top: var(--s8); }
+.pj-fact { display: flex; flex-direction: column; gap: var(--s2); padding-top: var(--s4); border-top: 2px solid var(--peach-2); }
+.pj-fact h3 { font-size: 17px; font-weight: 600; }
+.pj-fact p { font-size: 15px; line-height: 1.6; color: var(--ink-2); }
+
+/* ————— what has changed —————
+   Each card states the old way quietly and the new way as its heading, so the
+   difference is read in one movement down the card rather than looked up in a
+   comparison table. */
+
+.pj-changes { list-style: none; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--s6); margin-top: var(--s8); }
+.pj-change {
+  display: flex; flex-direction: column; gap: var(--s2);
+  padding: var(--s6); border: 1px solid var(--line); border-radius: var(--radius); background: var(--ground);
+}
+.pj-change-was {
+  display: flex; align-items: baseline; gap: var(--s2);
+  font-size: 13px; line-height: 1.4; color: var(--ink-3);
+}
+.pj-change-was::before { content: 'was'; flex: none; font-family: var(--mono); font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-4); }
+.pj-change h3 { font-size: 17px; font-weight: 600; color: var(--ink); }
+.pj-change h3::before { content: '↓'; display: block; margin-bottom: 2px; font-size: 13px; font-weight: 400; color: var(--saffron); }
+.pj-change p:last-child { font-size: 15px; line-height: 1.6; color: var(--ink-2); }
+
+/* ————— how a scheme claim travels: the one dark band ————— */
+
+.pj-journey { position: relative; isolation: isolate; overflow: hidden; padding: var(--s24) 0; }
+.pj-journey-inner { position: relative; }
+.pj-steps { list-style: none; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--s6); margin-top: var(--s12); }
+.pj-step { display: flex; flex-direction: column; gap: var(--s2); }
+.pj-step-num { font-family: var(--mono); font-size: 12px; letter-spacing: 0.08em; color: var(--dk-indigo); }
+.pj-step h3 { margin: 0; font-size: 16.5px; font-weight: 600; color: #fff; }
+.dark-page .pj-step p { font-size: 14.5px; line-height: 1.6; }
+
+/* The rule under the four steps, with one signal running its length: out to
+   the payer and back to the hospital, which is the round trip above it. */
+.pj-rail { position: relative; height: 2px; margin-top: var(--s12); border-radius: 2px; background: rgba(255, 255, 255, 0.12); overflow: hidden; }
+.pj-rail i {
+  position: absolute; top: -2px; left: 0; width: 120px; height: 6px; margin-left: -60px; border-radius: 999px;
+  background: linear-gradient(90deg, transparent, var(--primary-soft) 40%, #eaf0ff 50%, var(--primary-soft) 60%, transparent);
+  box-shadow: 0 0 16px 2px rgba(123, 138, 230, 0.45);
+  animation: pj-run 7s ease-in-out infinite;
+}
+@keyframes pj-run {
+  0%   { left: 0%;   opacity: 0; }
+  6%   { opacity: 1; }
+  44%  { opacity: 1; }
+  50%  { left: 100%; opacity: 0; }
+  56%  { left: 100%; opacity: 1; }
+  94%  { opacity: 1; }
+  100% { left: 0%;   opacity: 0; }
+}
+
+/* ————— what each side gets ————— */
+
+.pj-sides { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--s8); margin-top: var(--s8); }
+.pj-side { padding: var(--s6); border: 1px solid var(--line); border-radius: var(--radius); background: var(--ground); }
+.pj-side h3 { font-size: 17px; font-weight: 600; }
+.pj-side ul { list-style: none; display: flex; flex-direction: column; gap: var(--s3); margin-top: var(--s4); }
+.pj-side li { position: relative; padding-left: var(--s6); font-size: 15px; line-height: 1.6; color: var(--ink-2); }
+.pj-side li::before {
+  content: ''; position: absolute; left: 0; top: 9px; width: 8px; height: 8px; border-radius: 2px;
+  background: var(--peach-2);
+}
+
+@media (max-width: 980px) {
+  .pj-hero-inner { grid-template-columns: 1fr; gap: var(--s8); }
+  .pj-hero-mark { justify-self: flex-start; }
+  .pj-hero-mark img { max-width: 180px; }
+  .pj-facts, .pj-steps, .pj-changes { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .pj-sides { grid-template-columns: 1fr; gap: var(--s6); }
+  .pj-journey { padding: var(--s16) 0; }
+}
+@media (max-width: 620px) {
+  .pj-facts, .pj-steps, .pj-changes { grid-template-columns: 1fr; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .pj-rail i { animation: none !important; left: 50%; opacity: 0.85; }
+}

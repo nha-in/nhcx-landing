@@ -1,202 +1,111 @@
-import { withBase } from "@/lib/paths";
-import CountUp from "@/components/landing/CountUp";
+import type { ReactNode } from 'react';
+import type { HomeCopy } from '@/lib/site-copy';
+import Rich from '@/components/Rich';
+import { UNDERSTAND_ICONS } from '@/components/vectors/understandIcons';
 
 /**
- * "NHCX at a glance" + "Understand NHCX" — the facts a first-time visitor
- * needs, drawn from the programme's own site (nhcx.abdm.gov.in): what the
- * exchange is, who takes part, what moves over it and where it stands.
+ * One card, name on the front and the answer on the back.
+ *
+ * Both faces are in the markup and neither is hidden from assistive
+ * technology: read straight through, a card is its name followed by what it
+ * means, which is the sentence the list used to be. The flip is presentation
+ * for people who can see it, not the only way to the content — so no-JS,
+ * print, a crawler and a screen reader all get everything.
+ *
+ * `tabIndex={0}` and `:focus-within` are what make it work without a pointer:
+ * a keyboard reaches the card and a tap on a touch screen focuses it, which
+ * is the same state hover produces. It is not a button, because nothing
+ * happens when you press it — the flip is a hover affordance, and a control
+ * that claims to do something and does not is worse than none.
  */
-
-const FIGURES = [
-  {
-    value: "34",
-    label: "insurers and TPAs live on NHCX",
-    note: "as of 21 Jul 2024",
-  },
-  {
-    value: "~300",
-    label: "hospitals onboarding to send claims",
-    note: "as of 21 Jul 2024",
-  },
-  {
-    value: "5",
-    label: "claim use cases on one protocol",
-    note: "eligibility · pre-auth · claim · payment notice · communication",
-  },
-  {
-    value: "1",
-    label: "integration for every payer",
-    note: "the exchange routes by participant code",
-  },
-];
-
-const PARTICIPANTS: Array<{ title: string; who: string }> = [
-  {
-    title: "Providers",
-    who: "Hospitals, nursing homes, diagnostic centres and clinics, and the HMIS or TMS vendors that build for them.",
-  },
-  {
-    title: "Payers",
-    who: "Insurance companies, TPAs, state health agencies and government schemes such as PM-JAY.",
-  },
-  {
-    title: "Sponsors and regulators",
-    who: "Scheme planners with payer-equivalent access; IRDAI and auditors with aggregate, anonymised views.",
-  },
-  {
-    title: "Beneficiaries",
-    who: "Patients, authenticated through ABHA in production (not required in the sandbox), whose consent governs what an ISNP or app may see.",
-  },
-];
-
-const USE_CASES: Array<{ name: string; path: string; what: string }> = [
-  {
-    name: "Coverage eligibility",
-    path: "/coverageeligibility/check",
-    what: "Is this person covered for this treatment, today?",
-  },
-  {
-    name: "Pre-authorisation",
-    path: "/preauth/submit",
-    what: "Approve a package and amount before admission.",
-  },
-  {
-    name: "Claim",
-    path: "/claim/submit",
-    what: "The discharge bundle: diagnosis, procedures, bill lines.",
-  },
-  {
-    name: "Payment notice",
-    path: "/paymentnotice/request",
-    what: "Settlement advice, from payer to provider.",
-  },
-  {
-    name: "Communication",
-    path: "/communication/request",
-    what: "Queries and supporting documents, both ways.",
-  },
-];
-
-/** The four figures under "What NHCX guarantees". */
-export function Glance() {
+function Flip({ icon, face, note, back }: { icon: string; face: string; note?: string; back: string }) {
   return (
-    <section className="lp-glance" aria-label="NHCX at a glance">
-      <div className="lp-wrap">
-        <dl className="lp-figures" data-reveal="">
-          {FIGURES.map((f) => (
-            <div key={f.label} className="lp-figure">
-              <dt>
-                <span className="lp-figure-value">
-                  <CountUp value={f.value} />
-                </span>
-                <span className="lp-figure-label">{f.label}</span>
-              </dt>
-              <dd>{f.note}</dd>
-            </div>
-          ))}
-        </dl>
+    <li className="lp-flip" tabIndex={0}>
+      <div className="lp-flip-inner">
+        <div className="lp-flip-face">
+          <svg viewBox="0 0 24 24" className="lp-flip-icon" aria-hidden="true">
+            {UNDERSTAND_ICONS[icon]}
+          </svg>
+          <b>{face}</b>
+          {note && <code>{note}</code>}
+        </div>
+        <div className="lp-flip-back">
+          <span>{back}</span>
+        </div>
       </div>
-    </section>
+    </li>
   );
 }
 
-/** The explainer, placed after the onboarding steps. */
-export default function Understand() {
+/** A titled row of them. */
+function Flips({ title, delay, children }: { title: string; delay: number; children: ReactNode }) {
   return (
-    <section
-      id="understand"
-      className="lp-understand"
-      aria-labelledby="understand-title"
-    >
+    <div className="lp-und-block">
+      <h3 data-reveal="" data-delay={String(delay)}>
+        {title}
+      </h3>
+      <ul className="lp-flips" data-reveal="" data-delay={String(delay + 40)}>
+        {children}
+      </ul>
+    </div>
+  );
+}
+
+/**
+ * "Understand NHCX" — the facts a first-time visitor needs, drawn from the
+ * programme's own site (nhcx.abdm.gov.in): what the exchange is, who takes
+ * part and what moves over it.
+ *
+ * Thirteen definitions in three columns of prose was a wall to read rather
+ * than something to look at. They are cards now, one per definition, with the
+ * name on the front and the answer on the back: the page shows thirteen short
+ * labels, and a reader turns over only the ones they do not already know.
+ *
+ * Each front carries a drawing, so a row is something to look at before it is
+ * something to read, and three to a row at most — a fourth column made the
+ * cards too narrow for a name to sit on one line.
+ *
+ * The "at a glance" figures that used to open this file were four
+ * hand-written numbers dated July 2024, and the statistics table now above it
+ * carries the same measures from the NHA dashboard, dated by the API. Two
+ * counts of the same thing that disagree is worse than one, so they are gone.
+ */
+
+/** The explainer, placed after the onboarding steps. */
+export default function Understand({ copy }: { copy: HomeCopy['understand'] }) {
+  return (
+    <section id="understand" className="lp-understand" aria-labelledby="understand-title">
       <div className="lp-wrap">
         <p className="lp-eyebrow" data-reveal="">
-          Understand NHCX
+          {copy.eyebrow}
         </p>
         <h2 id="understand-title" data-reveal="" data-delay="60">
-          A national exchange for health-claim data, run by the National Health
-          Authority under ABDM
+          {copy.title}
         </h2>
         <p className="lp-understand-intro" data-reveal="" data-delay="100">
-          The National Health Claims Exchange is the digital gateway between the
-          people who deliver care and the people who pay for it. A hospital
-          submits a claim once, as coded FHIR data; the exchange checks and
-          signs it, finds the payer, and delivers it. The decision comes back
-          the same way. It began as the Health Claims Platform (HCP) and was
-          renamed NHCX on the industry&rsquo;s suggestion; its specifications
-          were developed in the open with insurers, TPAs and state health
-          agencies.
+          {copy.intro}
         </p>
 
-        <div className="lp-understand-grid">
-          <div className="lp-und-col" data-reveal="" data-delay="120">
-            <h3>Who takes part</h3>
-            <ul className="lp-und-list">
-              {PARTICIPANTS.map((p) => (
-                <li key={p.title}>
-                  <b>{p.title}</b>
-                  <span>{p.who}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
-          <div className="lp-und-col" data-reveal="" data-delay="180">
-            <h3>What moves over it</h3>
-            <ul className="lp-und-apis">
-              {USE_CASES.map((u) => (
-                <li key={u.name}>
-                  <b>{u.name}</b>
-                  <code>{u.path}</code>
-                  <span>{u.what}</span>
-                </li>
-              ))}
-            </ul>
-            <p className="lp-und-note">
-              Every request has an <code>on_</code> callback, and every message
-              is a signed, encrypted envelope (JWE) around an HL7 FHIR R4
-              bundle.{" "}
-              <a href={withBase("/documentation/")}>
-                Read the protocol in the documentation →
-              </a>
-            </p>
-          </div>
-          <div className="lp-und-col" data-reveal="" data-delay="240">
-            <h3>Why it matters</h3>
-            <ul className="lp-und-list">
-              <li>
-                <b>Structured, not scanned</b>
-                <span>
-                  Claims travel as coded data rather than PDFs and images, so
-                  payers can auto-adjudicate routine cases and both sides see
-                  fewer queries.
-                </span>
-              </li>
-              <li>
-                <b>Lower cost and time</b>
-                <span>
-                  Automation cuts processing cost and turnaround, reduces manual
-                  error and gives the data quality that fraud control and
-                  analytics need.
-                </span>
-              </li>
-              <li>
-                <b>Records stay with the hospital</b>
-                <span>
-                  Clinical and financial records remain in hospital systems;
-                  claim data flows natively into billing and accounts,
-                  simplifying audits and reconciliation.
-                </span>
-              </li>
-              <li>
-                <b>Open and non-repudiable</b>
-                <span>
-                  Open APIs, digital signatures on every event, an audit log
-                  every participant can query, and a public registry of who is
-                  on the exchange.
-                </span>
-              </li>
-            </ul>
-          </div>
-        </div>
+        <Flips title={copy.participantsTitle} delay={120}>
+          {copy.participants.map((p) => (
+            <Flip key={p.title} icon={p.icon} face={p.title} back={p.text} />
+          ))}
+        </Flips>
+
+        <Flips title={copy.useCasesTitle} delay={180}>
+          {copy.useCases.map((u) => (
+            <Flip key={u.name} icon={u.icon} face={u.name} note={u.path} back={u.what} />
+          ))}
+        </Flips>
+        <p className="lp-und-note" data-reveal="" data-delay="200">
+          <Rich parts={copy.note} />
+        </p>
+
+        <Flips title={copy.whyTitle} delay={240}>
+          {copy.why.map((item) => (
+            <Flip key={item.title} icon={item.icon} face={item.title} back={item.text} />
+          ))}
+        </Flips>
       </div>
     </section>
   );

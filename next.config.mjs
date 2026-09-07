@@ -8,9 +8,6 @@
 const rawBase = (process.env.NEXT_PUBLIC_BASE_PATH ?? '').trim();
 const basePath = rawBase && rawBase !== '/' ? `/${rawBase.replace(/^\/+|\/+$/g, '')}` : '';
 
-/** `next dev`; `next build` (and the export) run with NODE_ENV=production. */
-const isDev = process.env.NODE_ENV !== 'production';
-
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   output: 'export',
@@ -22,23 +19,6 @@ const nextConfig = {
   // serving. `next build` keeps .next/ and exports to out/ as before.
   distDir: process.env.NEXT_DIST_DIR ?? '.next',
 
-  /**
-   * In production nginx serves the chat service at /chatbot/ alongside this
-   * export (see lib/chat.ts), so the assistant is a same-origin path. `next
-   * dev` has no such neighbour, so this gives a developer the same /chatbot
-   * the deployed site has.
-   *
-   * Only under `next dev`: `output: 'export'` ignores rewrites and warns about
-   * every one it finds, and there is nothing for it to do at build time.
-   */
-  ...(isDev
-    ? {
-        async rewrites() {
-          const upstream = (process.env.NHCX_ASSISTANT_UPSTREAM ?? 'http://127.0.0.1:8000').replace(/\/$/, '');
-          return [{ source: '/chatbot/:path*', destination: `${upstream}/:path*` }];
-        },
-      }
-    : {}),
 };
 
 export default nextConfig;

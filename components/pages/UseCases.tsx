@@ -11,9 +11,7 @@
  * never picks one and the two grids on a page stay in step.
  */
 
-export type IconName = 'book' | 'braces' | 'play' | 'search' | 'plug' | 'rocket' | 'layers' | 'ledger';
-
-export type UseCase = { icon: IconName; title: string; text: string };
+import type { IconName, UseCaseCopy } from '@/lib/site-copy';
 
 /**
  * Geometry from Feather and Lucide (MIT), drawn on the same 24×24 grid at the
@@ -94,7 +92,7 @@ function Icon({ name }: { name: IconName }) {
   );
 }
 
-export default function UseCases({ title, items }: { title: string; items: UseCase[] }) {
+export default function UseCases({ title, items }: { title: string; items: UseCaseCopy[] }) {
   return (
     <div className="blk">
       <h3 className="blk-title">{title}</h3>

@@ -4,7 +4,9 @@
 The landing site is a static export whose every word lives in a handful of
 JSON files under `content/`, and whose look lives in the custom properties at
 the top of `styles/globals.css`. This edits both, in a browser, without anyone
-having to open an editor or know JSON.
+having to open an editor or know JSON. Nothing the site renders is written in
+a component: a heading, a tagline or a description changes here and nowhere
+else.
 
     python3 cms/app.py                 # http://127.0.0.1:8100
     NHCX_CMS_PASSWORD=… python3 cms/app.py --host 0.0.0.0 --port 8100
@@ -91,6 +93,13 @@ DOCS: list[Doc] = [
         "Everything the CMS-driven pages say: the navigation and footer, the landing sections, "
         "the DevTools and apply pages.",
         {"global": dict, "pages": dict, "collections": dict},
+    ),
+    Doc(
+        "site.json",
+        "Page copy",
+        "Every word of the pages that are designed rather than assembled in the CMS: the landing "
+        "sections, PM-JAY, DevTools and the AI skill page, plus the footer's contact block.",
+        {"chrome": dict, "home": dict, "pmjay": dict, "devtools": dict, "skill": dict},
     ),
     Doc("news.json", "News", "The news page and its feed.", {"page": dict, "items": list}),
     Doc("videos.json", "Videos", "The videos page and its library.", {"page": dict, "videos": list}),

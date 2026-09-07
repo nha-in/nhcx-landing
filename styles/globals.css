@@ -2,8 +2,10 @@
  * NHCX Sandbox 2.0 — design system.
  *
  * Inter for text with IBM Plex Mono for eyebrows, labels and figures; a
- * deep navy ink (#0A2540) with an electric blue primary (#3E5BFF) and a
- * peach accent kept for one gradient and the check marks; flat white
+ * deep navy ink (#0A2540) with the blue of the HCX mark as the primary
+ * (#3D52DA, sampled from public/assets/hcx-logo.png). The warm saffron is
+ * no longer a second brand colour on the landing page: it belongs to the
+ * PM-JAY page, whose own scheme it is, and to small status pills; flat white
  * surfaces on hairline borders (#E7EDF3), 4px radii, soft navy shadows
  * only on cards that lift; a 1140px container. Light theme only. Sizes
  * are in px so the A- / A / A+ control can scale the page (body zoom).
@@ -19,12 +21,12 @@
   --ground-3: #FBFCFE;
   --line: #E7EDF3;
   --line-2: #EDF1F6;
-  --primary: #3E5BFF;
-  --primary-2: #5771FF;
-  --primary-3: #2437B8;
-  --primary-tint: #EEF1FF;
-  --primary-line: #C7D0FF;
-  --primary-soft: #8FA0FF;
+  --primary: #3D52DA;
+  --primary-2: #586ADF;
+  --primary-3: #2031A2;
+  --primary-tint: #EFF0FC;
+  --primary-line: #C6CCF4;
+  --primary-soft: #8E9AE9;
   --navy: #0A2540;
   --navy-2: #061B31;
   --navy-3: #0B1B33;
@@ -116,7 +118,6 @@ p { max-width: var(--measure); text-wrap: pretty; }
 /* ————— layout primitives ————— */
 .container { width: 100%; max-width: var(--container); margin: 0 auto; padding-left: var(--s6); padding-right: var(--s6); }
 .section { padding: var(--s24) 0; border-top: 1px solid var(--line); }
-.section-tight { padding: var(--s12) 0; }
 .section-alt { background: var(--ground-2); }
 .section-head { display: flex; flex-direction: column; gap: var(--s3); max-width: 60ch; }
 .section-head .btn { align-self: flex-start; margin-top: var(--s3); }
@@ -176,8 +177,17 @@ button.btn { font-family: inherit; }
 .brand { display: flex; align-items: center; gap: 14px; flex: none; min-width: 0; }
 .brand-marks { display: flex; align-items: center; gap: 12px; list-style: none; }
 .brand-marks a { display: flex; align-items: center; }
-.brand-marks img { display: block; width: auto; height: 30px; }
-.brand-marks .mark-nha img { height: 34px; }
+/* Optical sizing, not equal heights: the NHA block is a wordmark and sets the
+   line, a roundel reads larger than a wordmark of the same height so it is
+   set a little shorter, and the NHCX source carries a transparent margin of
+   its own (its ink is about three-quarters of the box) so it is set taller.
+   The hairline after it separates the exchange's own mark from the two that
+   stand behind it. */
+.brand-marks img { display: block; width: auto; height: 40px; }
+.brand-marks .mark-nhcx { padding-right: 16px; border-right: 1px solid var(--line); }
+.brand-marks .mark-nhcx img { height: 42px; }
+.brand-marks .mark-nha img { height: 42px; }
+.brand-marks .mark-roundel img { height: 42px; }
 .nav-links { display: flex; align-items: stretch; gap: 2px; min-height: var(--nav-h); overflow-x: auto; scrollbar-width: none; margin-left: auto; }
 .nav-links::-webkit-scrollbar { display: none; }
 .nav-links a {
@@ -187,6 +197,9 @@ button.btn { font-family: inherit; }
 .nav-links a:hover { color: var(--ink); text-decoration: none; }
 .nav-links a.active { color: var(--ink); border-bottom-color: var(--primary); }
 .nav-links a:focus-visible { outline-offset: -4px; }
+/* The row ends in one button. `.nav-links` keeps its `margin-left: auto`, so
+   the navigation and the button travel together against the right edge and
+   the marks keep the room they need. */
 .nav-tools { display: flex; align-items: center; gap: var(--s3); flex: none; }
 .nav-tools .btn-sm { height: 36px; font-size: 13.5px; }
 
@@ -204,27 +217,14 @@ button.btn { font-family: inherit; }
 .figures { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: var(--s6) var(--s8); border-top: 1px solid var(--line); padding-top: var(--s6); }
 .figure { display: flex; flex-direction: column; gap: var(--s1); }
 .figure dt { display: flex; flex-direction: column; gap: 2px; }
-.figure-value { font-size: 34px; line-height: 1.1; font-weight: 600; letter-spacing: -0.02em; font-variant-numeric: tabular-nums; color: var(--ink); }
-.figure-title { font-size: 15px; font-weight: 600; color: var(--ink); }
 .figure dd { font-size: 14px; line-height: 1.5; color: var(--ink-3); }
 
 .meta-list { display: flex; flex-wrap: wrap; gap: var(--s2) var(--s4); list-style: none; font-size: 13px; color: var(--ink-3); }
 .meta-list li { display: inline-flex; align-items: center; gap: var(--s2); }
 .meta-list li + li::before { content: ''; width: 3px; height: 3px; border-radius: 50%; background: var(--line); }
 
-.status-dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: var(--ink-3); }
-.status-dot.ok { background: var(--green); }
-.status-dot.wait { background: var(--amber); }
-.status-dot.bad { background: var(--red); }
-
-.pill-badge, .news-tag, .rn-channel {
-  display: inline-flex; align-items: center; gap: 6px; padding: 3px 10px; border-radius: 999px; border: 1px solid var(--line);
-  font-size: 12px; font-weight: 600; line-height: 1.4; color: var(--ink-2); background: var(--ground);
-}
 .pill-badge.muted { color: var(--ink-3); }
-.rn-channel.production { border-color: #BFEBE3; background: var(--green-tint); color: var(--green); }
 .news-tag.muted { color: var(--ink-3); }
-.news-tag.brand, .rn-channel.sandbox { border-color: var(--primary-line); background: var(--primary-tint); color: var(--primary); }
 
 .chip-btn {
   display: inline-flex; align-items: center; height: 32px; padding: 0 var(--s3); border-radius: 999px; border: 1px solid var(--line);
@@ -235,7 +235,6 @@ button.btn { font-family: inherit; }
 .chip-btn.on { border-color: var(--primary); background: var(--primary); color: #fff; }
 .chip-btn:disabled { opacity: 0.45; cursor: default; }
 
-.db-tabs { display: inline-flex; flex-wrap: wrap; gap: var(--s1); padding: var(--s1); border-radius: var(--radius); border: 1px solid var(--line); background: var(--ground-2); }
 .db-tab {
   display: inline-flex; align-items: center; height: 34px; padding: 0 var(--s4); border-radius: 6px; border: 1px solid transparent;
   background: transparent; font-size: 14px; font-weight: 600; color: var(--ink-2); cursor: pointer;
@@ -245,11 +244,6 @@ button.btn { font-family: inherit; }
 
 .copy-btn { height: 28px; padding: 0 10px; border-radius: 6px; border: 1px solid var(--line); background: var(--ground); font-size: 12px; font-weight: 600; color: var(--ink-2); cursor: pointer; }
 .copy-btn:hover { color: var(--primary); border-color: var(--primary-line); }
-
-.code-block {
-  margin: 0; padding: var(--s4); border-radius: var(--radius); border: 1px solid var(--line); background: var(--ground-2);
-  overflow-x: auto; font-size: 13px; line-height: 1.7; color: var(--ink);
-}
 
 /* tables: hairline rows */
 .table-wrap { width: 100%; overflow-x: auto; border: 1px solid var(--line); border-radius: var(--radius); background: var(--ground); }
@@ -279,8 +273,8 @@ input[type='checkbox'], input[type='radio'] { accent-color: var(--primary); }
 .footer :focus-visible { outline-color: #fff; }
 .footer-inner { padding-top: clamp(40px, 5vw, 64px); padding-bottom: clamp(24px, 3vw, 34px); display: flex; flex-direction: column; gap: clamp(28px, 4vw, 44px); }
 .footer-brand { display: inline-flex; align-items: center; gap: var(--s4); align-self: flex-start; padding: 12px 18px; border-radius: var(--radius); background: #fff; }
-.footer-brand img { display: block; height: 28px; width: auto; }
-.footer-brand .mark-nha img { height: 32px; }
+.footer-brand img { display: block; height: 36px; width: auto; }
+.footer-brand .mark-nha img { height: 40px; }
 .footer-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: var(--s8) clamp(24px, 4vw, 56px); }
 .footer-col h2 { font-size: 13px; font-weight: 600; letter-spacing: -0.005em; color: #fff; margin-bottom: 14px; text-transform: none; }
 .footer-col ul { list-style: none; display: grid; gap: 9px; }
@@ -293,20 +287,6 @@ input[type='checkbox'], input[type='radio'] { accent-color: var(--primary); }
 /* ═════════ sub-pages ═════════ */
 
 /* ————— devtools page ————— */
-.kitp-hero { background: var(--ground-2); border-bottom: 1px solid var(--line); }
-.kitp-hero-inner { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: var(--s12); align-items: start; padding-top: var(--s16); padding-bottom: var(--s16); }
-.kitp-copy { gap: var(--s4); }
-.kitp-ctas { display: flex; flex-wrap: wrap; gap: var(--s3); margin-top: var(--s2); }
-.kitp-build { display: flex; flex-direction: column; gap: var(--s1); min-width: 240px; padding: var(--s6); border: 1px solid var(--line); border-radius: var(--radius); background: var(--ground); }
-.kitp-build-label { font-size: 11px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-3); }
-.kitp-build-version { font-size: 28px; font-weight: 600; letter-spacing: -0.01em; font-variant-numeric: tabular-nums; }
-.kitp-build-meta { font-size: 13px; color: var(--ink-3); }
-.kitp-build .link-arrow { margin-top: var(--s2); font-size: 14px; }
-.kitp-flow { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: var(--s3); margin-top: var(--s12); padding: var(--s4) var(--s6); border: 1px solid var(--line); border-radius: var(--radius); background: var(--ground); }
-.kitp-flow-node { display: inline-flex; align-items: center; padding: var(--s2) var(--s4); border: 1px solid var(--line); border-radius: 6px; background: var(--ground-2); font-size: 14px; font-weight: 600; }
-.kitp-flow-hub { display: inline-flex; align-items: center; padding: var(--s2) var(--s4); border-radius: 6px; background: var(--primary); color: #fff; font-size: 14px; font-weight: 600; }
-.kitp-flow-arrow { position: relative; width: 56px; height: 2px; background: var(--primary-line); flex: none; }
-.kitp-flow-arrow::after { content: ''; position: absolute; right: -1px; top: -4px; width: 8px; height: 8px; border-top: 2px solid var(--primary-line); border-right: 2px solid var(--primary-line); transform: rotate(45deg); }
 .kitp-section { display: flex; flex-direction: column; gap: var(--s8); margin-top: var(--s16); }
 /* The adapter section closes the DevTools page, so it carries the same
    breathing room before the footer that .kitp-bottom used to. */
@@ -329,12 +309,9 @@ input[type='checkbox'], input[type='radio'] { accent-color: var(--primary); }
 .dl-get:hover { border-color: var(--primary-line); background: var(--primary-tint); color: var(--primary); }
 .dl-empty { padding: var(--s8) var(--s6); border: 1px dashed var(--line); border-radius: var(--radius); font-size: 15px; line-height: 1.6; color: var(--ink-2); }
 .dl-empty code { font-size: 13px; padding: 1px 5px; border-radius: 4px; background: var(--ground-2); }
-.kit-download-arrow { display: inline-block; width: 8px; height: 8px; border-right: 2px solid currentColor; border-bottom: 2px solid currentColor; transform: rotate(45deg) translate(-1px, -1px); }
 /* ————— the NHCX Adapter, on the DevTools page ————— */
 /* One card now ("Run it"), so it is capped rather than stretched across the
    page: five short lines of shell in a full-width box read as an empty box. */
-.adapter-start { display: grid; grid-template-columns: minmax(0, 640px); gap: var(--s6); }
-.adapter-start .kitp-card h3 { font-size: 20px; }
 .lede code { font-family: var(--mono); font-size: 13px; padding: 1px 5px; border-radius: 4px; background: var(--ground-2); }
 .adapter-rel { font-family: var(--mono); font-size: 13px; font-weight: 400; color: var(--ink-3); }
 
@@ -415,12 +392,6 @@ input[type='checkbox'], input[type='radio'] { accent-color: var(--primary); }
 .term-code { margin: 0; padding: var(--s4) var(--s6); overflow-x: auto; font-size: 13px; line-height: 1.75; color: #C7D6F5; }
 .term-line { display: block; white-space: pre; }
 /* Highlighting: the program, its subcommands, flags, paths, and the comment. */
-.tk-cmd { color: #8FA0FF; }
-.tk-sub { color: #FFFFFF; }
-.tk-flag { color: #FFB37A; }
-.tk-path { color: #4FD1B5; }
-.tk-comment { color: rgba(203, 213, 245, 0.45); font-style: italic; }
-
 
 /* ————— videos ————— */
 .vid-featured { display: grid; grid-template-columns: minmax(300px, 1.25fr) minmax(260px, 1fr); margin-bottom: var(--s6); border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; background: var(--ground); color: var(--ink); }
@@ -433,7 +404,6 @@ a.vid-featured:hover { text-decoration: none; border-color: var(--primary); colo
 .vid-play.sm { width: 44px; height: 44px; }
 .vid-play.sm i { margin-left: 3px; border-left-width: 12px; border-top-width: 8px; border-bottom-width: 8px; }
 .vid-soon { padding: 5px 12px; border-radius: 999px; border: 1px solid var(--peach-2); background: var(--amber-tint); font-size: 12px; font-weight: 600; color: var(--amber); }
-.vid-thumb-note { position: absolute; bottom: var(--s3); left: var(--s3); font-family: var(--mono); font-size: 11px; color: var(--ink-3); }
 .vid-length { position: absolute; right: 10px; bottom: 10px; padding: 2px 6px; border-radius: 4px; background: var(--ink); font-family: var(--mono); font-size: 11px; font-weight: 600; color: #fff; }
 .vid-featured-copy { display: flex; flex-direction: column; align-items: flex-start; gap: var(--s3); padding: var(--s8); }
 .vid-featured-copy h2 { font-size: 24px; }
@@ -531,34 +501,13 @@ a.vid-card:hover { text-decoration: none; color: var(--ink); }
 .ap-success p { font-size: 15px; line-height: 1.6; color: var(--ink-2); max-width: 60ch; }
 
 /* ————— release notes ————— */
-.rn-wrap { display: grid; grid-template-columns: minmax(0, 1fr) 320px; gap: var(--s12); align-items: start; padding-bottom: var(--s24); }
-.rn-list { display: flex; flex-direction: column; min-width: 0; }
-.rn-entry { display: grid; grid-template-columns: 160px minmax(0, 1fr); gap: var(--s6); padding: var(--s8) 0; border-top: 1px solid var(--line); scroll-margin-top: calc(var(--nav-h) + 24px); }
-.rn-side { display: flex; flex-direction: column; align-items: flex-start; gap: var(--s2); }
-.rn-version { font-family: var(--mono); font-size: 14px; font-weight: 600; }
-.rn-date { font-size: 13px; color: var(--ink-3); font-variant-numeric: tabular-nums; }
-.rn-main { display: flex; flex-direction: column; gap: var(--s3); min-width: 0; }
-.rn-main h2 { font-size: 22px; }
-.rn-main h3 { margin-top: var(--s2); font-size: 12px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-3); }
-.rn-summary { font-size: 16px; line-height: 1.6; color: var(--ink-2); }
-.rn-main ul { padding-left: 18px; display: flex; flex-direction: column; gap: 6px; font-size: 15px; line-height: 1.55; color: var(--ink-2); }
-.rn-main li::marker { color: var(--ink-3); }
-.rn-breaking-title { color: var(--red); }
-.rn-breaking li::marker { color: var(--red); }
-.rn-links { display: flex; flex-wrap: wrap; gap: var(--s4); padding-top: var(--s2); }
-.rn-links a { font-size: 14px; font-weight: 600; }
-.rn-aside { position: sticky; top: calc(var(--nav-h) + var(--s6)); display: flex; flex-direction: column; gap: var(--s4); }
 
 /* ═════════ responsive ═════════ */
 @media (max-width: 1080px) {
-  .kit-head, .kitp-hero-inner { grid-template-columns: 1fr; }
-  .news-feed, .rn-wrap, .ap-wrap { grid-template-columns: 1fr; }
-  .news-aside, .rn-aside, .ap-aside { position: static; }
 }
 @media (max-width: 760px) {
   :root { --nav-h: 56px; }
   .section { padding: var(--s16) 0; }
-  .section-tight { padding: var(--s8) 0; }
   .section > .container { gap: var(--s8); }
   h1, .display { font-size: 34px; }
   h2 { font-size: 26px; }
@@ -569,8 +518,10 @@ a.vid-card:hover { text-decoration: none; color: var(--ink); }
   .brand { order: 1; }
   .nav-tools { order: 2; margin-left: auto; padding: var(--s2) 0; }
   .nav-links { order: 3; width: 100%; min-height: 44px; margin: 0 calc(-1 * var(--s6)); padding: 0 var(--s6); width: calc(100% + 2 * var(--s6)); border-top: 1px solid var(--line-2); }
-  .brand-marks img, .brand-marks .mark-nha img { height: 26px; }
-  .checklist, .kit-steps, .uc-grid, .adl-choose { grid-template-columns: 1fr; }
+  .brand-marks img, .brand-marks .mark-nha img { height: 30px; }
+  .brand-marks .mark-nhcx { padding-right: 10px; }
+  .brand-marks .mark-nhcx img { height: 32px; }
+  .brand-marks .mark-roundel img { height: 30px; }
   .adl-head, .term-bar { gap: var(--s3); }
   /* The three tabs do not fit a phone with their OS notes, and a clipped tab
      cannot be tapped: drop the notes and let the strip take the full row. */
@@ -578,197 +529,11 @@ a.vid-card:hover { text-decoration: none; color: var(--ink); }
   .term-shell { flex: 1 1 auto; justify-content: center; }
   .term-shell span { display: none; }
   .adl-get { width: 100%; }
-  .figure-value { font-size: 28px; }
   .footer-grid { grid-template-columns: 1fr 1fr; }
   .page-head { padding-top: var(--s8); }
-  .kitp-hero-inner { padding-top: var(--s8); padding-bottom: var(--s8); }
-  .kitp-flow-arrow { width: 24px; }
   .ap-grid { grid-template-columns: 1fr; }
   .ap-card { padding: var(--s6); }
   .news-row { grid-template-columns: 1fr; gap: var(--s2); }
-  .rn-entry { grid-template-columns: 1fr; gap: var(--s3); }
-  .rn-side { flex-direction: row; flex-wrap: wrap; align-items: center; gap: var(--s3); }
   .vid-featured, .news-featured { grid-template-columns: 1fr; }
   .vid-featured.planned .vid-thumb { border-right: none; border-bottom: 1px dashed var(--line); }
-}
-
-/* ————— DevTools hero: the two tools, dark ————— */
-.dtx-hero {
-  position: relative; isolation: isolate; overflow: hidden;
-  background: var(--navy-2); color: #E6ECFF;
-  padding: var(--s16) 0 var(--s12);
-}
-/* Two slow drifting lights, so the band is not a flat rectangle. */
-.dtx-aurora {
-  position: absolute; inset: -40% -20%; z-index: -2; pointer-events: none;
-  background:
-    radial-gradient(38% 46% at 22% 30%, rgba(62, 91, 255, 0.42), transparent 70%),
-    radial-gradient(34% 40% at 78% 62%, rgba(79, 209, 181, 0.24), transparent 70%),
-    radial-gradient(30% 36% at 60% 12%, rgba(255, 163, 93, 0.16), transparent 70%);
-  animation: dtx-drift 22s ease-in-out infinite alternate;
-}
-.dtx-grid {
-  position: absolute; inset: 0; z-index: -1; pointer-events: none; opacity: 0.5;
-  background-image:
-    linear-gradient(rgba(255, 255, 255, 0.045) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.045) 1px, transparent 1px);
-  background-size: 64px 64px;
-  mask-image: radial-gradient(120% 80% at 50% 0%, #000 30%, transparent 78%);
-}
-@keyframes dtx-drift {
-  from { transform: translate3d(-3%, -2%, 0) scale(1); }
-  to   { transform: translate3d(3%, 3%, 0) scale(1.08); }
-}
-
-.dtx-hero-inner { display: flex; flex-direction: column; gap: var(--s4); }
-.dtx-eyebrow {
-  display: inline-flex; align-items: center; gap: var(--s2); align-self: flex-start;
-  font-family: var(--mono); font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase;
-  color: rgba(203, 213, 245, 0.66);
-}
-.dtx-eyebrow::before { content: ''; width: 1px; height: 12px; background: var(--primary-soft); }
-.dtx-title {
-  margin: 0; max-width: 16em;
-  font-size: clamp(34px, 5.2vw, 60px); font-weight: 500; letter-spacing: -0.03em; line-height: 1.06; color: #fff;
-}
-.dtx-title span { color: var(--primary-soft); }
-.dtx-intro { max-width: 56ch; font-size: 17px; line-height: 1.6; color: rgba(203, 213, 245, 0.82); text-wrap: pretty; }
-
-.dtx-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: var(--s4); margin-top: var(--s6); }
-.dtx-card {
-  display: flex; flex-direction: column; gap: var(--s3);
-  padding: var(--s6); border-radius: var(--radius-lg);
-  border: 1px solid rgba(255, 255, 255, 0.1); background: rgba(255, 255, 255, 0.045);
-  backdrop-filter: blur(2px);
-  transition: transform var(--motion-base) var(--ease-out), border-color var(--motion-base) ease, background var(--motion-base) ease;
-}
-.dtx-card:hover { transform: translateY(-3px); }
-/* One colour per tool, taken from the dot in its tag: DevTools is the live,
-   teal thing you can open now, the adapter the indigo one you deploy. */
-.dtx-card.is-tools {
-  border-color: rgba(79, 209, 181, 0.3);
-  background: linear-gradient(155deg, rgba(79, 209, 181, 0.22), rgba(79, 209, 181, 0.07) 55%, rgba(255, 255, 255, 0.03));
-}
-.dtx-card.is-tools:hover { border-color: rgba(79, 209, 181, 0.62); }
-.dtx-card.is-adapter {
-  border-color: rgba(143, 160, 255, 0.32);
-  background: linear-gradient(155deg, rgba(62, 91, 255, 0.26), rgba(62, 91, 255, 0.08) 55%, rgba(255, 255, 255, 0.03));
-}
-.dtx-card.is-adapter:hover { border-color: rgba(143, 160, 255, 0.65); }
-.dtx-card h2 { margin: 0; font-size: 26px; font-weight: 500; letter-spacing: -0.02em; color: #fff; }
-.dtx-card-tag {
-  display: inline-flex; align-items: center; gap: var(--s2);
-  font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.12em; text-transform: uppercase;
-  color: rgba(203, 213, 245, 0.62);
-}
-.dtx-card-copy { font-size: 15px; line-height: 1.6; color: rgba(203, 213, 245, 0.8); }
-.dtx-card-meta { list-style: none; display: flex; flex-wrap: wrap; gap: var(--s2) var(--s3); margin-top: auto; font-family: var(--mono); font-size: 11.5px; color: rgba(203, 213, 245, 0.55); }
-.dtx-card-meta li { display: inline-flex; align-items: center; gap: var(--s3); }
-.dtx-card-meta li + li::before { content: ''; width: 3px; height: 3px; border-radius: 50%; background: rgba(203, 213, 245, 0.35); }
-.dtx-card-actions { display: flex; flex-wrap: wrap; gap: var(--s3); padding-top: var(--s2); }
-
-.dtx-btn {
-  display: inline-flex; align-items: center; justify-content: center; gap: var(--s2);
-  padding: 0 var(--s4); height: 38px; border-radius: var(--radius);
-  border: 1px solid rgba(255, 255, 255, 0.22); color: #E6ECFF;
-  font-size: 14px; font-weight: 500; text-decoration: none; white-space: nowrap;
-  transition: border-color var(--motion-fast) ease, background var(--motion-fast) ease, color var(--motion-fast) ease;
-}
-.dtx-btn:hover { border-color: #fff; background: rgba(255, 255, 255, 0.08); color: #fff; text-decoration: none; }
-.dtx-btn-primary { border-color: transparent; background: var(--primary); color: #fff; }
-.dtx-btn-primary:hover { background: var(--primary-2); border-color: transparent; }
-
-/* A green dot that breathes: the console is a live thing you can open now. */
-.dtx-live, .dtx-dot { width: 7px; height: 7px; border-radius: 50%; flex: none; }
-.dtx-live { background: #4FD1B5; box-shadow: 0 0 0 0 rgba(79, 209, 181, 0.55); animation: dtx-pulse 2.4s ease-out infinite; }
-.dtx-dot { background: var(--primary-soft); }
-@keyframes dtx-pulse {
-  0% { box-shadow: 0 0 0 0 rgba(79, 209, 181, 0.5); }
-  70% { box-shadow: 0 0 0 8px rgba(79, 209, 181, 0); }
-  100% { box-shadow: 0 0 0 0 rgba(79, 209, 181, 0); }
-}
-
-/* Where the adapter sits: one glowing signal runs your system → adapter →
-   NHCX and then all the way back, which is what the adapter actually does —
-   it carries the request out and the callback home. Two wires, one relay: the
-   left wire lights first, hands over to the right, and the return leg walks
-   the same path in reverse. The nodes flare as the signal reaches them. */
-.dtx-flow {
-  --dtx-cycle: 5.6s;
-  display: flex; flex-wrap: wrap; align-items: center; gap: var(--s3);
-  margin-top: var(--s8); padding: var(--s4) var(--s6);
-  border: 1px solid rgba(255, 255, 255, 0.1); border-radius: var(--radius-lg);
-  background: rgba(255, 255, 255, 0.03);
-}
-.dtx-flow-node {
-  padding: 7px var(--s4); border-radius: 999px;
-  border: 1px solid rgba(255, 255, 255, 0.14); background: rgba(255, 255, 255, 0.05);
-  font-size: 13px; color: rgba(230, 236, 255, 0.9); white-space: nowrap;
-  animation: dtx-node var(--dtx-cycle) ease-in-out infinite;
-}
-.dtx-flow-node:first-child { animation-delay: calc(var(--dtx-cycle) * -0.02); }
-.dtx-flow-node:last-child { animation-delay: calc(var(--dtx-cycle) * -0.52); }
-.dtx-flow-node.is-mid {
-  border-color: rgba(143, 160, 255, 0.6); background: rgba(62, 91, 255, 0.22); color: #fff;
-  font-size: 13px; letter-spacing: 0.01em;
-  animation: dtx-node-mid var(--dtx-cycle) ease-in-out infinite;
-}
-
-/* The wire is a 14px lane so the glow can bloom without being clipped to the
-   2px track, which is drawn by the pseudo-element. */
-.dtx-wire { position: relative; flex: 1 1 60px; min-width: 60px; height: 14px; overflow: hidden; }
-.dtx-wire::before {
-  content: ''; position: absolute; left: 0; right: 0; top: 50%;
-  height: 2px; margin-top: -1px; border-radius: 2px; background: rgba(255, 255, 255, 0.12);
-}
-.dtx-wire i {
-  position: absolute; top: 50%; left: 0; width: 38px; height: 6px; margin-top: -3px;
-  transform: translateX(-50%); border-radius: 999px;
-  background: linear-gradient(90deg, transparent, var(--primary-soft) 35%, #eaf0ff 50%, var(--primary-soft) 65%, transparent);
-  box-shadow: 0 0 14px 2px rgba(124, 148, 255, 0.5);
-}
-.dtx-wire.is-a i { animation: dtx-glow-a var(--dtx-cycle) ease-in-out infinite; }
-.dtx-wire.is-b i { animation: dtx-glow-b var(--dtx-cycle) ease-in-out infinite; }
-
-/* Out: 0–25% along the first wire, 25–50% along the second.
-   Back: 50–75% down the second, 75–100% down the first. */
-@keyframes dtx-glow-a {
-  0%   { left: 0%;   opacity: 0; }
-  5%   { opacity: 1; }
-  22%  { opacity: 1; }
-  25%  { left: 100%; opacity: 0; }
-  75%  { left: 100%; opacity: 0; }
-  78%  { opacity: 1; }
-  95%  { opacity: 1; }
-  100% { left: 0%;   opacity: 0; }
-}
-@keyframes dtx-glow-b {
-  0%   { left: 0%;   opacity: 0; }
-  25%  { left: 0%;   opacity: 0; }
-  30%  { opacity: 1; }
-  50%  { left: 100%; opacity: 1; }
-  70%  { opacity: 1; }
-  75%  { left: 0%;   opacity: 0; }
-  100% { left: 0%;   opacity: 0; }
-}
-/* Each node brightens as the signal reaches it. */
-@keyframes dtx-node {
-  0%, 12%, 100% { border-color: rgba(255, 255, 255, 0.14); background: rgba(255, 255, 255, 0.05); color: rgba(230, 236, 255, 0.9); }
-  3% { border-color: rgba(143, 160, 255, 0.7); background: rgba(143, 160, 255, 0.16); color: #fff; }
-}
-@keyframes dtx-node-mid {
-  0%, 100% { box-shadow: 0 0 0 0 rgba(143, 160, 255, 0); }
-  25%, 75% { box-shadow: 0 0 18px 1px rgba(143, 160, 255, 0.45); }
-  40%, 90% { box-shadow: 0 0 0 0 rgba(143, 160, 255, 0); }
-}
-
-@media (max-width: 720px) {
-  .dtx-hero { padding-top: var(--s12); }
-  .dtx-flow { gap: var(--s2); }
-  .dtx-wire { flex-basis: 24px; min-width: 24px; }
-}
-@media (prefers-reduced-motion: reduce) {
-  .dtx-aurora, .dtx-live, .dtx-wire i, .dtx-flow-node { animation: none !important; }
-  .dtx-wire i { left: 50%; opacity: 0.85; }
-  .dtx-card { transition: none; }
 }

@@ -1,0 +1,249 @@
+/*
+ * The DevTools page, on top of the shared dark surface (styles/dark.css).
+ *
+ * The page is the front door for the two things a developer installs, so it
+ * is dark end to end, built from the `dk-` pieces. What is here is what only this page has: the two tool cards, the
+ * strip that shows where the adapter sits, the use-case grid, the shell
+ * terminal and the download panel, each restyled for dark rather than
+ * duplicated — the light rules for `.uc-*`, `.term*` and `.adl*` in
+ * globals.css still serve whatever else uses them, and everything below is
+ * scoped to `.dark-page` so it only applies here.
+ */
+
+/* ————— hero: the two tools ————— */
+
+.dtx-hero { padding: var(--s16) 0 var(--s12); }
+.dtx-hero-inner { display: flex; flex-direction: column; gap: var(--s4); align-items: flex-start; }
+.dark-page .dtx-intro { max-width: 56ch; font-size: 17px; line-height: 1.6; }
+
+.dtx-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: var(--s4); margin-top: var(--s6); width: 100%; }
+.dtx-card {
+  display: flex; flex-direction: column; gap: var(--s3);
+  padding: var(--s6); border-radius: var(--radius-lg);
+  border: 1px solid var(--dk-line); background: var(--dk-glass);
+  backdrop-filter: blur(2px);
+  transition: transform var(--motion-base) var(--ease-out), border-color var(--motion-base) ease, background var(--motion-base) ease;
+}
+.dtx-card:hover { transform: translateY(-3px); }
+/* One colour per tool, taken from the dot in its tag: DevTools is the live,
+   teal thing you can open now, the adapter the indigo one you deploy. */
+.dtx-card.is-tools {
+  border-color: rgba(79, 209, 181, 0.3);
+  background: linear-gradient(155deg, rgba(79, 209, 181, 0.22), rgba(79, 209, 181, 0.07) 55%, rgba(255, 255, 255, 0.03));
+}
+.dtx-card.is-tools:hover { border-color: rgba(79, 209, 181, 0.62); }
+.dtx-card.is-adapter {
+  border-color: rgba(142, 154, 233, 0.32);
+  background: linear-gradient(155deg, rgba(61, 82, 218, 0.26), rgba(61, 82, 218, 0.08) 55%, rgba(255, 255, 255, 0.03));
+}
+.dtx-card.is-adapter:hover { border-color: rgba(142, 154, 233, 0.65); }
+.dtx-card h2 { margin: 0; font-size: 26px; font-weight: 500; letter-spacing: -0.02em; color: #fff; }
+.dtx-card-tag {
+  display: inline-flex; align-items: center; gap: var(--s2);
+  font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--dk-faint);
+}
+.dark-page .dtx-card-copy { font-size: 15px; line-height: 1.6; }
+.dtx-card-meta { list-style: none; display: flex; flex-wrap: wrap; gap: var(--s2) var(--s3); margin-top: auto; font-family: var(--mono); font-size: 11.5px; color: rgba(203, 213, 245, 0.55); }
+.dtx-card-meta li { display: inline-flex; align-items: center; gap: var(--s3); }
+.dtx-card-meta li + li::before { content: ''; width: 3px; height: 3px; border-radius: 50%; background: rgba(203, 213, 245, 0.35); }
+.dtx-card-actions { display: flex; flex-wrap: wrap; gap: var(--s3); padding-top: var(--s2); }
+
+/* ————— where the adapter sits ————— */
+
+/* One glowing signal runs your system → adapter → NHCX and then all the way
+   back, which is what the adapter actually does: it carries the request out
+   and the callback home. Two wires, one relay — the left wire lights first,
+   hands over to the right, and the return leg walks the same path in reverse.
+   The nodes flare as the signal reaches them. */
+.dtx-flow {
+  --dtx-cycle: 5.6s;
+  display: flex; flex-wrap: wrap; align-items: center; gap: var(--s3);
+  width: 100%; margin-top: var(--s8); padding: var(--s4) var(--s6);
+  border: 1px solid var(--dk-line); border-radius: var(--radius-lg);
+  background: rgba(255, 255, 255, 0.03);
+}
+.dtx-flow-node {
+  padding: 7px var(--s4); border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.14); background: rgba(255, 255, 255, 0.05);
+  font-size: 13px; color: rgba(230, 236, 255, 0.9); white-space: nowrap;
+  animation: dtx-node var(--dtx-cycle) ease-in-out infinite;
+}
+.dtx-flow-node:first-child { animation-delay: calc(var(--dtx-cycle) * -0.02); }
+.dtx-flow-node:last-child { animation-delay: calc(var(--dtx-cycle) * -0.52); }
+.dtx-flow-node.is-mid {
+  border-color: rgba(142, 154, 233, 0.6); background: rgba(61, 82, 218, 0.22); color: #fff;
+  letter-spacing: 0.01em;
+  animation: dtx-node-mid var(--dtx-cycle) ease-in-out infinite;
+}
+
+/* The wire is a 14px lane so the glow can bloom without being clipped to the
+   2px track, which is drawn by the pseudo-element. */
+.dtx-wire { position: relative; flex: 1 1 60px; min-width: 60px; height: 14px; overflow: hidden; }
+.dtx-wire::before {
+  content: ''; position: absolute; left: 0; right: 0; top: 50%;
+  height: 2px; margin-top: -1px; border-radius: 2px; background: rgba(255, 255, 255, 0.12);
+}
+/* The signal is a full-lane runner that travels on `transform` alone, with the
+   beam drawn on its leading edge. It used to be a 38px block animating `left`,
+   which relaid out the lane every frame and pinned the glow to whole pixels:
+   down a 60px wire that reads as a coarse, stepping dot rather than a signal.
+   A transform is composited and lands on subpixels, so it stays smooth. */
+.dtx-wire i {
+  position: absolute; inset: 0;
+  transform: translateX(-100%);
+  will-change: transform, opacity;
+}
+/* The beam is drawn twice: a hard 2px core that carries the shape, and a
+   wider soft pass behind it that carries the light. One element doing both
+   meant a 6px bar whose own edges were a gradient, and a 6px gradient on a
+   2px track has nowhere to resolve, so it read as a smudge rather than a
+   signal. The core sits on the track's exact height and takes no blur. */
+.dtx-wire i::before,
+.dtx-wire i::after {
+  content: ''; position: absolute; top: 50%; right: 0; border-radius: 999px;
+  transform: translateX(50%);
+}
+.dtx-wire i::before {
+  width: 26px; height: 2px; margin-top: -1px;
+  background: linear-gradient(90deg, transparent, #eaf0ff 22%, #ffffff 50%, #eaf0ff 78%, transparent);
+}
+.dtx-wire i::after {
+  width: 44px; height: 8px; margin-top: -4px;
+  background: radial-gradient(closest-side, rgba(142, 154, 233, 0.55), transparent);
+  filter: blur(2px);
+}
+.dtx-wire.is-a i { animation: dtx-glow-a var(--dtx-cycle) ease-in-out infinite; }
+.dtx-wire.is-b i { animation: dtx-glow-b var(--dtx-cycle) ease-in-out infinite; }
+
+/* Out: 0–25% along the first wire, 25–50% along the second.
+   Back: 50–75% down the second, 75–100% down the first. */
+@keyframes dtx-glow-a {
+  0%   { transform: translateX(-100%); opacity: 0; }
+  5%   { opacity: 1; }
+  22%  { opacity: 1; }
+  25%  { transform: translateX(0);     opacity: 0; }
+  75%  { transform: translateX(0);     opacity: 0; }
+  78%  { opacity: 1; }
+  95%  { opacity: 1; }
+  100% { transform: translateX(-100%); opacity: 0; }
+}
+@keyframes dtx-glow-b {
+  0%   { transform: translateX(-100%); opacity: 0; }
+  25%  { transform: translateX(-100%); opacity: 0; }
+  30%  { opacity: 1; }
+  50%  { transform: translateX(0);     opacity: 1; }
+  70%  { opacity: 1; }
+  75%  { transform: translateX(-100%); opacity: 0; }
+  100% { transform: translateX(-100%); opacity: 0; }
+}
+/* Each node brightens as the signal reaches it. */
+@keyframes dtx-node {
+  0%, 12%, 100% { border-color: rgba(255, 255, 255, 0.14); background: rgba(255, 255, 255, 0.05); color: rgba(230, 236, 255, 0.9); }
+  3% { border-color: rgba(142, 154, 233, 0.7); background: rgba(142, 154, 233, 0.16); color: #fff; }
+}
+@keyframes dtx-node-mid {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(142, 154, 233, 0); }
+  25%, 75% { box-shadow: 0 0 18px 1px rgba(142, 154, 233, 0.45); }
+  40%, 90% { box-shadow: 0 0 0 0 rgba(142, 154, 233, 0); }
+}
+
+/* The page closes lit, the way it opened: the same drifting lights under the
+   section a reader has come here to act on, dimmer so the download panel and
+   the commands above it stay the brightest things on the band. */
+.dtx-adapter-glow { inset: -30% -20% -50%; opacity: 0.5; }
+
+/* ————— page body ————— */
+
+.dark-page .dk-head .dk-btn { align-self: flex-start; margin-top: var(--s3); }
+.dark-page .kitp-section { display: flex; flex-direction: column; gap: var(--s8); margin-top: 0; margin-bottom: 0; }
+.dark-page .blk { display: flex; flex-direction: column; gap: var(--s4); }
+.dark-page .blk-title { display: flex; flex-wrap: wrap; align-items: baseline; gap: var(--s3); margin: 0; font-size: 20px; font-weight: 500; letter-spacing: -0.015em; color: #fff; }
+.dark-page .adapter-rel { font-family: var(--mono); font-size: 12.5px; font-weight: 400; color: var(--dk-faint); }
+.dark-page .dl-empty {
+  padding: var(--s8) var(--s6); border: 1px dashed var(--dk-line-2); border-radius: var(--radius);
+  font-size: 15px; line-height: 1.6; color: var(--dk-muted); background: rgba(255, 255, 255, 0.02);
+}
+
+/* ————— what you'd use it for ————— */
+
+.dark-page .uc-grid { list-style: none; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--s4); }
+.dark-page .uc-card {
+  position: relative; overflow: hidden; display: flex; flex-direction: column; gap: var(--s3);
+  padding: var(--s6); border-radius: var(--radius-lg);
+  border: 1px solid var(--dk-line); background: var(--dk-glass); box-shadow: none;
+  transition: transform var(--motion-base) var(--ease-out), border-color var(--motion-base) ease, background var(--motion-base) ease;
+}
+/* One accent per column, the same three the rest of the page uses. */
+.dark-page .uc-card { --uc-ink: var(--dk-indigo); --uc-glow: rgba(142, 154, 233, 0.5); }
+.dark-page .uc-card:nth-child(2) { --uc-ink: var(--dk-teal); --uc-glow: rgba(79, 209, 181, 0.5); }
+.dark-page .uc-card:nth-child(3) { --uc-ink: var(--saffron); --uc-glow: rgba(255, 163, 93, 0.5); }
+/* A hairline of the accent along the top edge, brightening on hover. */
+.dark-page .uc-card::before {
+  content: ''; position: absolute; inset: 0 0 auto 0; height: 1px;
+  background: linear-gradient(90deg, transparent, var(--uc-glow), transparent);
+  opacity: 0.6; transition: opacity var(--motion-base) ease;
+}
+.dark-page .uc-card:hover { transform: translateY(-3px); border-color: var(--uc-glow); background: rgba(255, 255, 255, 0.06); }
+.dark-page .uc-card:hover::before { opacity: 1; }
+.dark-page .uc-head { display: flex; align-items: center; gap: var(--s3); }
+.dark-page .uc-head b { font-size: 16px; font-weight: 500; line-height: 1.3; color: #fff; }
+.dark-page .uc-text { font-size: 14.5px; line-height: 1.6; color: var(--dk-muted); }
+.dark-page .uc-mark {
+  display: inline-flex; align-items: center; justify-content: center; flex: none;
+  width: 36px; height: 36px; border-radius: 10px;
+  border: 1px solid color-mix(in srgb, var(--uc-ink) 40%, transparent);
+  background: color-mix(in srgb, var(--uc-ink) 14%, transparent);
+  color: var(--uc-ink);
+}
+
+/* ————— run it: the shell terminal ————— */
+
+.dark-page .term {
+  border: 1px solid var(--dk-line); border-radius: var(--radius-lg); overflow: hidden;
+  background: linear-gradient(170deg, rgba(14, 24, 48, 0.92), rgba(6, 12, 26, 0.94));
+  box-shadow: 0 40px 90px -60px rgba(0, 0, 0, 0.9);
+}
+.dark-page .term-bar { background: rgba(255, 255, 255, 0.02); border-bottom-color: rgba(255, 255, 255, 0.07); }
+.dark-page .term-title { font-family: var(--mono); font-size: 11.5px; font-weight: 400; letter-spacing: 0.1em; text-transform: uppercase; color: var(--dk-faint); }
+
+/* ————— the download panel ————— */
+
+.dark-page .adl {
+  border: 1px solid var(--dk-line); border-radius: var(--radius-lg); overflow: hidden;
+  background: var(--dk-glass);
+}
+.dark-page .adl-head {
+  padding: var(--s6); gap: var(--s4);
+  border-bottom: 1px solid var(--dk-line);
+  background: linear-gradient(155deg, rgba(61, 82, 218, 0.26), rgba(61, 82, 218, 0.08) 60%, rgba(255, 255, 255, 0.03));
+}
+.dark-page .adl-label { font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--dk-faint); }
+.dark-page .adl-os { font-size: 20px; font-weight: 500; letter-spacing: -0.015em; color: #fff; }
+.dark-page .adl-note { font-size: 14px; color: var(--dk-muted); }
+.dark-page .adl-choose { padding: var(--s6) var(--s6) var(--s4); }
+.dark-page .adl-field { font-size: 12px; font-family: var(--mono); font-weight: 400; letter-spacing: 0.08em; text-transform: uppercase; color: var(--dk-faint); }
+.dark-page .adl-field select {
+  height: 40px; padding: 0 var(--s3); border-radius: var(--radius);
+  border: 1px solid var(--dk-line-2); background: rgba(6, 12, 26, 0.8); color: var(--dk-ink);
+  font-family: var(--sans); font-size: 14px; letter-spacing: normal; text-transform: none;
+}
+.dark-page .adl-field select:hover { border-color: rgba(142, 154, 233, 0.6); }
+.dark-page .adl-meta {
+  padding: var(--s4) var(--s6); border-top: 1px solid var(--dk-line); background: rgba(6, 12, 26, 0.5);
+}
+.dark-page .adl-meta span { color: var(--dk-faint); }
+.dark-page .adl-meta b { color: var(--dk-muted); }
+
+@media (max-width: 900px) {
+  .dark-page .uc-grid { grid-template-columns: 1fr; }
+}
+@media (max-width: 720px) {
+  .dtx-hero { padding-top: var(--s12); }
+  .dtx-flow { gap: var(--s2); }
+  .dtx-wire { flex-basis: 24px; min-width: 24px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .dtx-wire i, .dtx-flow-node { animation: none !important; }
+  .dtx-wire i { transform: translateX(-50%); opacity: 0.85; }
+  .dtx-card, .dark-page .uc-card { transition: none; }
+}

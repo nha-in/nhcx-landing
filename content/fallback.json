@@ -26,24 +26,20 @@
         "url": "/"
       },
       {
-        "label": "Documentation",
-        "url": "/documentation/"
+        "label": "PMJAY",
+        "url": "/pmjay/"
       },
       {
         "label": "DevTools",
         "url": "/devtools/"
       },
       {
-        "label": "Downloads",
+        "label": "AI Skill",
+        "url": "/skill/"
+      },
+      {
+        "label": "Links",
         "url": "/download/"
-      },
-      {
-        "label": "Videos",
-        "url": "/videos/"
-      },
-      {
-        "label": "News",
-        "url": "/news/"
       }
     ],
     "applyCta": {
@@ -59,7 +55,15 @@
         "links": [
           {
             "label": "Documentation",
-            "url": "/documentation/"
+            "url": "docs:/"
+          },
+          {
+            "label": "DevTools",
+            "url": "/devtools/"
+          },
+          {
+            "label": "AI skill",
+            "url": "/skill/"
           },
           {
             "label": "Downloads",
@@ -72,10 +76,6 @@
           {
             "label": "Learning path",
             "url": "devtools:/learn"
-          },
-          {
-            "label": "Sample bundles",
-            "url": "/documentation/?p=07.01"
           }
         ]
       },
@@ -83,16 +83,12 @@
         "title": "Onboard",
         "links": [
           {
+            "label": "Get started",
+            "url": "/get-started/"
+          },
+          {
             "label": "Apply for access",
             "url": "/apply/"
-          },
-          {
-            "label": "Participant onboarding",
-            "url": "/documentation/?p=10.01"
-          },
-          {
-            "label": "Sandbox and production",
-            "url": "/documentation/?p=10.02"
           }
         ]
       },
@@ -121,6 +117,10 @@
             "url": "https://abdm.gov.in"
           },
           {
+            "label": "PM-JAY on NHCX",
+            "url": "/pmjay/"
+          },
+          {
             "label": "PM-JAY",
             "url": "https://pmjay.gov.in"
           },
@@ -144,19 +144,20 @@
     ],
     "subFooterLinks": [
       {
-        "label": "API catalogue",
-        "url": "devtools:/apis"
-      },
-      {
-        "label": "Documentation",
-        "url": "/documentation/"
-      },
-      {
         "label": "Home",
         "url": "/"
+      },
+      {
+        "label": "Get started",
+        "url": "/get-started/"
+      },
+      {
+        "label": "API catalogue",
+        "url": "devtools:/apis"
       }
     ],
-    "devtoolsUrl": "https://nhcx.sbxstage.in/dev"
+    "devtoolsUrl": "https://nhcx.sbxstage.in/dev",
+    "docsUrl": "https://nhcx.abdm.gov.in/documentation"
   },
   "landing": {
     "seo": {
@@ -175,11 +176,6 @@
           "label": "Apply for access",
           "url": "/apply/",
           "style": "primary"
-        },
-        "secondaryCta": {
-          "label": "Read the documentation",
-          "url": "/documentation/",
-          "style": "secondary"
         },
         "windowTitle": "sandbox.hcx · claim workbench",
         "providersLabel": "PROVIDERS",
@@ -225,11 +221,6 @@
         "hubCaption": "one protocol, one claim format",
         "startLabel": "Start here",
         "startTiles": [
-          {
-            "title": "Documentation",
-            "description": "Claim flows, endpoint specifications, envelope keys and mapping rules, with an assistant that answers from them.",
-            "url": "/documentation/"
-          },
           {
             "title": "DevTools console",
             "description": "DevTools (simulator, FHIR builder, transaction logs) and the NHCX Adapter, the binary that speaks the protocol.",
@@ -575,128 +566,107 @@
           {
             "topic": "Onboarding",
             "question": "Who should onboard to the sandbox?",
-            "answer": "Any hospital, insurer, TPA, government scheme or software vendor building health-claim exchange capability. The sandbox exists so each participant can test its own components against the communication standards and get certified before touching production.",
-            "docs": "10.01"
+            "answer": "Any hospital, insurer, TPA, government scheme or software vendor building health-claim exchange capability. The sandbox exists so each participant can test its own components against the communication standards and get certified before touching production."
           },
           {
             "topic": "Onboarding",
             "question": "What happens after I submit the application?",
-            "answer": "Applications are verified against the details in the form: a semi-manual step, so expect review latency rather than instant provisioning. Duplicate requests from one participant, participants not registered with any registry, TSPs without a valid website and spam are filtered out. Approved participants are added to the sandbox and issued credentials; follow your application on the Status page.",
-            "docs": "10.01"
+            "answer": "Applications are verified against the details in the form: a semi-manual step, so expect review latency rather than instant provisioning. Duplicate requests from one participant, participants not registered with any registry, TSPs without a valid website and spam are filtered out. Approved participants are added to the sandbox and issued credentials; follow your application on the Status page."
           },
           {
             "topic": "Onboarding",
             "question": "Which registry ID do I use?",
-            "answer": "Providers use the HFR ID generated during ABDM integration. Payers and TPAs use the IRDAI (or respective authority) ID with leading zeros stripped: 0123 is passed as 123. End-user applications may use their client ID. An entity can hold several participant IDs, one per linked HFR ID.",
-            "docs": "10.01"
+            "answer": "Providers use the HFR ID generated during ABDM integration. Payers and TPAs use the IRDAI (or respective authority) ID with leading zeros stripped: 0123 is passed as 123. End-user applications may use their client ID. An entity can hold several participant IDs, one per linked HFR ID."
           },
           {
             "topic": "Onboarding",
             "question": "What are the role and registry codes, and do they differ between sandbox and production?",
-            "answer": "They are the same in both. Roles: PROVIDER 10001, PAYER 10002, AGENCY_TPA 10003, EUA 10009. Registries: HFR/EUA 10001, PAYER/TPA 10004. Note that 10001 means PROVIDER as a role and HFR/EUA as a registry: different enums in different fields. Wrong mapping causes access issues, rejections or misrouting.",
-            "docs": "11.03"
+            "answer": "They are the same in both. Roles: PROVIDER 10001, PAYER 10002, AGENCY_TPA 10003, EUA 10009. Registries: HFR/EUA 10001, PAYER/TPA 10004. Note that 10001 means PROVIDER as a role and HFR/EUA as a registry: different enums in different fields. Wrong mapping causes access issues, rejections or misrouting."
           },
           {
             "topic": "Onboarding",
             "question": "Can I test without a real payer or provider partner?",
-            "answer": "Yes. The sandbox provides a dummy payer, participant 1000003538@hcx, for insurance plan, coverage eligibility, pre-auth, claim, payment notice and communication. You drive its answer yourself (Approve, Reject or Query) through a control endpoint that does not exist in production, so remove it from your code before go-live.",
-            "docs": "10.02"
+            "answer": "Yes. The sandbox provides a dummy payer, participant 1000003538@hcx, for insurance plan, coverage eligibility, pre-auth, claim, payment notice and communication. You drive its answer yourself (Approve, Reject or Query) through a control endpoint that does not exist in production, so remove it from your code before go-live."
           },
           {
             "topic": "Tokens and access",
             "question": "How do I get a session token, and how long does it last?",
-            "answer": "Exchange the client_id and client_secret issued at onboarding for a bearer token with an OAuth 2.0 client-credentials call to /get/session. The token lives 1200 seconds (20 minutes): cache it, refresh it well inside that window and never log it. Sandbox tokens do not work against production and vice versa.",
-            "docs": "03.02"
+            "answer": "Exchange the client_id and client_secret issued at onboarding for a bearer token with an OAuth 2.0 client-credentials call to /get/session. The token lives 1200 seconds (20 minutes): cache it, refresh it well inside that window and never log it. Sandbox tokens do not work against production and vice versa."
           },
           {
             "topic": "Tokens and access",
             "question": "Why do I get 401 Unauthorized?",
-            "answer": "Three usual causes: the token was sent without the Bearer prefix; it has expired: “Sender is not authorized to execute the operation” is the expiry message, so renew via the session API; or it was minted for the other environment. On a 401 discard the cached token, mint a new one and replay once; a second 401 means the credentials themselves are wrong.",
-            "docs": "03.02"
+            "answer": "Three usual causes: the token was sent without the Bearer prefix; it has expired: “Sender is not authorized to execute the operation” is the expiry message, so renew via the session API; or it was minted for the other environment. On a 401 discard the cached token, mint a new one and replay once; a second 401 means the credentials themselves are wrong."
           },
           {
             "topic": "Encryption",
             "question": "How is the payload protected on the wire?",
-            "answer": "Every request body is a JWE in compact serialization: RSA-OAEP-256 wraps the content key with the recipient’s public certificate and A256GCM encrypts the FHIR bundle. The x-hcx-* routing headers sit in the protected header, so the gateway routes without reading clinical content: the payload is unreadable even to NHCX.",
-            "docs": "08.01"
+            "answer": "Every request body is a JWE in compact serialization: RSA-OAEP-256 wraps the content key with the recipient’s public certificate and A256GCM encrypts the FHIR bundle. The x-hcx-* routing headers sit in the protected header, so the gateway routes without reading clinical content: the payload is unreadable even to NHCX."
           },
           {
             "topic": "Encryption",
             "question": "Where does the recipient’s certificate come from, and do I sign the payload as well?",
-            "answer": "Fetch it from the registry with /fetch/certs and cache it for 24 hours. No separate signature is needed: JWE’s authenticated encryption (AEAD) already protects the integrity of the ciphertext and the protected header. Rotate your own encryption key yearly and report any compromise at once.",
-            "docs": "03.05"
+            "answer": "Fetch it from the registry with /fetch/certs and cache it for 24 hours. No separate signature is needed: JWE’s authenticated encryption (AEAD) already protects the integrity of the ciphertext and the protected header. Rotate your own encryption key yearly and report any compromise at once."
           },
           {
             "topic": "Callbacks",
             "question": "Is any transaction synchronous?",
-            "answer": "No. The gateway never returns a business decision on the same connection. A submission is acknowledged with HTTP 202 and the answer arrives later as a separate inbound call to your on_ endpoint: /preauth/submit is answered on /preauth/on_submit. Every participant is therefore also an HTTP server.",
-            "docs": "04.01"
+            "answer": "No. The gateway never returns a business decision on the same connection. A submission is acknowledged with HTTP 202 and the answer arrives later as a separate inbound call to your on_ endpoint: /preauth/submit is answered on /preauth/on_submit. Every participant is therefore also an HTTP server."
           },
           {
             "topic": "Callbacks",
             "question": "What must my callback endpoint return?",
-            "answer": "HTTP 202 Accepted with the acceptance body, within 30 seconds. Anything else (a 200, a malformed body, an adjudication holding the socket) is treated as an error: the gateway retries the same message up to five times and then deletes the correlation ID. Acknowledge first, adjudicate after, and be idempotent on x-hcx-correlation_id.",
-            "docs": "08.03"
+            "answer": "HTTP 202 Accepted with the acceptance body, within 30 seconds. Anything else (a 200, a malformed body, an adjudication holding the socket) is treated as an error: the gateway retries the same message up to five times and then deletes the correlation ID. Acknowledge first, adjudicate after, and be idempotent on x-hcx-correlation_id."
           },
           {
             "topic": "Callbacks",
             "question": "My callback never arrives. What do I check?",
-            "answer": "In order: the callback URL uses a domain name, not an IP address or port; the server is India-based; the NHCX NAT addresses 3.109.99.210, 13.126.152.0 and 13.200.129.223 are whitelisted; the firewall is not dropping them; and the request is not being misrouted inside your own gateway or load balancer.",
-            "docs": "11.03"
+            "answer": "In order: the callback URL uses a domain name, not an IP address or port; the server is India-based; the NHCX NAT addresses 3.109.99.210, 13.126.152.0 and 13.200.129.223 are whitelisted; the firewall is not dropping them; and the request is not being misrouted inside your own gateway or load balancer."
           },
           {
             "topic": "Callbacks",
             "question": "What is the v1/error API, and do I have to implement it?",
-            "answer": "Yes, every integrator must. It is the sender-side endpoint that receives reject details when a message never reached its recipient or the recipient failed to handle it. Without it a request that died at the gateway looks, from the hospital desk, identical to one still under review.",
-            "docs": "08.03"
+            "answer": "Yes, every integrator must. It is the sender-side endpoint that receives reject details when a message never reached its recipient or the recipient failed to handle it. Without it a request that died at the gateway looks, from the hospital desk, identical to one still under review."
           },
           {
             "topic": "Correlation and headers",
             "question": "What is the difference between api_call_id, request_id and correlation_id?",
-            "answer": "All three are 36-character UUIDs. x-hcx-api_call_id is new on every single call; x-hcx-request_id is new per request payload; x-hcx-correlation_id is constant for the whole conversation and is what responders copy back, so persist it against your case before you post. After five failed deliveries the correlation ID is dead: start a fresh cycle with a new one.",
-            "docs": "04.01"
+            "answer": "All three are 36-character UUIDs. x-hcx-api_call_id is new on every single call; x-hcx-request_id is new per request payload; x-hcx-correlation_id is constant for the whole conversation and is what responders copy back, so persist it against your case before you post. After five failed deliveries the correlation ID is dead: start a fresh cycle with a new one."
           },
           {
             "topic": "Correlation and headers",
             "question": "Which timestamp format does x-hcx-timestamp take?",
-            "answer": "The published sources disagree: the PMJAY handbook shows an IST ISO-8601 value (2026-03-19T11:46:34+05:30) and warns that other zones fail validation, while the integrator FAQ gives a zero-UTC form (2024-05-20T11:29:27.358Z). Validate against the environment you are integrating with rather than assuming; the documentation records both.",
-            "docs": "08.02"
+            "answer": "The published sources disagree: the PMJAY handbook shows an IST ISO-8601 value (2026-03-19T11:46:34+05:30) and warns that other zones fail validation, while the integrator FAQ gives a zero-UTC form (2024-05-20T11:29:27.358Z). Validate against the environment you are integrating with rather than assuming; the documentation records both."
           },
           {
             "topic": "Correlation and headers",
             "question": "Which recipient code do I put in the header?",
-            "answer": "The registry participant code, namespaced as code@hcx. For a payer take the processingID from the get/policies response, not the PayerID field, which is one of the most common integration mistakes. Your own code goes in x-hcx-sender_code.",
-            "docs": "08.02"
+            "answer": "The registry participant code, namespaced as code@hcx. For a payer take the processingID from the get/policies response, not the PayerID field, which is one of the most common integration mistakes. Your own code goes in x-hcx-sender_code."
           },
           {
             "topic": "Error codes",
             "question": "What is the difference between NHCX-* and PAYR-* error codes?",
-            "answer": "NHCX-* codes are raised by the exchange gateway: the headers, registration or transport are wrong and the payer never saw the request. PAYR-* codes come from the payer side, either the bridge that validates FHIR or the adjudication engine. PAYR numbers are reused across sheets with different meanings, so match on the description string and log both.",
-            "docs": "09.03"
+            "answer": "NHCX-* codes are raised by the exchange gateway: the headers, registration or transport are wrong and the payer never saw the request. PAYR-* codes come from the payer side, either the bridge that validates FHIR or the adjudication engine. PAYR numbers are reused across sheets with different meanings, so match on the description string and log both."
           },
           {
             "topic": "Error codes",
             "question": "What does NHCX-1006 “Duplicate request” mean?",
-            "answer": "A message with the same correlation ID already exists in the gateway. Correlation IDs are unique per request cycle: reuse one (including after a failed cycle) and the gateway rejects it. Mint a new UUID and resubmit.",
-            "docs": "09.03"
+            "answer": "A message with the same correlation ID already exists in the gateway. Correlation IDs are unique per request cycle: reuse one (including after a failed cycle) and the gateway rejects it. Mint a new UUID and resubmit."
           },
           {
             "topic": "Certification and go-live",
             "question": "What does certification actually get me?",
-            "answer": "A successful-completion certificate from the sandbox, valid for a configured period, issued after your functional and security test results are reviewed. That certificate is what the production onboarding review asks for; depending on policy the sandbox may also require STQC or CERT-IN review.",
-            "docs": "10.02"
+            "answer": "A successful-completion certificate from the sandbox, valid for a configured period, issued after your functional and security test results are reviewed. That certificate is what the production onboarding review asks for; depending on policy the sandbox may also require STQC or CERT-IN review."
           },
           {
             "topic": "Certification and go-live",
             "question": "What is tested at sandbox exit?",
-            "answer": "A fixed use-case list: 13 for providers (registry lookups, session, eligibility, insurance plan, pre-auth, communication, claim, search, payment-notice acknowledgement, task, status) and 15 for payers. Every payload must validate against the NRCeS profiles, responses must carry the right correlation and receiver codes, and rejections use a ProtocolResponse.",
-            "docs": "10.02"
+            "answer": "A fixed use-case list: 13 for providers (registry lookups, session, eligibility, insurance plan, pre-auth, communication, claim, search, payment-notice acknowledgement, task, status) and 15 for payers. Every payload must validate against the NRCeS profiles, responses must carry the right correlation and receiver codes, and rejections use a ProtocolResponse."
           },
           {
             "topic": "Certification and go-live",
             "question": "What changes when I go live?",
-            "answer": "The gateway base URL, the credentials, the certificates you encrypt against (re-fetch from production) and the counterparty: the dummy payer, its control endpoints and the test provider and policy IDs must be removed. Bundles, headers and encryption stay the same. PMJAY–NHCX is a separate track with extra scheme configuration.",
-            "docs": "10.02"
+            "answer": "The gateway base URL, the credentials, the certificates you encrypt against (re-fetch from production) and the counterparty: the dummy payer, its control endpoints and the test provider and policy IDs must be removed. Bundles, headers and encryption stay the same. PMJAY-NHCX is a separate track with extra scheme configuration."
           }
         ]
       },
@@ -708,11 +678,6 @@
           "label": "Apply for sandbox access",
           "url": "/apply/",
           "style": "primary"
-        },
-        "secondaryCta": {
-          "label": "Read the documentation",
-          "url": "/documentation/",
-          "style": "secondary"
         }
       }
     ]
@@ -810,13 +775,6 @@
           "highlighted": false
         }
       ],
-      "checklistLinks": [
-        {
-          "label": "Read the documentation",
-          "url": "/documentation/",
-          "style": "secondary"
-        }
-      ],
       "consoleTitle": "DevTools",
       "consoleIntro": "Everything the protocol asks of you, in a tab: the endpoint reference with worked requests and responses, a guided path through the exchange, a FHIR builder that validates against the ABDM profiles, a mock payer to run whole flows against, and a decrypted, searchable log of every message. A sandbox account is built in, so nothing installs and no server of ours sits in the path.",
       "consoleTiles": [
@@ -884,7 +842,6 @@
       "featuredTitle": "Documentation corpus refreshed: 64 pages in 12 chapters",
       "featuredDescription": "The reader and the assistant now run on the corpus built on 22 August 2026 from NHA’s published material: claim flows, FHIR references, protocol headers, codes and troubleshooting.",
       "featuredLinkLabel": "Open the documentation →",
-      "featuredUrl": "/documentation/",
       "featuredImageNote": "Documentation",
       "upcomingTitle": "Sessions",
       "events": [],
@@ -1122,7 +1079,6 @@
         "title": "Documentation corpus refreshed: 64 pages in 12 chapters",
         "body": "Built on 22 August 2026 from NHA’s published material: claim flows, FHIR references, protocol headers, codes and troubleshooting. The reader, the search index and the assistant all read this set.",
         "meta": "documentation · this site",
-        "url": "/documentation/",
         "rank": 0
       },
       {
@@ -1162,7 +1118,6 @@
         "title": "NHA integrator FAQ v1.1 reproduced in the corpus",
         "body": "The Commonly Asked Questions for NHCX APIs (registry codes, 401s, header formats, callbacks, the dummy payer and the PMJAY-specific rules) dated 14 August 2026 and marked approval pending in the source.",
         "meta": "documentation chapter 11.03",
-        "url": "/documentation/?p=11.03",
         "rank": 4
       },
       {
@@ -1172,7 +1127,6 @@
         "title": "NRCeS FHIR profiles: why NHCX mandates them over base R4",
         "body": "What NRCeS publishes, which resources are profiled for the health-claim eObjects, and how to validate a payload against the ndhm.in package.",
         "meta": "documentation chapter 05.02",
-        "url": "/documentation/?p=05.02",
         "rank": 5
       },
       {
@@ -1182,7 +1136,6 @@
         "title": "The NHA workflow status sheet, mapped to protocol headers",
         "body": "Every x-hcx-workflow_id (provider-initiated and payer-response codes) with its protocol status and NRCeS outcome.",
         "meta": "documentation chapter 09.01",
-        "url": "/documentation/?p=09.01",
         "rank": 6
       },
       {
@@ -1192,7 +1145,6 @@
         "title": "Participant onboarding guidelines: the two-stage path",
         "body": "Sandbox registration, integration, certification, then production registration and go-live, with the registry APIs and identifiers used at each step.",
         "meta": "documentation chapter 10.01",
-        "url": "/documentation/?p=10.01",
         "rank": 7
       },
       {
@@ -1202,7 +1154,6 @@
         "title": "Sandbox exit checklists for providers and payers",
         "body": "The 13 provider and 15 payer use cases assessed at certification, the exit criteria, and what changes at go-live.",
         "meta": "documentation chapter 10.02",
-        "url": "/documentation/?p=10.02",
         "rank": 8
       }
     ],

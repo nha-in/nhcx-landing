@@ -9,7 +9,7 @@ export function generateMetadata(): Metadata {
   return {
     title: landing.seo?.metaTitle ?? 'National Health Claim Exchange',
     description: landing.seo?.metaDescription ?? '',
-    icons: { icon: withBase('/assets/hcx-logo.png') },
+    icons: { icon: withBase('/assets/hcx-favicon.png') },
   };
 }
 

@@ -18,10 +18,12 @@ import { basePath, withBase } from '@/lib/paths';
 import RootLayout, { generateMetadata as rootMetadata } from '@/app/layout';
 import Home from '@/app/page';
 import NewsPage from '@/app/news/page';
+import GetStartedPage from '@/app/get-started/page';
 import VideosPage from '@/app/videos/page';
 import DevToolsPage from '@/app/devtools/page';
+import PmjayPage from '@/app/pmjay/page';
+import SkillPage from '@/app/skill/page';
 import DownloadPage from '@/app/download/page';
-import DocumentationPage from '@/app/documentation/page';
 import ApplyPage from '@/app/apply/page';
 
 const BASE = '/landing';
@@ -42,7 +44,7 @@ test('withBase() prefixes site paths and leaves everything else alone', () => {
   assert.equal(basePath(), BASE);
   assert.equal(withBase('/'), `${BASE}/`);
   assert.equal(withBase('/news/'), `${BASE}/news/`);
-  assert.equal(withBase('/documentation/?p=04.04'), `${BASE}/documentation/?p=04.04`);
+  assert.equal(withBase('/get-started/'), `${BASE}/get-started/`);
   assert.equal(withBase(`${BASE}/news/`), `${BASE}/news/`, 'already prefixed');
   assert.equal(withBase('#feed'), '#feed');
   assert.equal(withBase('?p=04.04'), '?p=04.04');
@@ -54,17 +56,19 @@ test('withBase() prefixes site paths and leaves everything else alone', () => {
 
 test('the root layout icon is prefixed', () => {
   const meta = rootMetadata();
-  assert.equal(meta.icons.icon, `${BASE}/assets/hcx-logo.png`);
+  assert.equal(meta.icons.icon, `${BASE}/assets/hcx-favicon.png`);
   assert.ok(renderToString(RootLayout({ children: 'body' })).includes('<html'));
 });
 
 for (const [route, Page] of [
   ['/', Home],
   ['/news/', NewsPage],
+  ['/get-started/', GetStartedPage],
   ['/videos/', VideosPage],
+  ['/pmjay/', PmjayPage],
   ['/devtools/', DevToolsPage],
+  ['/skill/', SkillPage],
   ['/download/', DownloadPage],
-  ['/documentation/', DocumentationPage],
   ['/apply/', ApplyPage],
 ]) {
   test(`${route} renders with every internal link under ${BASE}/`, async () => {

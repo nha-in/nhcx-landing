@@ -1,23 +1,51 @@
+import { Fragment } from 'react';
 import type { GlobalContent } from '@/lib/content';
 import FontSizeControls from '@/components/FontSizeControls';
 import NavShadow from '@/components/NavShadow';
+import { getSiteCopy } from '@/lib/site-copy';
 import { withBase } from '@/lib/paths';
 
 /**
  * The site's chrome: a slim top strip (ministry line, accessibility
- * controls), one sticky header row (programme marks, navigation and the apply
- * button) and the navy footer.
+ * controls), one sticky header row (programme marks, navigation and the
+ * documentation button) and the navy footer.
  *
  * Every internal href goes through withBase(); links resolved from the
  * `devtools:` scheme and the programme sites are absolute and pass through.
+ *
+ * The links and the marks come from the CMS global single type. The words
+ * around them that the CMS has no field for — the skip link, the contact
+ * block, the credit line — come from `chrome` in content/site.json, read here
+ * so no page has to pass them down.
  */
 
-function marks(global: GlobalContent) {
+/**
+ * The marks in the chrome, in order of standing.
+ *
+ * The header leads with NHCX itself, linking home, then a hairline, then the
+ * two marks that stand behind it: the National Health Authority, which
+ * publishes the exchange, and the Ayushman Bharat Digital Mission it is built
+ * under. The footer keeps the government order and has no NHCX mark, because
+ * the whole page is already the exchange's.
+ *
+ * PM-JAY is a scheme that settles claims over the exchange rather than its
+ * publisher, so its roundel belongs in the footer with the other programme
+ * links, and on the page written about it (/pmjay/).
+ */
+function marks(global: GlobalContent, where: 'header' | 'footer' = 'footer') {
+  const nhcx = { src: global.logoUrl, alt: chrome(global).nhcxAlt, href: withBase('/'), cls: 'mark-nhcx' };
+  const pmjay = { src: global.pmjayLogoUrl, alt: global.pmjayAlt || 'Pradhan Mantri Jan Arogya Yojana', href: global.pmjayHref || 'https://pmjay.gov.in', cls: 'mark-roundel' };
   return [
+    ...(where === 'header' ? [nhcx] : []),
     { src: global.nhaLogoUrl, alt: global.nhaAlt || 'National Health Authority', href: global.nhaHref || 'https://nha.gov.in', cls: 'mark-nha' },
     { src: global.abdmLogoUrl, alt: global.abdmAlt || 'Ayushman Bharat Digital Mission', href: global.abdmHref || 'https://abdm.gov.in', cls: 'mark-roundel' },
-    { src: global.pmjayLogoUrl, alt: global.pmjayAlt || 'Pradhan Mantri Jan Arogya Yojana', href: global.pmjayHref || 'https://pmjay.gov.in', cls: 'mark-roundel' },
+    ...(where === 'footer' ? [pmjay] : []),
   ].filter((m) => m.src);
+}
+
+/** The chrome's own copy, keyed off the console address the snapshot carries. */
+function chrome(global: GlobalContent) {
+  return getSiteCopy(global.devtoolsUrl ?? '', global.docsUrl).chrome;
 }
 
 /** The slim strip above the header: ministry line, ribbon links and the A- / A / A+ control. */
@@ -45,15 +73,23 @@ export function GovRibbon({ global }: { global: GlobalContent }) {
   );
 }
 
-/** Sticky header row: programme marks on the left, navigation and apply on the right. */
+/**
+ * Sticky header row: programme marks on the left, navigation and the
+ * documentation button on the right.
+ *
+ * The documentation is a different site. Its address is `docs:` in the copy
+ * and resolves against `global.docsUrl` at build time (lib/content.ts), so the
+ * button is an absolute link out and needs no `withBase()`.
+ */
 export function Navbar({ global, currentPath = '/' }: { global: GlobalContent; currentPath?: string }) {
+  const { docsCta } = chrome(global);
   return (
     <div className="navbar">
       <NavShadow />
       <div className="container navbar-inner">
         <div className="brand">
-          <ul className="brand-marks" aria-label="Programme partners">
-            {marks(global).map((mark) => (
+          <ul className="brand-marks" aria-label={chrome(global).marksLabel}>
+            {marks(global, 'header').map((mark) => (
               <li key={mark.alt}>
                 <a href={mark.href} className={mark.cls} title={mark.alt}>
                   <img src={withBase(mark.src)} alt={mark.alt} />
@@ -73,11 +109,12 @@ export function Navbar({ global, currentPath = '/' }: { global: GlobalContent; c
           })}
         </nav>
         <div className="nav-tools">
-          {global.applyCta && (
-            <a href={withBase(global.applyCta.url)} className="btn btn-sm btn-primary">
-              {global.applyCta.label} <span className="chev" aria-hidden="true">›</span>
-            </a>
-          )}
+          <a href={docsCta.href} className="btn btn-sm btn-primary" rel="noopener">
+            {docsCta.label}{' '}
+            <span className="chev" aria-hidden="true">
+              ›
+            </span>
+          </a>
         </div>
       </div>
     </div>
@@ -90,6 +127,7 @@ function buildDate(): string {
 }
 
 export function Footer({ global }: { global: GlobalContent }) {
+  const { footer } = chrome(global);
   return (
     <footer className="footer">
       <div className="container footer-inner">
@@ -114,14 +152,17 @@ export function Footer({ global }: { global: GlobalContent }) {
             </nav>
           ))}
           <div className="footer-col">
-            <h2>Contact</h2>
+            <h2>{footer.contactTitle}</h2>
             <div className="footer-contact">
               <div>
-                9th floor, Tower-I, Jeevan Bharati Building,
-                <br />
-                Connaught Place, New Delhi – 110001
+                {footer.addressLines.map((line, i) => (
+                  <Fragment key={line}>
+                    {i > 0 && <br />}
+                    {line}
+                  </Fragment>
+                ))}
               </div>
-              <div>Toll-free 14555</div>
+              <div>{footer.phone}</div>
             </div>
           </div>
         </div>
@@ -139,8 +180,10 @@ export function Footer({ global }: { global: GlobalContent }) {
               </a>
             ))}
           </span>
-          <span>Designed and developed by National Health Authority (NHA), Government of India.</span>
-          <span className="footer-updated">Last updated {buildDate()}</span>
+          <span>{footer.credit}</span>
+          <span className="footer-updated">
+            {footer.updatedPrefix} {buildDate()}
+          </span>
         </div>
       </div>
     </footer>
@@ -167,7 +210,7 @@ export function PageShell({
   return (
     <>
       <a href="#main" className="skip-link">
-        Skip to content
+        {chrome(global).skipLink}
       </a>
       <header className="site-header">
         <GovRibbon global={global} />

@@ -13,7 +13,6 @@
     "featuredTitle": "Documentation corpus refreshed: 64 pages in 12 chapters",
     "featuredDescription": "The reader and the assistant now run on the corpus built on 22 August 2026 from NHA’s published material: claim flows, FHIR references, protocol headers, codes and troubleshooting.",
     "featuredLinkLabel": "Open the documentation →",
-    "featuredUrl": "/documentation/",
     "featuredImageNote": "Documentation",
     "upcomingTitle": "Sessions",
     "events": [],
@@ -29,7 +28,6 @@
       "title": "Documentation corpus refreshed: 64 pages in 12 chapters",
       "body": "Built on 22 August 2026 from NHA’s published material: claim flows, FHIR references, protocol headers, codes and troubleshooting. The reader, the search index and the assistant all read this set.",
       "meta": "documentation · this site",
-      "url": "/documentation/",
       "rank": 0
     },
     {
@@ -69,7 +67,6 @@
       "title": "NHA integrator FAQ v1.1 reproduced in the corpus",
       "body": "The Commonly Asked Questions for NHCX APIs (registry codes, 401s, header formats, callbacks, the dummy payer and the PMJAY-specific rules) dated 14 August 2026 and marked approval pending in the source.",
       "meta": "documentation chapter 11.03",
-      "url": "/documentation/?p=11.03",
       "rank": 4
     },
     {
@@ -79,7 +76,6 @@
       "title": "NRCeS FHIR profiles: why NHCX mandates them over base R4",
       "body": "What NRCeS publishes, which resources are profiled for the health-claim eObjects, and how to validate a payload against the ndhm.in package.",
       "meta": "documentation chapter 05.02",
-      "url": "/documentation/?p=05.02",
       "rank": 5
     },
     {
@@ -89,7 +85,6 @@
       "title": "The NHA workflow status sheet, mapped to protocol headers",
       "body": "Every x-hcx-workflow_id (provider-initiated and payer-response codes) with its protocol status and NRCeS outcome.",
       "meta": "documentation chapter 09.01",
-      "url": "/documentation/?p=09.01",
       "rank": 6
     },
     {
@@ -99,7 +94,6 @@
       "title": "Participant onboarding guidelines: the two-stage path",
       "body": "Sandbox registration, integration, certification, then production registration and go-live, with the registry APIs and identifiers used at each step.",
       "meta": "documentation chapter 10.01",
-      "url": "/documentation/?p=10.01",
       "rank": 7
     },
     {
@@ -109,7 +103,6 @@
       "title": "Sandbox exit checklists for providers and payers",
       "body": "The 13 provider and 15 payer use cases assessed at certification, the exit criteria, and what changes at go-live.",
       "meta": "documentation chapter 10.02",
-      "url": "/documentation/?p=10.02",
       "rank": 8
     }
   ]

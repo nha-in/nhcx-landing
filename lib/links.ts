@@ -1,5 +1,4 @@
 import type { Global } from './cms-types';
-import { withBase } from './paths';
 
 /**
  * Link helpers shared by the sections and pages.
@@ -19,11 +18,6 @@ export function consoleUrl(global: Pick<Global, 'devtoolsUrl'>): string {
 /** A catalogue entry in the console, by slug. */
 export function consoleApiHref(global: Pick<Global, 'devtoolsUrl'>, slug: string): string {
   return `${consoleUrl(global)}/apis/${encodeURIComponent(slug)}`;
-}
-
-/** A documentation page by its chapter code (`04.04`), through the reader. */
-export function docsHref(code?: string): string | null {
-  return code ? withBase(`/documentation/?p=${encodeURIComponent(code)}`) : null;
 }
 
 /** True for a link that leaves the site (the console, nha.gov.in, …). */

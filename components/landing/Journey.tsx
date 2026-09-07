@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
+import type { HomeCopy } from '@/lib/site-copy';
 
 /**
  * "How a typical flow looks like" — a claim's round trip, told as a pinned
@@ -8,15 +9,11 @@ import { useEffect, useRef } from 'react';
  * put; the path draws, the packet moves, one waypoint card at a time) and
  * as a plain vertical timeline on narrow screens or under reduced motion.
  * Both variants are in the HTML; CSS picks one by viewport width.
+ *
+ * The five steps come from content/site.json; the geometry does not, because
+ * the node positions, the stops along the path and the curves themselves are
+ * one drawing rather than five editable values.
  */
-
-const STEPS = [
-  { tag: '01 · Hospital HMIS', title: 'Structured at source', text: 'The discharge summary, bill lines and codes leave the HMIS as a signed FHIR R4 bundle. No PDFs, no re-typing.', tick: 'Hospital HMIS' },
-  { tag: '02 · In transit', title: 'Schema-checked and signed', text: 'Validated against the specification and signed on both sides, leaving an immutable trail.', tick: 'In transit' },
-  { tag: '03 · NHCX', title: 'Route and deliver', text: 'The exchange identifies the payer and delivers the claim. One integration, every payer.', tick: 'NHCX' },
-  { tag: '04 · Payer engine', title: 'Auto-adjudicated', text: 'Policy active, member verified. Package rate matched. Duplicate and abuse checks clear.', tick: 'Payer engine' },
-  { tag: '05 · The return leg', title: 'Back to the provider', text: 'The decision travels the same path in reverse and lands in the HMIS: a round trip, not a one-way pipe.', tick: 'Return leg' },
-];
 
 const NODES: Array<[number, number]> = [
   [150, 420],
@@ -29,8 +26,9 @@ const STOPS = [0, 0.16, 0.34, 0.55, 0.78];
 const FWD = 'M150,420 Q262,392 380,305 Q502,218 600,215 Q772,226 900,330';
 const RET = 'M900,330 C820,478 420,516 150,420';
 
-export default function Journey() {
+export default function Journey({ copy }: { copy: HomeCopy['journey'] }) {
   const wrap = useRef<HTMLDivElement>(null);
+  const steps = copy.steps;
 
   useEffect(() => {
     const el = wrap.current;
@@ -108,8 +106,8 @@ export default function Journey() {
       <div className="lp-journey-scroll" ref={wrap}>
         <div className="lp-journey-stage">
           <div className="lp-wrap lp-journey-head">
-            <p className="lp-eyebrow on-dark bare">How a typical flow looks like</p>
-            <h2 id="journey-title">From the hospital&rsquo;s HMIS to a decision, and back again</h2>
+            <p className="lp-eyebrow on-dark bare">{copy.eyebrow}</p>
+            <h2 id="journey-title">{copy.title}</h2>
           </div>
           <div className="lp-journey-graph-wrap">
             <div className="lp-journey-graph">
@@ -117,11 +115,11 @@ export default function Journey() {
                 <svg viewBox="0 0 1200 560" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
                   <g data-cam="">
                     <path d={RET} fill="none" stroke="rgba(255,255,255,0.10)" strokeWidth="2" strokeDasharray="7 8" />
-                    <path data-path="ret" d={RET} fill="none" stroke="#8FA0FF" strokeWidth="2.2" />
+                    <path data-path="ret" d={RET} fill="none" stroke="#8E9AE9" strokeWidth="2.2" />
                     <path d={FWD} fill="none" stroke="rgba(255,255,255,0.12)" strokeWidth="2" />
-                    <path data-path="fwd" d={FWD} fill="none" stroke="#3E5BFF" strokeWidth="2.6" />
+                    <path data-path="fwd" d={FWD} fill="none" stroke="#3D52DA" strokeWidth="2.6" />
                     {NODES.slice(0, 4).map(([x, y], i) => (
-                      <circle key={i} data-glow="" cx={x} cy={y} r={i === 2 ? 34 : 26} fill="#3E5BFF" opacity="0" />
+                      <circle key={i} data-glow="" cx={x} cy={y} r={i === 2 ? 34 : 26} fill="#3D52DA" opacity="0" />
                     ))}
                     <circle cx="150" cy="420" r="6" fill="#ADBDCC" />
                     <circle cx="380" cy="305" r="5" fill="#ADBDCC" />
@@ -129,19 +127,19 @@ export default function Journey() {
                     <circle cx="600" cy="215" r="19" fill="none" stroke="rgba(255,255,255,0.30)" strokeWidth="1.5" />
                     <circle cx="900" cy="330" r="6" fill="#ADBDCC" />
                     <text x="150" y="452" textAnchor="middle" fill="#8792A2" fontFamily="'IBM Plex Mono', monospace" fontSize="13" letterSpacing="1.2">
-                      HMIS
+                      {copy.graphLabels.start}
                     </text>
                     <text x="600" y="180" textAnchor="middle" fill="#8792A2" fontFamily="'IBM Plex Mono', monospace" fontSize="13" letterSpacing="1.2">
-                      NHCX
+                      {copy.graphLabels.hub}
                     </text>
                     <text x="900" y="364" textAnchor="middle" fill="#8792A2" fontFamily="'IBM Plex Mono', monospace" fontSize="13" letterSpacing="1.2">
-                      PAYER
+                      {copy.graphLabels.end}
                     </text>
-                    <circle data-packet="" cx="150" cy="420" r="16" fill="#3E5BFF" opacity="0.28" />
+                    <circle data-packet="" cx="150" cy="420" r="16" fill="#3D52DA" opacity="0.28" />
                     <circle data-packet="" cx="150" cy="420" r="5.5" fill="#FFFFFF" />
                   </g>
                 </svg>
-                {STEPS.map((s, i) => (
+                {steps.map((s, i) => (
                   <div key={s.tag} className="lp-wp" data-wp={i}>
                     <div className="lp-wp-tag">{s.tag}</div>
                     <b>{s.title}</b>
@@ -152,7 +150,7 @@ export default function Journey() {
             </div>
           </div>
           <div className="lp-wrap lp-ticks" aria-hidden="true">
-            {STEPS.map((s, i) => (
+            {steps.map((s, i) => (
               <div key={s.tick} className="lp-tick" data-tick={i}>
                 {s.tick}
               </div>
@@ -164,22 +162,25 @@ export default function Journey() {
       {/* narrow: vertical timeline */}
       <div className="lp-journey-list">
         <div className="lp-wrap">
-          <p className="lp-eyebrow on-dark bare">How a typical flow looks like</p>
-          <h2>From the hospital&rsquo;s HMIS to a decision, and back again</h2>
+          <p className="lp-eyebrow on-dark bare">{copy.eyebrow}</p>
+          <h2>{copy.title}</h2>
           <ol>
-            {STEPS.map((s, i) => (
-              <li key={s.tag} className="lp-step" style={{ listStyle: 'none' }}>
-                <div className="lp-step-rail" aria-hidden="true">
-                  {i === 4 ? <span className="lp-step-up">▲</span> : <span className={`lp-step-dot${i === 2 ? ' hub' : ''}`} />}
-                  {i < 4 && <span className={`lp-step-line${i === 3 ? ' dashed' : ''}`} />}
-                </div>
-                <div>
-                  <div className="lp-wp-tag">{s.tag}</div>
-                  <b>{s.title}</b>
-                  <p>{s.text}</p>
-                </div>
-              </li>
-            ))}
+            {steps.map((s, i) => {
+              const last = i === steps.length - 1;
+              return (
+                <li key={s.tag} className="lp-step" style={{ listStyle: 'none' }}>
+                  <div className="lp-step-rail" aria-hidden="true">
+                    {last ? <span className="lp-step-up">▲</span> : <span className={`lp-step-dot${i === 2 ? ' hub' : ''}`} />}
+                    {!last && <span className={`lp-step-line${i === steps.length - 2 ? ' dashed' : ''}`} />}
+                  </div>
+                  <div>
+                    <div className="lp-wp-tag">{s.tag}</div>
+                    <b>{s.title}</b>
+                    <p>{s.text}</p>
+                  </div>
+                </li>
+              );
+            })}
           </ol>
         </div>
       </div>

@@ -1,4 +1,5 @@
 import type { AdapterRelease } from '@/lib/adapter';
+import type { DevToolsCopy } from '@/lib/site-copy';
 import { withBase } from '@/lib/paths';
 
 /**
@@ -12,102 +13,74 @@ import { withBase } from '@/lib/paths';
  * the wire out to the exchange and back. The strip says it on its own, so
  * there is no caption under it.
  *
- * Dark, because it is the only band of the site that is, and the animation is
- * CSS alone: the export is static and nothing here should wait on JavaScript.
- * Everything that moves stops under `prefers-reduced-motion`.
+ * The band opens the page's dark surface (styles/dark.css, then
+ * styles/devtools.css) and the animation is CSS alone: the export is static
+ * and nothing here should wait on JavaScript. Everything that moves stops
+ * under `prefers-reduced-motion`.
  */
 export default function DevToolsHero({
+  copy,
+  fallbackRepoUrl,
   release,
   consoleUrl,
 }: {
+  copy: DevToolsCopy['hero'];
+  fallbackRepoUrl: string;
   release: AdapterRelease | null;
   consoleUrl: string;
 }) {
-  const repoUrl = release?.repoUrl ?? 'https://github.com/nha-in/nhcx-adapter';
+  const repoUrl = release?.repoUrl ?? fallbackRepoUrl;
+  const { consoleCard, adapterCard } = copy;
 
   return (
-    <section className="dtx-hero">
-      <span className="dtx-aurora" aria-hidden="true" />
-      <span className="dtx-grid" aria-hidden="true" />
+    <section className="dtx-hero dk-band">
+      <span className="dk-aurora" aria-hidden="true" />
+      <span className="dk-grid" aria-hidden="true" />
 
       <div className="container dtx-hero-inner">
-        <p className="dtx-eyebrow">Developer tools for NHCX</p>
-        <h1 className="dtx-title">
-          Rehearse in a browser,
+        <p className="dk-eyebrow">{copy.eyebrow}</p>
+        <h1 className="dk-title">
+          {copy.titleLead}
           <br />
-          <span>deploy one binary</span>
+          <span>{copy.titleAccent}</span>
         </h1>
-        <p className="dtx-intro">
-          Two tools and no third thing to choose between: one that teaches and rehearses the exchange in a browser tab,
-          one that carries it in production.
-        </p>
+        <p className="dtx-intro">{copy.intro}</p>
 
         <div className="dtx-cards">
           <article className="dtx-card is-tools">
-            <p className="dtx-card-tag">
-              <span className="dtx-live" aria-hidden="true" />
-              In your browser
-            </p>
-            <h2>DevTools</h2>
-            <p className="dtx-card-copy">
-              The exchange end to end, in a tab: read how an endpoint behaves, build a bundle that validates, and trade
-              claims with a mock payer until every flow passes. Nothing you do here touches your servers.
-            </p>
-            <ul className="dtx-card-meta">
-              <li>no install</li>
-              <li>no login</li>
-              <li>sandbox included</li>
-            </ul>
+            <h2>{consoleCard.title}</h2>
+            <p className="dtx-card-copy">{consoleCard.copy}</p>
             <div className="dtx-card-actions">
-              <a href={`${consoleUrl}/`} className="dtx-btn dtx-btn-primary" rel="noopener">
-                Open DevTools
+              <a href={`${consoleUrl}/`} className="dk-btn dk-btn-primary" rel="noopener">
+                {consoleCard.ctaLabel}
               </a>
             </div>
           </article>
 
           <article className="dtx-card is-adapter">
-            <p className="dtx-card-tag">
-              <span className="dtx-dot" aria-hidden="true" />
-              One binary
-            </p>
-            <h2>NHCX Adapter</h2>
-            <p className="dtx-card-copy">
-              The piece you actually deploy. Post a FHIR bundle to it, read a plain callback back, and it does the
-              headers, the encryption, the certificates and the acknowledgements in between. One JSON config, no
-              database.
-            </p>
-            <ul className="dtx-card-meta">
-              {release ? (
-                <>
-                  <li>{release.version}</li>
-                  <li>{release.builds.length} platform builds</li>
-                  <li>released {release.releasedLabel}</li>
-                </>
-              ) : (
-                <li>open source on GitHub</li>
-              )}
-            </ul>
+            <h2>{adapterCard.title}</h2>
+            <p className="dtx-card-copy">{adapterCard.copy}</p>
             <div className="dtx-card-actions">
-              <a href={withBase('/devtools/#adapter')} className="dtx-btn dtx-btn-primary">
-                {release ? `Download ${release.version}` : 'Get the adapter'}
+              <a href={withBase('/devtools/#adapter')} className="dk-btn dk-btn-primary">
+                {release ? `${adapterCard.downloadPrefix} ${release.version}` : adapterCard.fallbackCtaLabel}
               </a>
-              <a href={repoUrl} className="dtx-btn" target="_blank" rel="noopener noreferrer">
-                GitHub
+              <a href={repoUrl} className="dk-btn" target="_blank" rel="noopener noreferrer">
+                {adapterCard.repoLabel}
               </a>
             </div>
           </article>
         </div>
 
         <div className="dtx-flow" aria-hidden="true">
-          <span className="dtx-flow-node">Your system</span>
+          <span className="dtx-flow-node">{copy.flow[0]}</span>
           <span className="dtx-wire is-a">
             <i />
           </span>
-          <span className="dtx-flow-node is-mid">NHCX Adapter</span>
+          <span className="dtx-flow-node is-mid">{copy.flow[1]}</span>
           <span className="dtx-wire is-b">
             <i />
           </span>
-          <span className="dtx-flow-node">NHCX</span>
+          <span className="dtx-flow-node">{copy.flow[2]}</span>
         </div>
       </div>
     </section>

@@ -16,13 +16,18 @@ import { renderToString } from 'react-dom/server';
 
 import RootLayout, { generateMetadata as rootMetadata } from '@/app/layout';
 import Home from '@/app/page';
-import DocumentationPage, { generateMetadata as documentationMetadata } from '@/app/documentation/page';
 import DevToolsPage, { generateMetadata as devtoolsMetadata } from '@/app/devtools/page';
+import PmjayPage, { generateMetadata as pmjayMetadata } from '@/app/pmjay/page';
+import SkillPage, { generateMetadata as skillMetadata } from '@/app/skill/page';
+import GetStartedPage, { generateMetadata as getStartedMetadata } from '@/app/get-started/page';
 import DownloadPage, { generateMetadata as downloadMetadata } from '@/app/download/page';
 import VideosPage, { generateMetadata as videosMetadata } from '@/app/videos/page';
 import NewsPage, { generateMetadata as newsMetadata } from '@/app/news/page';
 import ApplyPage, { generateMetadata as applyMetadata } from '@/app/apply/page';
 import { getContent } from '@/lib/content';
+import { getSiteCopy } from '@/lib/site-copy';
+import { groupDigits } from '@/lib/stats';
+import { getStats } from '@/lib/stats-file';
 
 /** Bracketed editor notes: "[ press photo — 1200×750 ]", "[ paste URL ]". */
 const PLACEHOLDER = /\[ [^\]\n]{2,120} \]/;
@@ -39,10 +44,8 @@ function check(html, route) {
   assert.ok(html.includes('<main'), `${route}: no <main> landmark`);
   assert.ok(html.includes('<header'), `${route}: no <header> landmark`);
   assert.ok(html.includes('<footer'), `${route}: no <footer> landmark`);
-  // The documentation reader's <h1> is the corpus page title, which arrives
-  // with the corpus on the client; every other route renders its own.
   const h1s = (html.match(/<h1[\s>]/g) ?? []).length;
-  assert.ok(h1s <= 1 && (h1s === 1 || route === '/documentation/'), `${route}: expected exactly one <h1>, found ${h1s}`);
+  assert.equal(h1s, 1, `${route}: expected exactly one <h1>, found ${h1s}`);
   const hit = html.match(PLACEHOLDER);
   assert.equal(hit, null, `${route}: placeholder text leaked into the page: ${hit?.[0]}`);
   assert.ok(!/lorem ipsum/i.test(html), `${route}: lorem ipsum in the page`);
@@ -52,8 +55,10 @@ function check(html, route) {
 
 const ROUTES = [
   ['/', Home, rootMetadata],
-  ['/documentation/', DocumentationPage, documentationMetadata],
+  ['/pmjay/', PmjayPage, pmjayMetadata],
   ['/devtools/', DevToolsPage, devtoolsMetadata],
+  ['/skill/', SkillPage, skillMetadata],
+  ['/get-started/', GetStartedPage, getStartedMetadata],
   ['/download/', DownloadPage, downloadMetadata],
   ['/videos/', VideosPage, videosMetadata],
   ['/news/', NewsPage, newsMetadata],
@@ -69,11 +74,98 @@ for (const [route, Page, metadata] of ROUTES) {
   });
 }
 
-test('the chrome carries the NHA, ABDM and PM-JAY marks and the primary navigation', async () => {
+test('the designed pages take every heading and tagline from content/site.json', async () => {
+  const copy = getSiteCopy('http://localhost:8080');
+  // One string per page, chosen from the parts a component used to hold
+  // inline: change it in the file and the page has to change with it.
+  const pages = [
+    ['/', Home, [copy.home.hero.titleAccent, copy.home.hero.text, copy.home.sandbox.text, copy.home.specs.lede]],
+    ['/pmjay/', PmjayPage, [copy.pmjay.hero.lede, copy.pmjay.changed.title, copy.pmjay.sides.groups[0].who]],
+    ['/devtools/', DevToolsPage, [copy.devtools.hero.intro, copy.devtools.adapter.useCasesTitle]],
+    ['/skill/', SkillPage, [copy.skill.hero.lede, copy.skill.prompts.items[0], copy.skill.install]],
+  ];
+  for (const [route, Page, strings] of pages) {
+    const html = await render(Page);
+    for (const wanted of strings) {
+      // react-dom/server escapes only these three in a text node.
+      const escaped = wanted.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+      assert.ok(html.includes(escaped), `${route}: "${wanted.slice(0, 48)}…" is not on the page`);
+    }
+  }
+  // The chrome's own words come from the same file, on every route.
+  const home = await render(Home);
+  assert.ok(home.includes(copy.chrome.footer.phone), 'footer: the contact line is not from content/site.json');
+  assert.ok(home.includes(copy.chrome.footer.credit), 'footer: the credit line is not from content/site.json');
+});
+
+test('the header button points at the documentation site, not at a local route', async () => {
   const html = await render(Home);
-  for (const alt of ['National Health Authority', 'Ayushman Bharat Digital Mission', 'Pradhan Mantri Jan Arogya Yojana']) {
+  const { global } = getContent();
+  const nav = html.slice(html.indexOf('class="navbar"'), html.indexOf('</header>'));
+  assert.ok(nav.includes('nav-tools'), 'header: the button slot is gone from the header row');
+  // The documentation is a different site: the `docs:` scheme must have been
+  // resolved against global.docsUrl, and nothing may be left unresolved or
+  // pointing at a route this site no longer serves.
+  assert.ok(global.docsUrl, 'global.docsUrl is not configured');
+  assert.ok(nav.includes(`href="${global.docsUrl}`), `header: the button does not point at ${global.docsUrl}`);
+  assert.ok(!nav.includes('docs:'), 'header: an unresolved docs: link reached the page');
+  // Absolute, so it leaves this site. Checking for the string "/documentation/"
+  // would not do it: the configured docs URL ends in that path itself.
+  assert.match(nav, /href="https?:\/\//, 'header: the button is a relative link, so it stays on this site');
+  assert.ok(global.applyCta?.label && !nav.includes(global.applyCta.label), 'header: the apply CTA is back in the header');
+  assert.ok(nav.includes('>Links<'), 'header: the downloads link is not labelled "Links"');
+  assert.ok(!/href="[^"]*\/news\/"/.test(nav), 'header: the news link is back in the navigation');
+});
+
+test('the home page prints the synced NHCX production figures', async () => {
+  const html = await render(Home);
+  // Through the same accessor and formatter the page uses: the bundle runs
+  // from test/dist/, so a relative read of content/ would not resolve.
+  const stats = getStats();
+  assert.ok(stats, 'public/stats.json has not been synced; run npm run sync:stats');
+  // FallingCount puts every digit in its own span, so the figure is only whole
+  // once the tags are out of the way. Checking the text is also the check that
+  // matters: it is what a reader and a screen reader are given.
+  const text = html.replace(/<[^>]*>/g, '');
+  for (const [sector, row] of Object.entries(stats.rows)) {
+    for (const [measure, value] of Object.entries(row)) {
+      assert.ok(text.includes(groupDigits(value)), `/: ${sector}.${measure} (${groupDigits(value)}) is not on the page`);
+    }
+  }
+  // The stamp was removed on purpose; the figures carry no date on the page.
+  assert.ok(!html.includes('lp-stats-stamp'), '/: the last-updated stamp is back');
+});
+
+test('/get-started/ asks the role first and renders both routes for it', async () => {
+  const html = await render(GetStartedPage);
+  const copy = getSiteCopy('http://localhost:8080').getStarted;
+  assert.ok(html.includes(copy.question), '/get-started/: the question is not asked');
+  for (const role of copy.roles) {
+    assert.ok(html.includes(role.label), `/get-started/: no ${role.label} choice`);
+    // Both routes are in the HTML and one is hidden, rather than only the
+    // chosen one existing: no-JS and a printed page get the whole thing.
+    for (const step of role.steps) {
+      assert.ok(html.includes(step.title), `/get-started/: ${role.label} is missing "${step.title}"`);
+    }
+  }
+  assert.ok(html.includes('role="tablist"'), '/get-started/: the choices are not a tablist');
+});
+
+test('the home page sends a first-time reader to /get-started/, not the form', async () => {
+  const html = await render(Home);
+  const hero = html.slice(html.indexOf('class="lp-hero'), html.indexOf('lp-banner') + 1 || undefined);
+  assert.match(hero, /href="[^"]*\/get-started\/"/, 'hero: the call to action does not go to /get-started/');
+});
+
+test('the chrome carries the NHA and ABDM marks, PM-JAY in the footer, and the primary navigation', async () => {
+  const html = await render(Home);
+  for (const alt of ['National Health Authority', 'Ayushman Bharat Digital Mission']) {
     assert.ok(html.includes(`alt="${alt}"`), `masthead: no ${alt} mark`);
   }
+  // PM-JAY settles claims over the exchange rather than publishing it, so its
+  // roundel is a footer mark and a page of its own, not a masthead mark.
+  const pmjay = (html.match(/alt="Pradhan Mantri Jan Arogya Yojana"/g) ?? []).length;
+  assert.equal(pmjay, 1, 'PM-JAY should appear once, in the footer');
   for (const href of ['https://nha.gov.in', 'https://abdm.gov.in', 'https://pmjay.gov.in']) {
     assert.ok(html.includes(`href="${href}"`), `masthead: no link to ${href}`);
   }
@@ -91,8 +183,8 @@ test('the home page points at the DevTools console for the catalogue and the lea
   assert.ok(html.includes('class="lp-hero'), 'no hero');
   assert.ok(html.includes('class="lp-net"'), 'no provider–NHCX–payer network diagram');
   assert.ok(html.includes('lp-journey'), 'no claim journey');
-  assert.ok(html.includes('lp-figures'), 'no at-a-glance figures');
-  assert.ok(html.includes('lp-count'), 'figures do not count up');
+  assert.ok(html.includes('lp-stat-cards'), 'no NHCX statistics');
+  assert.ok(!html.includes('lp-figures'), 'the at-a-glance figures are back alongside the statistics');
   assert.ok(!html.includes('ABDM · NHCX'), 'the ABDM · NHCX label is still rendered');
   assert.ok(html.includes('lp-onboard-steps'), 'no onboarding steps');
   assert.ok(html.includes('lp-specs-grid'), 'no specifications list');
@@ -133,49 +225,15 @@ test('/videos/ says "Recording coming soon" for entries without a URL', async ()
   assert.ok(!html.includes('href="#playlists"'), '/videos/: a planned recording still links to a fake player');
 });
 
-test('the landing FAQ has at least 15 questions in topic groups with documentation links', async () => {
+test('the landing FAQ has at least 15 questions in topic groups', async () => {
   const html = await render(Home);
   const questions = (html.match(/<summary>/g) ?? []).length;
   assert.ok(questions >= 15, `FAQ has ${questions} questions`);
   assert.ok((html.match(/class="lp-faq-topic"/g) ?? []).length >= 4, 'FAQ has fewer than 4 topic groups');
-  assert.ok(html.includes('faq-docs'), 'FAQ answers do not link to the documentation');
 });
 
 test('renders the root layout', () => {
   const html = renderToString(RootLayout({ children: 'body' }));
   assert.ok(html.includes('<html lang="en">'));
   assert.ok(html.includes('family=Inter') && html.includes('IBM+Plex+Mono'), 'the layout does not load Inter and IBM Plex Mono');
-});
-
-test('a ```mermaid fence renders as a drawable md-mermaid figure', async () => {
-  const { renderMarkdown } = await import('@/lib/markdown');
-  const doc = renderMarkdown(
-    '# Flow\n\n```mermaid\nflowchart LR\n  A[HMIS] -->|claim| B[NHCX]\n```\n',
-  );
-  // The renderer marks the source up for lib/mermaid.ts to draw client-side;
-  // the sanitiser must let the figure, its class and its state through.
-  assert.ok(doc.html.includes('<figure class="md-mermaid" data-state="pending">'), 'no md-mermaid figure');
-  assert.ok(doc.html.includes('class="md-mermaid-source"'), 'diagram source not kept in the figure');
-  assert.ok(doc.html.includes('flowchart LR'), 'diagram text lost');
-  // An ordinary fence must keep the plain code path.
-  const code = renderMarkdown('```json\n{ "a": 1 }\n```\n');
-  assert.ok(code.html.includes('<figure class="md-code"'), 'plain fence no longer renders as code');
-});
-
-test('a page image is resolved against the page, not the reader route', async () => {
-  const { renderMarkdown } = await import('@/lib/markdown');
-  // The corpus embeds images relative to the markdown file. The reader lives
-  // at /documentation/, so an unresolved source would point at /assets/… and
-  // 404 — every doc image did until the document's URL was passed in.
-  const src = '![figure 1](../assets/images/documents/flow/flow-01.png)';
-  const page = renderMarkdown(src, { baseUrl: '/docs/06-pmjay-flow/03-integration-overview.md' });
-  assert.ok(
-    page.html.includes('src="/docs/assets/images/documents/flow/flow-01.png"'),
-    `relative image not resolved: ${page.html}`,
-  );
-  // No base URL, no rewriting: the chat transcript renders the same function.
-  assert.ok(renderMarkdown(src).html.includes('src="../assets/images/'), 'image rewritten without a base');
-  // An absolute source is left alone.
-  const remote = renderMarkdown('![x](https://example.test/a.png)', { baseUrl: '/docs/a/b.md' });
-  assert.ok(remote.html.includes('src="https://example.test/a.png"'), 'absolute image source rewritten');
 });

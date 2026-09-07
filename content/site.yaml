@@ -1,0 +1,1959 @@
+# Every word on the site, and the two addresses that are not on it.
+#
+# This is the only file to edit. `npm run content` writes the JSON the app
+# loads; `npm run build` does it for you. Links to the DevTools console are
+# written `devtools:/apis`, links to the documentation `docs:/`, and both
+# resolve against config below when a page renders.
+config:
+  devtoolsUrl: https://nhcx.sbxstage.in/dev
+  docsUrl: https://nhcx.abdm.gov.in/documentation
+global:
+  ribbonText: भारत सरकार · Government of India · Ministry of Health and Family Welfare
+  ribbonLinks:
+    - label: Screen reader access
+      url: "#main"
+  brandTitle: National Health Claim Exchange
+  brandSubtitle: Sandbox 2.0 · Developer portal
+  logoUrl: /assets/hcx-logo.png
+  nhaLogoUrl: /assets/brand/nha-logo.png
+  nhaAlt: National Health Authority
+  nhaHref: https://nha.gov.in
+  abdmLogoUrl: /assets/brand/abdm-logo.png
+  abdmAlt: Ayushman Bharat Digital Mission
+  abdmHref: https://abdm.gov.in
+  pmjayLogoUrl: /assets/brand/pmjay-logo.png
+  pmjayAlt: Pradhan Mantri Jan Arogya Yojana
+  pmjayHref: https://pmjay.gov.in
+  nhaLogoWhiteUrl: /assets/brand/nha-logo-white.png
+  navLinks:
+    - label: Home
+      url: /
+    - label: PMJAY
+      url: /pmjay/
+    - label: DevTools
+      url: /devtools/
+    - label: AI Skill
+      url: /skill/
+    - label: Links
+      url: /download/
+  applyCta:
+    label: Apply for access
+    url: /apply/
+    style: primary
+  footerBrandTitle: HCX Sandbox
+  footerBlurb: An initiative of the National Health Authority under the Ayushman Bharat Digital Mission.
+  footerColumns:
+    - title: Build
+      links:
+        - label: Documentation
+          url: docs:/
+        - label: DevTools
+          url: /devtools/
+        - label: AI skill
+          url: /skill/
+        - label: Downloads
+          url: /download/
+        - label: API catalogue
+          url: devtools:/apis
+        - label: Learning path
+          url: devtools:/learn
+    - title: Onboard
+      links:
+        - label: Get started
+          url: /get-started/
+        - label: Apply for access
+          url: /apply/
+    - title: Ecosystem
+      links:
+        - label: Videos
+          url: /videos/
+        - label: News
+          url: /news/
+    - title: Programme
+      links:
+        - label: National Health Authority
+          url: https://nha.gov.in
+        - label: Ayushman Bharat Digital Mission
+          url: https://abdm.gov.in
+        - label: PM-JAY on NHCX
+          url: /pmjay/
+        - label: PM-JAY
+          url: https://pmjay.gov.in
+        - label: HCX DevTools console
+          url: devtools:/
+  copyright: © 2026 National Health Authority, Government of India
+  legalLinks:
+    - label: Privacy policy
+      url: /apply/#privacy
+    - label: Terms of use
+      url: /apply/#terms
+  subFooterLinks:
+    - label: Home
+      url: /
+    - label: Get started
+      url: /get-started/
+    - label: API catalogue
+      url: devtools:/apis
+landing:
+  seo:
+    metaTitle: National Health Claim Exchange · HCX Sandbox
+    metaDescription: One claim format. Every payer in India. Build and certify your NHCX claims integration in the free sandbox of the National Health Authority.
+  sections:
+    - __component: sections.hero
+      anchor: top
+      badgeText: Ayushman Bharat Digital Mission · National Health Authority
+      badgeAccent: Sandbox is open →
+      title: One claim format. Every payer in India.
+      subtitle: The National Health Claim Exchange connects every hospital, insurer, TPA and government scheme on one protocol, so claims move as structured data, settle in days instead of months, and cost far less to process. Build and certify in the sandbox, free.
+      primaryCta:
+        label: Apply for access
+        url: /apply/
+        style: primary
+      windowTitle: sandbox.hcx · claim workbench
+      providersLabel: PROVIDERS
+      providers:
+        - label: District hospital
+          icon: hospital
+        - label: Multi-speciality chain
+          icon: buildings
+        - label: Nursing home
+          icon: bed
+        - label: Diagnostic centre
+          icon: lab
+      payersLabel: PAYERS
+      payers:
+        - label: Insurance company
+          icon: shield
+        - label: TPA
+          icon: exchange
+        - label: State health agency
+          icon: institution
+        - label: Government scheme
+          icon: seal
+      hubTitle: NHCX
+      hubTag: EXCHANGE
+      hubCaption: one protocol, one claim format
+      startLabel: Start here
+      startTiles:
+        - title: DevTools console
+          description: DevTools (simulator, FHIR builder, transaction logs) and the NHCX Adapter, the binary that speaks the protocol.
+          url: /devtools/
+        - title: Learning path
+          description: Two guided tracks with a check after every chapter, inside the DevTools console.
+          url: devtools:/learn
+    - __component: sections.actors
+      anchor: specs
+      badge: Aligned to HCX open specifications · FHIR R4
+      title: Built for every actor in the claims network
+      actors:
+        - label: Hospitals & providers
+          marker: dot
+        - label: Insurers & payers
+          marker: square
+        - label: TPAs
+          marker: diamond
+        - label: Solution providers
+          marker: ring
+        - label: Government schemes
+          marker: dash
+    - __component: sections.pipeline
+      anchor: autoadjudication
+      eyebrow: STRUCTURED CLAIMS, END TO END
+      title: From the hospital's HMIS to auto-adjudication at the payer
+      intro: A claim leaves the hospital as machine-readable FHIR (coded diagnoses, itemised bills, verified identity), so the payer's engine can price and decide it without a human re-keying anything.
+      sourceTag: HOSPITAL HMIS
+      sourceTitle: Structured at source
+      sourceCodeLines:
+        - Coverage.beneficiary ✓
+        - Condition.code ICD-11 ✓
+        - ChargeItem × 14 ✓
+        - DocumentReference ✓
+      sourceNote: "Discharge summary, bill lines and codes leave the HMIS as a signed FHIR bundle: no PDFs, no re-typing."
+      leftPacketLabel: JWE
+      rightPacketLabel: FHIR
+      hubTitle: NHCX
+      hubTag: VALIDATE · ROUTE · AUDIT
+      hubNote: Schema-checked and signed in transit, with an immutable trail on both sides.
+      targetTag: PAYER ENGINE
+      targetTitle: Auto-adjudicated
+      targetChecks:
+        - text: Policy active, member verified
+        - text: Package rate matched
+        - text: Duplicate & abuse checks clear
+        - text: Approved ₹1,42,500
+      targetNote: Rules run against clean data, so routine claims clear straight through and only exceptions reach a reviewer.
+      metrics:
+        - value: Minutes
+          title: not days to a decision
+          description: Straight-through claims are priced and approved while the patient is still at the desk.
+        - value: Zero
+          title: re-keying between systems
+          description: "The bill the hospital raised is the bill the payer adjudicates: same codes, same line items."
+        - value: Fewer
+          title: fraudulent and duplicate claims
+          description: Signed, de-duplicated, fully traceable exchanges make upcoding and repeat billing easy to catch.
+        - value: Lower
+          title: cost to settle each claim
+          description: Manual review shifts to the exceptions that need judgement, not every routine admission.
+    - __component: sections.capabilities
+      anchor: capabilities
+      title: Everything you need to pass certification
+      features:
+        - icon: square
+          title: FHIR R4 profiles
+          description: Validate coverage eligibility, pre-auth and claim bundles against the ABDM implementation guide.
+        - icon: circle
+          title: End-to-end claim flows
+          description: Run eligibility check, pre-auth, claim submission and payment notice as async API exchanges.
+        - icon: diamond
+          title: Payload encryption
+          description: Test JWE packaging and signature verification with sandbox-issued keys before production.
+        - icon: pill
+          title: Mock counterparty
+          description: No partner yet? Exchange with a mock payer or mock provider that responds to every call.
+        - icon: square-filled
+          title: Protocol validator
+          description: Every request is checked against the protocol and returns readable, line-level error detail.
+        - icon: circle-filled
+          title: Sample data sets
+          description: Ready-made beneficiaries, policies and hospital bills so you can start testing on day one.
+        - icon: square-dashed
+          title: Participant registry
+          description: Look up sandbox participant codes and endpoints exactly as you would in production.
+        - icon: gradient
+          title: Certification report
+          description: Download a signed compliance report and use it to request production onboarding.
+    - __component: sections.split-benefits
+      anchor: structured
+      eyebrow: WHY FHIR MATTERS
+      title: Structured health records pay off on both sides of the claim
+      intro: A scanned discharge summary is a document someone has to read. The same record as a FHIR bundle is data a system can price, check and settle. That single difference is what changes the economics of a claim for the hospital and for the payer alike.
+      columns:
+        - audienceLabel: FOR THE PROVIDER
+          heading: Faster money, less paperwork
+          cards:
+            - title: Cash cycle shortens
+              description: Pre-auth answers arrive in hours and settlement in days, so working capital is not tied up in pending claims.
+            - title: No document chase
+              description: Codes, bill lines and supporting records travel with the claim, so far fewer queries and resubmissions come back.
+            - title: One integration, every payer
+              description: The HMIS speaks the protocol once instead of maintaining a portal workflow per insurer and scheme.
+            - title: Fewer avoidable rejections
+              description: "Validation happens at submission, not weeks later: errors surface while the claim is still fixable."
+        - audienceLabel: FOR THE PAYER
+          heading: Decisions at machine speed
+          cards:
+            - title: Straight-through processing
+              description: Coded diagnoses and itemised charges let rules engines price routine claims without a human touching them.
+            - title: Fraud and abuse caught early
+              description: Signed, de-duplicated, traceable exchanges make upcoding, repeat billing and impossible combinations visible.
+            - title: Lower cost per claim
+              description: Adjudicators spend their time on genuine exceptions instead of re-keying data from PDFs.
+            - title: Analytics that hold up
+              description: Consistent codes across every provider make utilisation, package pricing and network performance comparable.
+      traits:
+        - title: Interoperable
+          description: "FHIR R4 profiles from the ABDM implementation guide: the same bundle any participant can read."
+        - title: Machine-readable
+          description: Every element coded and typed, so systems act on it without interpretation or manual entry.
+        - title: Auditable
+          description: Both sides hold a signed, timestamped record of exactly what was sent and decided.
+        - title: Portable for the patient
+          description: The same structured record carries into the patient's health account rather than staying locked in one hospital.
+    - __component: sections.live-stats
+      anchor: live
+      badge: LIVE ON THE NETWORK
+      counterStart: 71924803
+      counterLabel: claims settled through the exchange
+      todayStart: 18442
+      todayLabel: settled today
+      stats:
+        - value: 4h 12m
+          label: average pre-auth response
+        - value: "150"
+          label: payers and schemes live
+        - value: ₹0
+          label: to test and certify
+      asOf: "Figures as published by the exchange on 15 Aug 2026: updated with each reporting cycle."
+    - __component: sections.steps
+      anchor: how
+      title: From application to production access
+      intro: "Four stages from first application to live claims: the sandbox covers the first three, and the certificate you earn opens the fourth."
+      steps:
+        - tag: STEP 01
+          title: Get onboarded
+          description: Apply as a provider, payer, TPA or vendor. On verification you are added to the registry and issued participant codes, API keys and sandbox credentials.
+          highlighted: false
+        - tag: STEP 02
+          title: Integration
+          description: Wire up your system (or drop in the NHCX Adapter) and map your claim data to the FHIR R4 bundles the protocol expects.
+          highlighted: false
+        - tag: STEP 03
+          title: UAT & HTC
+          description: Run user acceptance testing against the mock counterparty, then clear the health-tech certification suite case by case.
+          highlighted: true
+        - tag: STEP 04
+          title: Go to production
+          description: Carry your signed certification into production onboarding and start exchanging live claims on NHCX.
+          highlighted: false
+      cta:
+        label: Open the learning path in DevTools
+        url: devtools:/learn
+        style: secondary
+    - __component: sections.devtools
+      anchor: devtools
+      badgeText: NHCX developer tools
+      title: "The ultimate connector: NHCX-compliant in hours, not quarters"
+      description: "Integration used to be a two-quarter project: protocol, encryption, callbacks, FHIR mapping, then months of certification cycles. DevTools collapses all of it. Agentic AI skills read your existing HMIS schema, generate the mappings, and drive the compliance suite until every case is green, while your team watches."
+      metricLabel: TYPICAL TIME TO COMPLIANCE
+      metricValue: 2–4
+      metricUnit: hours
+      metricNote: from HMIS schema to a passing certification run
+      steps:
+        - tag: STEP 01 · ~20 MIN
+          title: Point it at your HMIS
+          description: The agent reads your schema and sample records (tables, codes, bill formats) and proposes a mapping plan you approve.
+          highlighted: false
+        - tag: STEP 02 · ~40 MIN
+          title: Mappings written for you
+          description: FHIR R4 bundles generated against the ABDM implementation guide, with your ICD and package codes reconciled.
+          highlighted: false
+        - tag: STEP 03 · ~60 MIN
+          title: Self-driving certification
+          description: The agent runs all 38 compliance cases, reads the validator errors, fixes the mapping and re-runs until they pass.
+          highlighted: false
+        - tag: STEP 04 · SAME DAY
+          title: Certified and live
+          description: "Download the signed report and take it into production onboarding: the same connector runs there unchanged."
+          highlighted: false
+      primaryCta:
+        label: Get HCX DevTools
+        url: /devtools/
+        style: primary
+      secondaryCta:
+        label: Watch a full integration, start to finish
+        url: /videos/
+        style: secondary
+      metaChips:
+        - label: single static binary
+        - label: macOS · Linux · Windows · FreeBSD
+        - label: MIT licence
+    - __component: sections.faq
+      anchor: faq
+      title: Questions and answers
+      items:
+        - topic: Onboarding
+          question: Who should onboard to the sandbox?
+          answer: Any hospital, insurer, TPA, government scheme or software vendor building health-claim exchange capability. The sandbox exists so each participant can test its own components against the communication standards and get certified before touching production.
+        - topic: Onboarding
+          question: What happens after I submit the application?
+          answer: "Applications are verified against the details in the form: a semi-manual step, so expect review latency rather than instant provisioning. Duplicate requests from one participant, participants not registered with any registry, TSPs without a valid website and spam are filtered out. Approved participants are added to the sandbox and issued credentials; follow your application on the Status page."
+        - topic: Onboarding
+          question: Which registry ID do I use?
+          answer: "Providers use the HFR ID generated during ABDM integration. Payers and TPAs use the IRDAI (or respective authority) ID with leading zeros stripped: 0123 is passed as 123. End-user applications may use their client ID. An entity can hold several participant IDs, one per linked HFR ID."
+        - topic: Onboarding
+          question: What are the role and registry codes, and do they differ between sandbox and production?
+          answer: "They are the same in both. Roles: PROVIDER 10001, PAYER 10002, AGENCY_TPA 10003, EUA 10009. Registries: HFR/EUA 10001, PAYER/TPA 10004. Note that 10001 means PROVIDER as a role and HFR/EUA as a registry: different enums in different fields. Wrong mapping causes access issues, rejections or misrouting."
+        - topic: Onboarding
+          question: Can I test without a real payer or provider partner?
+          answer: Yes. The sandbox provides a dummy payer, participant 1000003538@hcx, for insurance plan, coverage eligibility, pre-auth, claim, payment notice and communication. You drive its answer yourself (Approve, Reject or Query) through a control endpoint that does not exist in production, so remove it from your code before go-live.
+        - topic: Tokens and access
+          question: How do I get a session token, and how long does it last?
+          answer: "Exchange the client_id and client_secret issued at onboarding for a bearer token with an OAuth 2.0 client-credentials call to /get/session. The token lives 1200 seconds (20 minutes): cache it, refresh it well inside that window and never log it. Sandbox tokens do not work against production and vice versa."
+        - topic: Tokens and access
+          question: Why do I get 401 Unauthorized?
+          answer: "Three usual causes: the token was sent without the Bearer prefix; it has expired: “Sender is not authorized to execute the operation” is the expiry message, so renew via the session API; or it was minted for the other environment. On a 401 discard the cached token, mint a new one and replay once; a second 401 means the credentials themselves are wrong."
+        - topic: Encryption
+          question: How is the payload protected on the wire?
+          answer: "Every request body is a JWE in compact serialization: RSA-OAEP-256 wraps the content key with the recipient’s public certificate and A256GCM encrypts the FHIR bundle. The x-hcx-* routing headers sit in the protected header, so the gateway routes without reading clinical content: the payload is unreadable even to NHCX."
+        - topic: Encryption
+          question: Where does the recipient’s certificate come from, and do I sign the payload as well?
+          answer: "Fetch it from the registry with /fetch/certs and cache it for 24 hours. No separate signature is needed: JWE’s authenticated encryption (AEAD) already protects the integrity of the ciphertext and the protected header. Rotate your own encryption key yearly and report any compromise at once."
+        - topic: Callbacks
+          question: Is any transaction synchronous?
+          answer: "No. The gateway never returns a business decision on the same connection. A submission is acknowledged with HTTP 202 and the answer arrives later as a separate inbound call to your on_ endpoint: /preauth/submit is answered on /preauth/on_submit. Every participant is therefore also an HTTP server."
+        - topic: Callbacks
+          question: What must my callback endpoint return?
+          answer: "HTTP 202 Accepted with the acceptance body, within 30 seconds. Anything else (a 200, a malformed body, an adjudication holding the socket) is treated as an error: the gateway retries the same message up to five times and then deletes the correlation ID. Acknowledge first, adjudicate after, and be idempotent on x-hcx-correlation_id."
+        - topic: Callbacks
+          question: My callback never arrives. What do I check?
+          answer: "In order: the callback URL uses a domain name, not an IP address or port; the server is India-based; the NHCX NAT addresses 3.109.99.210, 13.126.152.0 and 13.200.129.223 are whitelisted; the firewall is not dropping them; and the request is not being misrouted inside your own gateway or load balancer."
+        - topic: Callbacks
+          question: What is the v1/error API, and do I have to implement it?
+          answer: Yes, every integrator must. It is the sender-side endpoint that receives reject details when a message never reached its recipient or the recipient failed to handle it. Without it a request that died at the gateway looks, from the hospital desk, identical to one still under review.
+        - topic: Correlation and headers
+          question: What is the difference between api_call_id, request_id and correlation_id?
+          answer: "All three are 36-character UUIDs. x-hcx-api_call_id is new on every single call; x-hcx-request_id is new per request payload; x-hcx-correlation_id is constant for the whole conversation and is what responders copy back, so persist it against your case before you post. After five failed deliveries the correlation ID is dead: start a fresh cycle with a new one."
+        - topic: Correlation and headers
+          question: Which timestamp format does x-hcx-timestamp take?
+          answer: "The published sources disagree: the PMJAY handbook shows an IST ISO-8601 value (2026-03-19T11:46:34+05:30) and warns that other zones fail validation, while the integrator FAQ gives a zero-UTC form (2024-05-20T11:29:27.358Z). Validate against the environment you are integrating with rather than assuming; the documentation records both."
+        - topic: Correlation and headers
+          question: Which recipient code do I put in the header?
+          answer: The registry participant code, namespaced as code@hcx. For a payer take the processingID from the get/policies response, not the PayerID field, which is one of the most common integration mistakes. Your own code goes in x-hcx-sender_code.
+        - topic: Error codes
+          question: What is the difference between NHCX-* and PAYR-* error codes?
+          answer: "NHCX-* codes are raised by the exchange gateway: the headers, registration or transport are wrong and the payer never saw the request. PAYR-* codes come from the payer side, either the bridge that validates FHIR or the adjudication engine. PAYR numbers are reused across sheets with different meanings, so match on the description string and log both."
+        - topic: Error codes
+          question: What does NHCX-1006 “Duplicate request” mean?
+          answer: "A message with the same correlation ID already exists in the gateway. Correlation IDs are unique per request cycle: reuse one (including after a failed cycle) and the gateway rejects it. Mint a new UUID and resubmit."
+        - topic: Certification and go-live
+          question: What does certification actually get me?
+          answer: A successful-completion certificate from the sandbox, valid for a configured period, issued after your functional and security test results are reviewed. That certificate is what the production onboarding review asks for; depending on policy the sandbox may also require STQC or CERT-IN review.
+        - topic: Certification and go-live
+          question: What is tested at sandbox exit?
+          answer: "A fixed use-case list: 13 for providers (registry lookups, session, eligibility, insurance plan, pre-auth, communication, claim, search, payment-notice acknowledgement, task, status) and 15 for payers. Every payload must validate against the NRCeS profiles, responses must carry the right correlation and receiver codes, and rejections use a ProtocolResponse."
+        - topic: Certification and go-live
+          question: What changes when I go live?
+          answer: "The gateway base URL, the credentials, the certificates you encrypt against (re-fetch from production) and the counterparty: the dummy payer, its control endpoints and the test provider and policy IDs must be removed. Bundles, headers and encryption stay the same. PMJAY-NHCX is a separate track with extra scheme configuration."
+    - __component: sections.cta
+      anchor: apply
+      title: Start certifying today
+      primaryCta:
+        label: Apply for sandbox access
+        url: /apply/
+        style: primary
+pages:
+  devtools:
+    seo:
+      metaTitle: DevTools and the NHCX Adapter · NHCX
+      metaDescription: "Two developer tools for NHCX: DevTools, which teaches and rehearses the exchange in a browser, and the NHCX Adapter, the binary that carries it in production."
+    badgeText: NHCX developer tools
+    title: Two tools, one exchange
+    description: One to learn and rehearse the protocol in a browser, one to carry it in production. Nothing else to install, and no third thing to choose between.
+    primaryCta:
+      label: Download DevTools
+      url: "#downloads"
+      style: primary
+    secondaryCta:
+      label: Watch the install walkthrough
+      url: /videos/
+      style: secondary
+    metaChips:
+      - label: single static binary
+      - label: no runtime to install
+      - label: sha256 published
+      - label: MIT licence
+    buildLabel: ""
+    buildVersion: ""
+    buildReleased: ""
+    buildSpec: ""
+    buildChangelog:
+      label: Changelog →
+      url: /news/
+      style: ghost
+    flowSource: Your HIS / claims system
+    flowConnector: NHCX Adapter
+    flowTarget: NHCX exchange
+    features:
+      - icon: square
+        title: Protocol handled
+        description: "Headers, correlation IDs, acknowledgements, retries and out-of-order callbacks: the adapter does them, you post a bundle."
+      - icon: circle
+        title: Crypto built in
+        description: JWE encryption, signing and certificate rotation resolved against the participant registry.
+      - icon: diamond
+        title: FHIR, checked
+        description: Compose eligibility, pre-auth, claim and payment bundles in DevTools and validate them before you send one.
+      - icon: square
+        title: Rehearse, then go live
+        description: Drive a mock payer through every flow in the simulator, then point the same calls at the sandbox.
+    downloadsTitle: Downloads
+    downloads: []
+    runTitle: ""
+    runCode: ""
+    runNote: ""
+    checklistTitle: Before you start
+    checklistItems:
+      - tag: "01"
+        title: "A sandbox participant code and key pair: apply for access if you do not have one."
+        description: ""
+        highlighted: false
+      - tag: "02"
+        title: A publicly reachable callback URL, or the bundled tunnel for local development.
+        description: ""
+        highlighted: false
+      - tag: "03"
+        title: Your claim data mapped to the FHIR R4 profiles in the implementation guide.
+        description: ""
+        highlighted: false
+    consoleTitle: DevTools
+    consoleIntro: "Everything the protocol asks of you, in a tab: the endpoint reference with worked requests and responses, a guided path through the exchange, a FHIR builder that validates against the ABDM profiles, a mock payer to run whole flows against, and a decrypted, searchable log of every message. A sandbox account is built in, so nothing installs and no server of ours sits in the path."
+    consoleTiles:
+      - title: API catalogue
+        description: Every NHCX endpoint with its purpose, preconditions, common mistakes and worked request and response examples.
+        url: devtools:/apis
+      - title: Learning path
+        description: Two tracks and fourteen chapters, a short check after each, with progress kept in DevTools.
+        url: devtools:/learn
+      - title: FHIR builder
+        description: Compose eligibility, pre-authorisation, claim and payment bundles against the ABDM profiles and validate them.
+        url: devtools:/builder
+      - title: Simulator
+        description: Drive a mock payer or provider through every flow and read the responses as they arrive.
+        url: devtools:/simulator
+      - title: Transaction logs
+        description: Every request and callback the adapter sent or received, decrypted, searchable and replayable.
+        url: devtools:/
+  videos:
+    seo:
+      metaTitle: Videos · NHCX
+      metaDescription: Planned walkthroughs of the NHCX integration (onboarding, DevTools, claim workflows, security and certification) with the outline each recording will follow.
+    eyebrow: VIDEO LIBRARY
+    title: Walkthroughs of the integration, chapter by chapter
+    intro: Nothing has been recorded yet. Each entry below is a planned session with the outline it will follow; the recording replaces the outline when it is published. Webinar materials get their own group as sessions are held.
+    channelCta:
+      label: Start with the learning path in DevTools
+      url: devtools:/learn
+      style: secondary
+    featuredBadge: Planned · first recording
+    featuredTitle: "End to end: install DevTools, register a participant, run a coverage eligibility check"
+    featuredDescription: The first recording will follow the implementation journey of the learning path, from a fresh install to reading the on_check callback.
+    featuredMeta: not yet scheduled
+    footNote: Recordings and webinar materials are announced in the news feed.
+    footLink:
+      label: News →
+      url: /news/
+      style: ghost
+  news:
+    seo:
+      metaTitle: News · NHCX
+      metaDescription: Milestones of the SBX 2.0 preview site, documentation refreshes, and the NHA and NRCeS material the corpus reproduces.
+    eyebrow: NEWS
+    title: What changed on this site and in the documentation
+    intro: Milestones of the SBX 2.0 preview site, refreshes of the documentation corpus, and pointers to the NHA and NRCeS material the corpus reproduces. Nothing here is a press release.
+    featuredTag: Documentation
+    featuredDate: 22 Aug 2026
+    featuredTitle: "Documentation corpus refreshed: 64 pages in 12 chapters"
+    featuredDescription: "The reader and the assistant now run on the corpus built on 22 August 2026 from NHA’s published material: claim flows, FHIR references, protocol headers, codes and troubleshooting."
+    featuredLinkLabel: Open the documentation →
+    featuredImageNote: Documentation
+    upcomingTitle: Sessions
+    events: []
+    upcomingNote: No developer sessions are scheduled. When one is, it is announced here.
+    enquiriesTitle: Questions about this site
+    enquiriesText: This is the SBX 2.0 preview of the sandbox portal. Questions about its content go to the sandbox desk through the application form; the National Health Authority’s own press contacts are published on its official site.
+  apply:
+    seo:
+      metaTitle: Apply for Sandbox Access · NHCX
+      metaDescription: Apply for access to the National Health Claim Exchange sandbox as a company, LLP, firm, individual or proprietorship.
+    eyebrow: SANDBOX ACCESS
+    title: Apply for access to the NHCX sandbox
+    intro: Tell us who you are, which role you will play on the exchange and what you want to test. Applications are reviewed by the onboarding desk; you will receive an application ID immediately and can track it on the status page.
+    useCaseOptions:
+      - Coverage eligibility
+      - Pre-authorisation
+      - Claim submission
+      - Payment notice
+      - Communication (queries and documents)
+      - Insurance plan / package master
+      - Status and search
+      - Notifications and subscriptions
+    documentsNote: Attach the registration certificate for a company, LLP or firm (CIN or LLPIN) or PAN and address proof for an individual or proprietorship. PDF, PNG or JPG, up to 10 MB each.
+    consentText: I confirm that the details above are accurate, that I am authorised to apply on behalf of the organisation named, and I agree to the sandbox terms of use and privacy policy below.
+    submitLabel: Submit application
+    successTitle: Application received
+    successText: "Keep this application ID safe: together with the email address you used, it lets you track the review on the status page. The onboarding desk typically responds within two working days."
+    errorText: The application could not be submitted because the exchange's content service is not reachable right now. Nothing was sent. Please try again in a few minutes; if the problem persists, write to the onboarding desk with the details you entered.
+    privacyTitle: Privacy policy
+    privacyText: The details you submit are used only to assess and process your sandbox access application and to contact you about it. They are stored by the National Health Authority's sandbox onboarding desk, are not shared with third parties, and are removed when the application is withdrawn or the sandbox account is closed. Uploaded documents are visible only to reviewers.
+    termsTitle: Terms of use
+    termsText: The NHCX sandbox is a test environment. It holds no real beneficiary, policy or claim data and must not be sent any. Access is granted to named participants for integration and certification, may be revoked for misuse, and carries no service-level commitment. Passing the sandbox exit checklist is a prerequisite for, not a guarantee of, production onboarding.
+collections:
+  videos:
+    - track: ONBOARDING
+      title: Applying for sandbox access
+      description: What the application asks for and what happens after you submit.
+      rank: 0
+      webinar: false
+      outline:
+        - text: The two applicant types and the documents each needs
+        - text: "Role on the exchange: provider, payer, TPA, HMIS vendor"
+        - text: What verification filters out and why review is semi-manual
+        - text: Reading your status on the Status page
+    - track: ONBOARDING
+      title: Participant codes, registry IDs and keys
+      description: The three identifiers that get confused at onboarding and where each is used.
+      rank: 1
+      webinar: false
+      outline:
+        - text: Registry ID per participant type; stripping leading zeros
+        - text: Role and registry enums and the 10001 collision
+        - text: Participant creation and the passcode confirmation
+        - text: Uploading your encryption certificate
+    - track: DEVTOOLS
+      title: Installing HCX DevTools
+      description: From the download table to a running console.
+      rank: 2
+      webinar: false
+      outline:
+        - text: Downloading the build for your platform and verifying the SHA-256
+        - text: First run of the console
+        - text: Pointing the kit at the sandbox gateway
+        - text: Where the staged documentation lives
+    - track: DEVTOOLS
+      title: Running a flow in the simulator
+      description: One transaction end to end, with the envelope opened up.
+      rank: 3
+      webinar: false
+      outline:
+        - text: "Choosing a family: eligibility, pre-auth, claim"
+        - text: Inspecting the JWE envelope and protected header
+        - text: Reading the 202 acknowledgement and the callback
+        - text: Injecting transport faults on outbound envelopes
+    - track: CLAIM WORKFLOWS
+      title: Coverage eligibility, request to callback
+      description: The full asynchronous round trip against the dummy payer.
+      rank: 4
+      webinar: false
+      outline:
+        - text: "The four purposes: discovery, validation, benefits, auth-requirements"
+        - text: Building the CoverageEligibilityRequest bundle
+        - text: Correlating /check with /on_check
+        - text: Reading the benefit and authorization fields
+    - track: CLAIM WORKFLOWS
+      title: Pre-authorisation outcomes
+      description: Every answer a payer can give, and what to do with each.
+      rank: 5
+      webinar: false
+      outline:
+        - text: Claim.use = preauthorization under workflow 12
+        - text: Approved, partially approved, queried, rejected, cancelled
+        - text: Answering a query on /communication/on_request
+        - text: Enhancement and cancellation via Task
+    - track: CLAIM WORKFLOWS
+      title: Claim submission and payment notice
+      description: From the discharge claim to the UTR.
+      rank: 6
+      webinar: false
+      outline:
+        - text: Switching the pre-auth payload to a claim
+        - text: The ClaimResponse decision table
+        - text: "PaymentNotice: settlement, TDS and the UTR"
+        - text: Acknowledging the notice
+    - track: SECURITY
+      title: JWE encryption in practice
+      description: Building and opening the encrypted payload.
+      rank: 7
+      webinar: false
+      outline:
+        - text: RSA-OAEP-256 and A256GCM
+        - text: Fetching and caching the recipient certificate
+        - text: The five-part compact serialization
+        - text: Decrypting a callback with your private key
+    - track: CERTIFICATION
+      title: Sandbox exit and go-live
+      description: What the certification review looks at and what to change afterwards.
+      rank: 8
+      webinar: false
+      outline:
+        - text: The provider and payer use-case checklists
+        - text: "Exit criteria: NRCeS profiles, correlation rules, ProtocolResponse"
+        - text: What changes at go-live
+        - text: Removing the dummy-payer scaffolding
+  newsItems:
+    - date: 22 Aug 2026
+      tag: Documentation
+      tone: brand
+      title: "Documentation corpus refreshed: 64 pages in 12 chapters"
+      body: "Built on 22 August 2026 from NHA’s published material: claim flows, FHIR references, protocol headers, codes and troubleshooting. The reader, the search index and the assistant all read this set."
+      meta: documentation · this site
+      rank: 0
+    - date: 25 Aug 2026
+      tag: Milestone
+      tone: brand
+      title: "Learning path launched: two tracks, fourteen chapters with checks"
+      body: NHCX fundamentals for newcomers and the API implementation journey for integrators, each chapter ending in a short check. The path lives in the DevTools console alongside the API catalogue, with progress kept there.
+      meta: milestone L-B · this site
+      url: devtools:/learn
+      rank: 1
+    - date: 25 Aug 2026
+      tag: Milestone
+      tone: brand
+      title: "HCX DevTools page: per-platform builds with SHA-256 digests"
+      body: The NHCX Adapter release is listed per operating system and architecture with its checksums, and the page recommends the build for the machine it is read on.
+      meta: milestone L-A · this site
+      url: /devtools/
+      rank: 2
+    - date: 25 Aug 2026
+      tag: Milestone
+      tone: muted
+      title: Sandbox application form, API catalogue, playbook and service status
+      body: Apply for sandbox access and look the application up later; browse the 63-endpoint catalogue; follow the playbook per persona; watch component health on the status page.
+      meta: milestone L-A · this site
+      url: /apply/
+      rank: 3
+    - date: 14 Aug 2026
+      tag: NHA document
+      tone: muted
+      title: NHA integrator FAQ v1.1 reproduced in the corpus
+      body: The Commonly Asked Questions for NHCX APIs (registry codes, 401s, header formats, callbacks, the dummy payer and the PMJAY-specific rules) dated 14 August 2026 and marked approval pending in the source.
+      meta: documentation chapter 11.03
+      rank: 4
+    - date: 22 Aug 2026
+      tag: Reference
+      tone: muted
+      title: "NRCeS FHIR profiles: why NHCX mandates them over base R4"
+      body: What NRCeS publishes, which resources are profiled for the health-claim eObjects, and how to validate a payload against the ndhm.in package.
+      meta: documentation chapter 05.02
+      rank: 5
+    - date: 22 Aug 2026
+      tag: Reference
+      tone: muted
+      title: The NHA workflow status sheet, mapped to protocol headers
+      body: Every x-hcx-workflow_id (provider-initiated and payer-response codes) with its protocol status and NRCeS outcome.
+      meta: documentation chapter 09.01
+      rank: 6
+    - date: 22 Aug 2026
+      tag: Reference
+      tone: muted
+      title: "Participant onboarding guidelines: the two-stage path"
+      body: Sandbox registration, integration, certification, then production registration and go-live, with the registry APIs and identifiers used at each step.
+      meta: documentation chapter 10.01
+      rank: 7
+    - date: 22 Aug 2026
+      tag: Reference
+      tone: muted
+      title: Sandbox exit checklists for providers and payers
+      body: The 13 provider and 15 payer use cases assessed at certification, the exit criteria, and what changes at go-live.
+      meta: documentation chapter 10.02
+      rank: 8
+  releaseNotes:
+    - version: 2.0.0-preview.3
+      date: 2026-08-25
+      channel: sandbox
+      title: "Milestone L-C: deployment path, releases, newsletter, dashboard structure"
+      summary: "The third preview of the SBX 2.0 site: the export now builds for its production base path, and the content sections stop presenting illustrative material as fact."
+      highlights:
+        - text: "Base path: the export builds with NEXT_PUBLIC_BASE_PATH=/landing, every internal link goes through one helper, and a build check fails on any root-absolute link"
+        - text: Release notes page fed by a new release-note collection
+        - text: "Newsletter sign-up in the footer and on the news page: email, consent and source only; idempotent; honeypot-protected"
+        - text: FAQ expanded to 21 questions written from the documentation corpus, grouped by topic and linked to their chapters
+        - text: Video library lists planned recordings with outlines instead of placeholder embeds; webinar materials form their own group
+        - text: News page carries this site’s milestones and corpus references only
+        - text: Dashboard scopes carry figure sets per period, state and workflow with an explicit source; the sample banner shows only for sample data
+        - text: Applications-by-status tiles on the dashboard, from a counts-only CMS endpoint
+      breaking:
+        - text: "dashboard-scope: the top-level kpis/months/funnel/states/payers fields moved under figures[] (period, state, workflow); the CMS re-seeds the sample sets on start"
+        - text: elements.qa gained topic and docs; FAQ items without a topic render under “General”
+      links:
+        - label: News
+          url: /news/
+          style: ghost
+    - version: 2.0.0-preview.2
+      date: 2026-08-25
+      channel: sandbox
+      title: "Milestone L-B: learning path, flow animation, site search, CMS hardening"
+      summary: "Second preview: a guided way through the exchange before building on it, and a build that fails on content drift instead of shipping blanks."
+      highlights:
+        - text: "Learning path: two tracks, fourteen chapters, a check after each: now served by the DevTools console, with progress kept there"
+        - text: Animated flow diagrams for the transaction chapters
+        - text: Site-wide search over the documentation, the API catalogue, the chapters, news and pages
+        - text: "CMS contract: one map drives the sync, the generated types and the public permissions; content checks fail the build on drift"
+      breaking: []
+      links:
+        - label: Learning path in DevTools
+          url: devtools:/learn
+          style: ghost
+    - version: 2.0.0-preview.1
+      date: 2026-08-25
+      channel: sandbox
+      title: "Milestone L-A: sign-up, API catalogue, playbook, service status"
+      summary: "First preview of the SBX 2.0 sandbox portal: Next.js 15 static export built from a Strapi 5 CMS."
+      highlights:
+        - text: Sandbox application form with honeypot, supporting documents and status lookup by application ID and email
+        - text: "API catalogue: 63 endpoints across 11 services, by persona and flow"
+        - text: Integration playbook by stage and persona
+        - text: Service health with 90-day uptime from the incident log, and an application-status tab
+        - text: "Honesty pass: illustrative figures sit under a sample-data banner"
+      breaking: []
+      links:
+        - label: Apply
+          url: /apply/
+          style: ghost
+        - label: API catalogue
+          url: devtools:/apis
+          style: ghost
+copy:
+  chrome:
+    skipLink: Skip to content
+    marksLabel: National Health Claim Exchange, and the programmes that publish it
+    nhcxAlt: National Health Claim Exchange
+    docsCta:
+      label: Documentation
+      href: docs:/
+    footer:
+      contactTitle: Contact
+      addressLines:
+        - 9th floor, Tower-I, Jeevan Bharati Building,
+        - Connaught Place, New Delhi 110001
+      phone: Toll-free 14555
+      credit: Designed and developed by National Health Authority (NHA), Government of India.
+      updatedPrefix: Last updated
+  getStarted:
+    meta:
+      title: Get started · NHCX
+      description: The path onto the National Health Claim Exchange, from sandbox registration to production, for providers and for payers.
+    eyebrow: Before you write any code
+    title: Get started on NHCX
+    lede: Four stages take any participant from registration to production. What you build inside them depends on which half of a claim you handle, so say which you are and the stages fill in.
+    question: Which side of a claim are you on?
+    changeLabel: Not you? Choose again
+    roles:
+      - key: provider
+        label: Provider
+        note: A hospital, clinic, nursing home or day care centre, or the HMIS or TMS vendor building for one. You raise claims.
+        flowTitle: The provider route
+        steps:
+          - title: Register on the ABDM sandbox
+            text: Fill in the sandbox registration form to get your credentials and participant code. The exchange addresses you by that code, so one integration reaches every payer on it.
+          - title: Send what your system already holds
+            text: The diagnosis, procedure, bill lines and codes your HMIS already records become one signed FHIR bundle. Nothing is re-keyed and nothing is scanned.
+          - title: Build the raising half of the flow
+            text: Check coverage eligibility, raise the pre-auth, submit the claim, and read the payment notice that comes back. Each one is a request you send and a callback you handle.
+          - title: Certify, then apply for production
+            text: Complete the functional and security test cases for the provider role in the sandbox, then submit both certificates. NHCX assigns your production role and credentials.
+      - key: payer
+        label: Payer
+        note: An insurer, TPA, state health agency or government scheme such as PM-JAY. You adjudicate claims.
+        flowTitle: The payer route
+        steps:
+          - title: Register on the ABDM sandbox
+            text: Fill in the sandbox registration form to get your credentials and participant code. Providers reach you by that code, so one integration serves all of them.
+          - title: Make your rules readable to the exchange
+            text: Plans, package rates and the checks you apply become rules a request can be matched against, so a clean claim is decided without anyone opening an attachment.
+          - title: Build the answering half of the flow
+            text: Receive eligibility checks, pre-auth requests and claims, respond on each, and send the payment notice. Each one is a request you handle and a callback you send.
+          - title: Certify, then apply for production
+            text: Complete the functional and security test cases for the payer role in the sandbox, then submit both certificates. NHCX assigns your production role and credentials.
+    bothTitle: True whichever you are
+    both:
+      - You build against NHCX once and reach every counterparty on it, instead of integrating with each payer or hospital in turn.
+      - The sandbox is free and open before you apply for anything, so you can read the specification by building against it.
+      - Certification is per role. A vendor building for both sides certifies for both.
+    ctaLabel: Apply for access
+    ctaHref: /apply/
+  home:
+    hero:
+      titleLead: One connected network for
+      titleAccent: Health Claims
+      text: NHCX puts India’s health claims on one interoperable standard, so provider and payer systems exchange claim data directly.
+      ctaLabel: Get started
+      ctaHref: /get-started/
+    stats:
+      eyebrow: From the production exchange
+      title: NHCX Statistics
+      measures:
+        - key: integrators
+          label: Integrators
+        - key: providers
+          label: Hospitals
+        - key: preauth
+          label: Preauths
+        - key: claims
+          label: Claims
+      rows:
+        - key: priv
+          label: Private
+        - key: gov
+          label: Government
+    benefits:
+      eyebrow: Why does this benefit
+      title: Powering businesses of all sizes.
+      titleAccent: Run your business on a reliable platform that adapts your needs.
+      cards:
+        - tone: warm
+          tag: Standardisation
+          ariaLabel: "Standardisation: every claim speaks the same language"
+          sub:
+            lead: One standard for every
+            accent: claim
+            tail: ""
+          over:
+            before: "Every "
+            strong: claim
+            after: " speaks the same language"
+          text: NHCX uses FHIR-based standards and internationally accepted coding practices, so provider and payer systems can exchange health information in a common, machine-readable format, without losing its meaning across systems.
+          points:
+            - title: One common structure
+              text: Health information follows a consistent FHIR-based format.
+            - title: Zero ambiguity
+              text: Standardised codes preserve the meaning of clinical information.
+            - title: Works across systems
+              text: Different technology stacks exchange the same information.
+          register:
+            url: nhcx.abdm.gov.in/claims
+            title: Claim register
+            standard: FHIR R4
+            rows:
+              - id: CLM-40912
+                tone: ok
+                label: Approved
+              - id: CLM-40913
+                tone: review
+                label: In review
+              - id: CLM-40915
+                tone: ok
+                label: Approved
+              - id: CLM-40921
+                tone: query
+                label: Query
+              - id: CLM-40928
+                tone: ok
+                label: Approved
+              - id: CLM-40931
+                tone: review
+                label: In review
+              - id: CLM-40934
+                tone: ok
+                label: Approved
+              - id: CLM-40940
+                tone: ok
+                label: Approved
+          phone:
+            label: Pre-auth
+            amount: ₹48,600
+            facts:
+              - label: Package
+                value: HBP 2.0
+              - label: Room
+                value: Semi-private
+              - label: Stay
+                value: 3 days
+            button: Submit
+        - tone: cool
+          tag: Structured data
+          ariaLabel: "Structured data: data a system can read, not a page to re-type"
+          sub:
+            lead: Send
+            accent: data
+            tail: ", not documents"
+          over:
+            before: "Data a system can "
+            strong: read
+            after: ", not a page to re-type"
+          text: "Diagnoses, procedures, drugs and bill lines travel as coded values: priced and checked automatically instead of opened and read."
+          points:
+            - title: Coded at source
+            - title: Nothing lost in transit
+            - title: Signed and audit-ready
+          table:
+            head:
+              - Field
+              - Coded value
+            rows:
+              - label: Diagnosis
+                code: ICD-10 · I21.0
+              - label: Procedure
+                code: SNOMED · 232717009
+              - label: Drug
+                code: NDHM-DR · 4180
+        - tone: mint
+          tag: Automation & AI assistance
+          ariaLabel: "Automation and AI assistance: fewer queries, faster decisions"
+          sub:
+            lead: More accuracy,
+            accent: less
+            tail: " resistance"
+          over:
+            before: "Fewer queries, "
+            strong: faster
+            after: " decisions"
+          text: Validated claims let payer engines price routine cases straight through, and let hospitals catch gaps before a claim ever leaves.
+          points:
+            - title: Straight-through pricing
+            - title: Checks before submission
+            - title: Insight across claims
+          bars:
+            items:
+              - label: Auto-adjudicated
+                percent: 78
+                tone: ""
+              - label: Queries raised
+                percent: 9
+                tone: teal
+            note: Bundle checked against payer rules before it leaves the hospital.
+    howItWorks:
+      eyebrow: How NHCX works
+      statementLead: Instead of converting structured hospital data into PDFs and images and sending them manually,
+      statementAccent: NHCX enables providers and payers to exchange digitised, machine-readable health information.
+      netLabel: Providers connect to payers through NHCX
+      providerLabel: Provider
+      payerLabel: Payer
+      hubLabel: NHCX
+      providers:
+        - District hospital
+        - Multi-speciality chain
+        - Nursing home
+        - Day care centre
+      payers:
+        - Insurance company
+        - TPA
+        - State health agency
+        - Government scheme
+    journey:
+      eyebrow: How a typical flow looks like
+      title: From the hospital’s HMIS to a decision, and back again
+      graphLabels:
+        start: HMIS
+        hub: NHCX
+        end: PAYER
+      steps:
+        - tag: 01 · Hospital HMIS
+          title: Structured at source
+          text: The discharge summary, bill lines and codes leave the HMIS as a signed FHIR R4 bundle. No PDFs, no re-typing.
+          tick: Hospital HMIS
+        - tag: 02 · In transit
+          title: Schema-checked and signed
+          text: Validated against the specification and signed on both sides, leaving an immutable trail.
+          tick: In transit
+        - tag: 03 · NHCX
+          title: Route and deliver
+          text: The exchange identifies the payer and delivers the claim. One integration, every payer.
+          tick: NHCX
+        - tag: 04 · Payer engine
+          title: Auto-adjudicated
+          text: Policy active, member verified. Package rate matched. Duplicate and abuse checks clear.
+          tick: Payer engine
+        - tag: 05 · The return leg
+          title: Back to the provider
+          text: "The decision travels the same path in reverse and lands in the HMIS: a round trip, not a one-way pipe."
+          tick: Return leg
+    onboarding:
+      eyebrow: How to onboard
+      titleLead: Four steps from registration to
+      titleAccent: production
+      steps:
+        - title: Register on the ABDM sandbox
+          text: "Fill in the sandbox registration form and you can start building. ABHA verification is not required in the sandbox: you only need it for production, where beneficiaries are authenticated for real."
+          linkLabel: Sandbox registration
+          linkHref: https://sandbox.abdm.gov.in/sandbox/v3/sandbox-registration
+        - title: Integrate and test the APIs
+          text: "Build against the HCX sandbox: coverage eligibility, pre-auth, claim, payment notice and communication, each with its on_ callback. Use the Postman collections and the DevTools console to exercise every flow."
+          linkLabel: HCX sandbox documents
+          linkHref: https://hcxsbx.abdm.gov.in/#/documents
+        - title: Get sandbox certification
+          text: Complete the functional and security test cases for your role. The affiliate sandbox may ask for additional security review (STQC or CERT-In) before it issues the certificates.
+          linkLabel: Test cases
+          linkHref: https://sandbox.abdm.gov.in/sandbox/v3/new-documentation?doc=TestCases
+        - title: Apply for production
+          text: Share the functional and security certificates. NHCX assigns your role in production, provisions credentials and registers you as a participant, then you go live.
+          linkLabel: Apply for sandbox access here
+          linkHref: /apply/
+      support:
+        - title: Integration support
+          parts:
+            - "Write to "
+            - label: hcx.integration@nha.gov.in
+              href: mailto:hcx.integration@nha.gov.in
+            - " or "
+            - label: integration.support@nha.gov.in
+              href: mailto:integration.support@nha.gov.in
+            - . A standing call for integrators and partners is held on the 22nd of every month.
+        - title: Facility registry
+          parts:
+            - "Hospitals register their facility in the ABDM Health Facility Registry first: "
+            - label: facility.abdm.gov.in
+              href: https://facility.abdm.gov.in/
+            - ", queries to "
+            - label: facility@nha.gov.in
+              href: mailto:facility@nha.gov.in
+            - .
+    understand:
+      eyebrow: Understand NHCX
+      title: A national exchange for health-claim data, run by the National Health Authority under ABDM
+      intro: The National Health Claims Exchange is the digital gateway between the people who deliver care and the people who pay for it. A hospital submits a claim once, as coded FHIR data; the exchange checks and signs it, finds the payer, and delivers it. The decision comes back the same way. It began as the Health Claims Platform (HCP) and was renamed NHCX on the industry’s suggestion; its specifications were developed in the open with insurers, TPAs and state health agencies.
+      participantsTitle: Who takes part
+      participants:
+        - icon: provider
+          title: Providers
+          text: Hospitals, clinics and the HMIS vendors who build for them.
+        - icon: payer
+          title: Payers
+          text: Insurers, TPAs, state health agencies and schemes like PM-JAY.
+        - icon: regulator
+          title: Sponsors and regulators
+          text: Scheme planners, IRDAI and auditors, on aggregate anonymised views.
+        - icon: person
+          title: Beneficiaries
+          text: Patients, authenticated by ABHA, whose consent governs what an app sees.
+      useCasesTitle: What moves over it
+      useCases:
+        - icon: eligible
+          name: Coverage eligibility
+          path: /coverageeligibility/check
+          what: Is this person covered for this treatment, today?
+        - icon: stamp
+          name: Pre-authorisation
+          path: /preauth/submit
+          what: Approve a package and amount before admission.
+        - icon: document
+          name: Claim
+          path: /claim/submit
+          what: "The discharge bundle: diagnosis, procedures, bill lines."
+        - icon: receipt
+          name: Payment notice
+          path: /paymentnotice/request
+          what: Settlement advice, from payer to provider.
+        - icon: messages
+          name: Communication
+          path: /communication/request
+          what: Queries and supporting documents, both ways.
+      note:
+        - "Every request has an "
+        - code: on_
+        - " callback, and every message is a signed, encrypted envelope (JWE) around an HL7 FHIR R4 bundle. "
+      whyTitle: Why it matters
+      why:
+        - icon: braces
+          title: Structured, not scanned
+          text: Claims arrive as coded data, so routine cases auto-adjudicate and queries drop.
+        - icon: trend
+          title: Lower cost and time
+          text: Automation cuts processing cost, turnaround and manual error.
+        - icon: vault
+          title: Records stay with the hospital
+          text: Clinical and financial records never leave your systems. Only claim data moves, into billing and accounts.
+        - icon: signed
+          title: Open and non-repudiable
+          text: Open APIs, signed events, a queryable audit log and a public registry.
+    tools:
+      titleLead: See what’s happening
+      titleAccent: inside the tool
+      prevLabel: Previous screen
+      nextLabel: Next screen
+      screens:
+        - kind: builder
+          shotTitle: FHIR Builder
+          shotSub: Visual editor to construct payload request bundles quickly
+          paneTitle: Visual FHIR bundle constructor
+          paneSub: Select a request template to generate form results dynamically.
+          fields:
+            - label: Mapping template
+              value: E4/NHCX.diagnostic.report
+              caret: true
+            - label: Document title
+              optional: true
+            - label: Patient name
+              required: true
+              focus: true
+          fieldPair:
+            - label: Gender
+              value: Select
+              muted: true
+              caret: true
+            - label: Date of birth
+              value: YYYY-MM-DD
+              muted: true
+          codeTitle: FHIR JSON result
+          codeBadge: Valid
+          code: |-
+            {
+              "resourceType": "Bundle",
+              "type": "collection",
+              "entry": [
+                { "resource": {
+                  "resourceType": "Claim",
+                  "status": "active",
+                  "total": { "value": 48600 }
+                } }
+              ]
+            }
+          footText: Build and validate FHIR bundles visually, with guided fields and instant FHIR output.
+          footLinkLabel: Open the FHIR builder →
+          footLinkHref: devtools:/builder
+        - kind: ecosystem
+          shotTitle: Simulated ecosystem
+          shotSub: A dummy IRDAI, PM-JAY, payers and providers to exchange claims with
+          paneTitle: Participants in this sandbox
+          participants:
+            - name: IRDAI
+              role: regulator
+              state: audit view
+              tone: ok
+            - name: PM-JAY · SHA
+              role: government scheme
+              state: HBP 2.0 rates
+              tone: ok
+            - name: NIC-HEALTH
+              role: insurer
+              state: auto-adjudication on
+              tone: ok
+            - name: MediAssist
+              role: TPA
+              state: queries 2/10
+              tone: ok
+            - name: District Hospital, Pune
+              role: provider
+              state: HMIS · 14 claims
+              tone: ok
+            - name: Apex Diagnostics
+              role: provider
+              state: awaiting first bundle
+              tone: wait
+          logTitle: Live traffic
+          log:
+            - text: hospital → NHCX · /claim/submit
+              state: "202"
+              tone: ok
+            - text: NHCX → NIC-HEALTH · deliver
+              state: "200"
+              tone: ok
+            - text: NIC-HEALTH → NHCX · /claim/on_submit
+              state: "202"
+              tone: ok
+            - text: NHCX → hospital · decision
+              state: approved
+              tone: ok
+            - text: IRDAI · /claim/search (aggregate)
+              state: masked
+              tone: warn
+          footText: "Every actor in the real network, simulated: a regulator, a government scheme, insurers, TPAs and hospitals that answer your calls the way production will."
+          footLinkLabel: Open the simulator →
+          footLinkHref: devtools:/simulator
+        - kind: adapter
+          shotTitle: nhcx-adapter
+          shotSub: Open-source adapter between your HMIS and the exchange, with the go-live checklist
+          codeTitle: Terminal
+          codeBadge: open source
+          shell:
+            - $ tar xzf nhcx-adapter_v1.0.1_linux_amd64.tar.gz
+            - $ ./nhcx-adapter config edit
+            - $ ./nhcx-adapter serve
+            - ✓ participant code `HOSP-4471` loaded
+            - ✓ keys verified · JWE ready
+            - ✓ callback https://hospital.example/in/v1/ reachable
+            - ✓ panel on http://127.0.0.1:8090/panel
+          checklistTitle: Go-live checklist
+          checklist:
+            - label: Sandbox participant code and key pair
+              done: true
+            - label: Public callback URL or bundled tunnel
+              done: true
+            - label: Claim data mapped to the FHIR R4 profiles
+              done: true
+            - label: All five use cases pass in the simulator
+              done: true
+            - label: Functional test cases cleared
+              done: false
+            - label: Security review (STQC / CERT-In)
+              done: false
+            - label: Production credentials provisioned
+              done: false
+          footText: One static binary (no JVM, no Docker) that signs, encrypts and routes every message, and tells you exactly what is left before you go live.
+          footLinkLabel: Get nhcx-adapter →
+          footLinkHref: /devtools/#adapter
+        - kind: playbook
+          shotTitle: Playbook and concepts
+          shotSub: The order to build in, the mandatory APIs per role, and what each concept means
+          paneTitle: Integration playbook · Provider
+          steps:
+            - label: Register and get keys
+              state: done
+            - label: Coverage eligibility check
+              state: done
+            - label: Pre-authorisation submit / on_submit
+              state: now
+            - label: Claim submit / on_submit
+              state: ""
+            - label: Payment notice and communication
+              state: ""
+            - label: Certification and go-live
+              state: ""
+          conceptTitle: Concept · Correlation ID
+          conceptParts:
+            - "Every request and its "
+            - code: on_
+            - " callback share one correlation ID. The exchange uses it to pair the return leg with the onward leg, and so should your HMIS."
+          conceptTags:
+            - JWE envelope
+            - Participant code
+            - FHIR bundle
+            - on_ callback
+            - Sandbox exit
+          footText: A guided path with a check after every chapter, so a new integrator knows what to build first and why.
+          footLinkLabel: Start the learning path →
+          footLinkHref: devtools:/learn
+    integration:
+      titleLead: NHCX
+      titleAccent: developer integration
+      items:
+        - title: Send data, not the document
+          text: Your hospital system already captures the clinical data a claim needs. NHCX moves that data as structured information instead of converting it into PDFs, images or scanned attachments.
+        - title: Preserve clinical detail
+          text: Diagnoses, procedures, drugs and bill lines travel as coded values, so nothing is lost in translation between the hospital and the payer.
+        - title: Improve claim accuracy
+          text: Bundles are validated against the specification before they leave, so incomplete claims are caught at source instead of coming back as queries.
+        - title: Enable automation
+          text: Machine-readable claims let payer rules engines price routine cases straight through, and let hospitals reconcile settlements automatically.
+      links:
+        - label: Explore the API catalogue
+          href: devtools:/apis
+        - label: Start the learning path
+          href: devtools:/learn
+        - label: Downloads
+          href: /download/
+      mockUrl: POST /v1/claim/submit
+      code: |-
+        {
+          "resourceType": "Bundle",
+          "type": "collection",
+          "entry": [
+            { "resource": { "resourceType": "Claim", "status": "active" } },
+            { "resource": { "resourceType": "Patient" } },
+            { "resource": { "resourceType": "Condition", "code": "ICD-10 I21.0" } },
+            { "resource": { "resourceType": "Procedure", "code": "SNOMED 232717009" } }
+          ],
+          "signature": { "type": "JWS", "who": "HMIS-4471" }
+        }
+    sandbox:
+      titleLead: Build in the
+      titleAccent: sandbox
+      titleTail: . Certify once. Go live.
+      text: Free to test and certify, for hospitals, insurers, TPAs, government schemes and solution vendors.
+      ctaLabel: Get sandbox access
+    specs:
+      eyebrow: Specifications and policies
+      title: The documents the exchange runs on
+      lede: The standards the exchange is built on, each at its source.
+      groups:
+        - title: Technical specifications
+          items:
+            - label: Implementation guide
+              href: https://nhcx.abdm.gov.in/#/NHCX_Specifications/Implementation_Guide
+              note: Protocol, message envelope, API pattern
+            - label: Domain data models
+              href: https://nhcx.abdm.gov.in/#/NHCX_Specifications/Domain_Data_Models
+              note: FHIR R4 bundles per use case
+            - label: Domain specifications
+              href: https://nhcx.abdm.gov.in/#/NHCX_Specifications/Domain_Specifications
+              note: The five use cases, request to callback
+            - label: Terminologies
+              href: https://nhcx.abdm.gov.in/#/NHCX_Specifications/Terminologies
+              note: ICD-10, SNOMED CT, national code directories
+            - label: Transport security
+              href: https://nhcx.abdm.gov.in/#/NHCX_Specifications/Transport_Security
+              note: TLS, JWS API keys, JWE payloads
+            - label: Audit reporting
+              href: https://nhcx.abdm.gov.in/#/NHCX_Specifications/Audit_Reporting
+              note: What is logged, and what a regulator sees
+        - title: Policies and guidelines
+          items:
+            - label: Participant onboarding
+              href: https://nhcx.abdm.gov.in/#/NHCX_Specifications/Guidlines_for_Participant_Onboarding
+              note: Sandbox, certification, then production
+            - label: Beneficiary authentication
+              href: https://nhcx.abdm.gov.in/#/NHCX_Specifications/Guidlines_for_Beneficiary
+              note: Authenticating a patient through ABHA
+            - label: Event audits
+              href: https://nhcx.abdm.gov.in/#/NHCX_Specifications/Guidlines_for_Event_Audits
+              note: The event trail behind every exchange
+            - label: Grievance redressal
+              href: https://nhcx.abdm.gov.in/#/NHCX_Specifications/Guidlines_for_Grievance_Redressal
+              note: Raising and answering a query
+            - label: Health care operation policy
+              href: https://nhcx.abdm.gov.in/#/NHCX_Specifications/Health_Care_Operation_Policy
+              note: How a settlement is meant to run
+        - title: Sandbox, code and this site
+          items:
+            - label: HCX sandbox documents
+              href: https://hcxsbx.abdm.gov.in/#/documents
+              note: Swagger for every service
+            - label: ABDM sandbox, getting started
+              href: https://sandbox.abdm.gov.in/sandbox/v3/new-documentation?doc=getting-started
+              note: Registering and reaching the sandbox
+            - label: Postman collections
+              href: https://sandbox.abdm.gov.in/sandbox/v3/new-documentation?doc=postman_collections
+              note: Ready-made requests for the sandbox APIs
+            - label: NHA-ABDM on GitHub
+              href: https://github.com/NHA-ABDM
+              note: Reference implementations and sample code
+            - label: Downloads
+              href: /download/
+              note: Documents, templates and links
+    faq:
+      fallbackTitle: FAQ
+      generalTopic: General
+  pmjay:
+    meta:
+      title: PM-JAY on NHCX
+      description: "Ayushman Bharat PM-JAY gives eligible families cashless treatment at empanelled hospitals. NHCX is the exchange those claims can travel on: one standard message from hospital to payer and back."
+    hero:
+      eyebrow: Ayushman Bharat · PM-JAY
+      titleLead: The world’s largest health scheme,
+      titleAccent: is on NHCX
+      lede: "Pradhan Mantri Jan Arogya Yojana gives eligible families cashless secondary and tertiary treatment at empanelled hospitals. NHCX is the rail those claims travel on: one standard message, one set of rules, and a claim raised in the hospital’s own HMIS instead of re-keyed into a separate portal."
+      primaryLabel: Get sandbox access
+      secondaryLabel: About PM-JAY
+      secondaryHref: https://pmjay.gov.in
+      emblemAlt: Ayushman Bharat PM-JAY emblem
+    facts:
+      eyebrow: The scheme
+      title: What PM-JAY is
+      items:
+        - title: Cover a family can use
+          text: Up to ₹5 lakh per family per year for secondary and tertiary hospitalisation, with no premium to pay at the point of care.
+        - title: Cashless at the hospital
+          text: An eligible patient is treated and discharged without paying the hospital; the claim is settled between the hospital and the scheme afterwards.
+        - title: Run by NHA with the states
+          text: The National Health Authority runs PM-JAY nationally, and each State Health Agency runs it in its own state, with its own empanelment and its own claim processing.
+    changed:
+      eyebrow: What has changed
+      title: Three things a hospital does differently
+      lede: The scheme is the same and so is the cover. What changes is where the claim is raised, how the patient is proved to be the beneficiary, and what happens to a claim that arrives clean.
+      items:
+        - was: Re-keyed into a separate claims portal
+          now: Raised in your HMIS
+          text: The claim is composed in the software the hospital already runs, from the diagnosis, procedure and bill lines it already holds. No second data entry, no staff switching systems to submit what has just been recorded.
+        - was: Identity argued at settlement
+          now: Beneficiary verified by biometrics
+          text: The patient is authenticated against their Ayushman record at the hospital, so who was treated is settled at the point of care rather than queried weeks later against a paper trail.
+        - was: One queue for every claim
+          now: Prioritised settlement
+          text: A claim that arrives coded, complete and validated can be priced against the scheme’s rules as it lands, so the straightforward majority settle first and human review is spent on the cases that need it.
+    journey:
+      eyebrow: On the exchange
+      titleLead: How a scheme claim
+      titleAccent: travels
+      text: The same four moves every claim makes, with the standards doing the work in between. Nothing here is particular to one hospital’s software or one state’s claim system.
+      steps:
+        - title: The hospital raises the claim
+          text: The treating hospital composes the claim from what it already recorded (diagnosis, procedure, drugs, bill lines) as one structured FHIR bundle rather than a folder of scans.
+        - title: NHCX carries it
+          text: The exchange routes the bundle to the right payer for that patient and that state, signed and encrypted, and hands back a receipt the hospital can quote later.
+        - title: The payer decides
+          text: The State Health Agency or its insurer reads a machine-readable claim, so routine cases can be priced by rules and only the ones that need a human get one.
+        - title: The answer comes home
+          text: Approval, query or rejection returns on the same rail against the same claim id, so the hospital knows where every claim stands without a phone call.
+    sides:
+      eyebrow: Both ends of the claim
+      title: What each side gets
+      groups:
+        - who: For hospitals
+          items:
+            - "One integration, not one per payer: the same bundle format serves PM-JAY, state schemes and private insurers."
+            - Claims validated before they leave, so incomplete ones are caught at the desk instead of coming back as queries weeks later.
+            - A readable trail for every claim, which is what a disputed settlement actually turns on.
+        - who: For State Health Agencies and insurers
+          items:
+            - Coded clinical data instead of scanned paper, so adjudication rules can run on the claim as it arrives.
+            - The same message shape from every empanelled hospital, whatever software that hospital runs.
+            - Faster, more traceable settlement, and fewer cycles spent asking hospitals for what was already sent.
+    start:
+      eyebrow: Start here
+      title: Connecting a PM-JAY hospital or payer
+      lede: "Integration is the same for a scheme claim as for any other: read the specification, build a bundle that validates, rehearse the whole flow against the sandbox, then apply for the environment you need."
+      applyLabel: Apply for access
+      consoleLabel: Open DevTools
+  devtools:
+    meta:
+      title: DevTools · NHCX
+      description: ""
+    hero:
+      eyebrow: Developer tools for NHCX
+      titleLead: Build against NHCX
+      titleAccent: before you connect to it
+      intro: "Two tools and no third thing to choose between: one that teaches and rehearses the exchange in a browser tab, one that carries it in production."
+      consoleCard:
+        title: DevTools
+        copy: "The exchange end to end, in a tab: read how an endpoint behaves, build a bundle that validates, and trade claims with a mock payer until every flow passes. Nothing you do here touches your servers."
+        ctaLabel: Open DevTools
+      adapterCard:
+        title: NHCX Adapter
+        copy: The piece you actually deploy. Post a FHIR bundle to it, read a plain callback back, and it does the headers, the encryption, the certificates and the acknowledgements in between. One JSON config, no database.
+        downloadPrefix: Download
+        fallbackCtaLabel: Get the adapter
+        repoLabel: GitHub
+      flow:
+        - Your system
+        - NHCX Adapter
+        - NHCX
+    console:
+      fallbackTitle: DevTools
+      ctaLabel: Open DevTools
+      useCasesTitle: What you’d use DevTools for
+      useCases:
+        - icon: book
+          title: Starting from zero
+          text: Fourteen chapters across two tracks, from what the exchange is to how a claim settles, each ending in a short check that remembers where you got to.
+        - icon: braces
+          title: Preparing your first claim
+          text: Compose eligibility, pre-authorisation, claim and payment bundles against the ABDM profiles, and find what is wrong before a real send does.
+        - icon: play
+          title: Testing with no counterparty
+          text: A mock payer answers, so a whole flow runs end to end before anyone assigns you a partner. When one fails, the decrypted request and callback are both there.
+    adapter:
+      eyebrowPrefix: Open source ·
+      fallbackRepoName: nhcx-adapter
+      repoUrl: https://github.com/nha-in/nhcx-adapter
+      title: NHCX Adapter
+      introParts:
+        - "One binary between your system and NHCX. Your software posts a FHIR bundle to it and reads a plain callback back; the adapter does the "
+        - code: x-hcx-*
+        - " headers, the encryption, the certificates and the acknowledgements. Nothing else about your system changes."
+      useCasesTitle: What you’d use the adapter for
+      useCases:
+        - icon: plug
+          title: Put an existing system on NHCX
+          text: Your HMIS or claims software posts a bundle to one local endpoint and reads plain JSON back. Nothing inside it learns the protocol, and one adapter can carry several participant codes.
+        - icon: rocket
+          title: Move from sandbox to production
+          text: One switch in config.json. The same calls and the same endpoints, pointed at the other environment’s registry and credentials.
+        - icon: search
+          title: Settle a disputed claim
+          text: Pull the exact request and callback for a correlation id months later, decrypted and readable, and replay it if the payer asks.
+      downloadsTitle: Download the NHCX Adapter
+      releasedPrefix: released
+      emptyParts:
+        - "The release list could not be read at build time. Every platform build is on the "
+        - label: releases page
+          href: ""
+        - .
+    quickStart:
+      title: Run it
+      shellGroupLabel: Shell
+      copyLabel: Copy
+      copiedLabel: Copied
+      shells:
+        - key: bash
+          label: bash
+          note: macOS · Linux
+          lines:
+            - tar xzf {name}_<os>_<arch>.tar.gz
+            - cd {name}_<os>_<arch>
+            - "./nhcx-adapter config edit    # writes config.json"
+            - "./nhcx-adapter serve          # checks, then listens"
+            - "./nhcx-adapter ledger follow  # the traffic, live"
+        - key: powershell
+          label: PowerShell
+          note: Windows
+          lines:
+            - Expand-Archive {name}_windows_amd64.zip -DestinationPath .
+            - Set-Location {name}_windows_amd64
+            - ".\\nhcx-adapter.exe config edit    # writes config.json"
+            - ".\\nhcx-adapter.exe serve          # checks, then listens"
+            - ".\\nhcx-adapter.exe ledger follow  # the traffic, live"
+        - key: cmd
+          label: Command Prompt
+          note: Windows
+          lines:
+            - tar -xf {name}_windows_amd64.zip
+            - cd {name}_windows_amd64
+            - nhcx-adapter.exe config edit
+            - nhcx-adapter.exe serve
+            - nhcx-adapter.exe ledger follow
+    download:
+      recommendedLabel: Recommended for this machine
+      selectedLabel: Selected build
+      osLabel: Operating system
+      archLabel: Architecture
+      getLabel: Download
+      archiveLabel: Archive
+      sizeLabel: Size
+      shaLabel: SHA-256
+  skill:
+    meta:
+      title: NHCX is one prompt away · AI skill
+      description: "An agent skill that teaches your coding assistant the National Health Claim Exchange: the protocol, the FHIR bundles, the envelope and the sandbox, so an integration can be asked for rather than assembled by hand."
+    skillUrl: https://github.com/nha-in/nhcx-skill
+    install: git clone https://github.com/nha-in/nhcx-skill .claude/skills/nhcx
+    hero:
+      eyebrow: Agentic AI for NHCX
+      titleLead: NHCX is
+      titleAccent: one prompt away
+      lede: "An agent skill that teaches the coding assistant you already use what the exchange actually is: its endpoints and callbacks, the FHIR bundle behind each flow, the envelope that carries it, and a sandbox to try the whole thing against. You describe the claim. It writes the integration and proves it."
+      skillCtaLabel: Get the skill
+      consoleCtaLabel: Open DevTools
+      chips:
+        - runs in your editor
+        - sandbox first
+        - cites the spec
+        - no new SDK
+    terminal:
+      tag: working
+      foot:
+        - sandbox credentials
+        - spec cited
+        - nothing sent without you
+      transcripts:
+        - prompt: Send a pre-authorisation for a cataract day-care admission to the sandbox.
+          steps:
+            - "read the pre-authorisation cycle: request, acknowledgement, callback"
+            - "composed the bundle: Claim, Coverage, Patient, Organization"
+            - validated against the ABDM profiles, no errors
+            - posted to the sandbox and waited for the callback
+          reply: The mock payer approved it in 4.2 seconds. The request, the callback and the decrypted payload are written to nhcx/preauth-01/ so you can read what actually went over the wire.
+        - prompt: This claim came back rejected. Tell me what to fix.
+          steps:
+            - decrypted the callback and read the error block
+            - matched the code against the error catalogue
+            - traced it to one bill line with no coded product
+            - patched the bundle and revalidated it
+          reply: The envelope was fine; the payer rejected the content. One item carried a description but no code, so it could not be priced. It is coded now and the bundle validates, ready to resend.
+        - prompt: Wire our hospital system to NHCX and prove it end to end.
+          steps:
+            - generated the adapter configuration from your endpoints
+            - checked the certificates and the participant code
+            - ran eligibility, pre-authorisation, claim and payment notice
+            - all four flows settled against the mock payer
+          reply: Four flows pass. Your system keeps posting plain JSON to one local endpoint; the encryption, the protocol headers and the acknowledgements all happen inside the adapter.
+        - prompt: What changes when we move this integration to production?
+          steps:
+            - listed every value that differs from the sandbox
+            - diffed your configuration against the production shape
+            - flagged two secrets still sitting in the repository
+            - wrote the cutover as a checklist
+          reply: Nine values change and two of them are secrets that should never have been committed. The checklist is in MOVE-TO-PRODUCTION.md, each line pointing at the part of the specification behind it.
+    loop:
+      eyebrow: How it works
+      titleLead: It reads before it writes, and
+      titleAccent: runs before it claims
+      text: "An answer you cannot check is worth little on a network that settles money. The skill works in a loop: study the rule, build the request, test it against the ABDM profiles, run it against the sandbox, and go round again until the flow passes or it can tell you exactly why it will not."
+      ringNodes:
+        - study
+        - build
+        - test
+        - run
+      phases:
+        - title: Study
+          text: "It pulls the part of the specification the task needs: the flow, the endpoints it uses, the profile each bundle has to satisfy. Nothing is answered from memory."
+        - title: Build
+          text: It writes the request in your project, in the language and the shape already there, instead of pasting a sample that assumes somebody else’s stack.
+        - title: Test
+          text: The bundle goes against the ABDM profiles and the envelope against the protocol at your desk, so a malformed claim is caught before it is anyone else’s problem.
+        - title: Run
+          text: It sends to the sandbox, waits for the asynchronous callback, decrypts it and reads it. A failure is the next input rather than the end of the attempt.
+    knows:
+      eyebrow: What it carries
+      titleLead: Not a chat window.
+      titleAccent: The exchange, in a form an agent can act on
+      ledeParts:
+        - The NHCX specification, compiled into instructions an assistant follows rather than pages a person reads.
+      cards:
+        - tag: protocol
+          title: The exchange itself
+          text: Which call starts a flow, which acknowledgement comes back on the same connection, and which answer arrives later on your callback endpoint. The asynchronous shape of NHCX is the part integrations get wrong first.
+        - tag: fhir
+          title: The bundle behind each flow
+          text: Eligibility, pre-authorisation, claim and payment notice, each as the FHIR resources the ABDM profiles require, with the fields that must be coded rather than typed.
+        - tag: envelope
+          title: Signing and encryption
+          text: How a payload is encrypted for one recipient, what the protocol headers carry, and which key the other participant will use to open it.
+        - tag: errors
+          title: What a rejection means
+          text: The error codes and their real causes, so a returned claim reads as an instruction (this field, this value, this fix) instead of a wall.
+        - tag: sandbox
+          title: Where to try it
+          text: How sandbox access is granted, what the mock payer will answer, and every value that changes on the day you point the same code at production.
+        - tag: adapter
+          title: The adapter you deploy
+          text: "The one binary that sits between a hospital system and the exchange: its configuration, the endpoints it exposes inward, and how to run it beside software you are not allowed to rewrite."
+    prompts:
+      eyebrow: Try it
+      titleLead: Prompts that are
+      titleAccent: a whole task
+      text: Copy one into the assistant in your editor. Each of these ends in something you can run, not in a paragraph explaining what you could run.
+      items:
+        - "Set up NHCX in this repository: sandbox config, a callback endpoint, and one eligibility check that passes."
+        - Build a pre-authorisation bundle for a cataract day-care admission and validate it against the ABDM profiles.
+        - This callback came back rejected. Decrypt it, tell me which field is wrong, and fix the bundle.
+        - Add the NHCX adapter beside our existing hospital system without changing how the HIS posts a claim.
+        - List everything that changes when we move this integration from the sandbox to production.
+    rules:
+      eyebrow: Limits
+      titleLead: The rules it
+      titleAccent: works under
+      text: An agent with credentials on a national network needs a shorter leash than one writing a landing page. These are the four it is held to.
+      items:
+        - title: Sandbox until you say otherwise
+          text: The skill points at the sandbox. Production is a thing you ask for in words, not a default it can wander into.
+        - title: Your machine, your data
+          text: It works in your repository with your credentials. Nothing about a patient goes anywhere except to the exchange you addressed it to.
+        - title: Every rule comes with its source
+          text: A field is required because a named section of the specification says so, and the answer says which section. You can check it without trusting it.
+        - title: It stops rather than invents
+          text: Where the specification is silent or the sandbox disagrees with it, the skill says so and hands the decision back, instead of filling the gap with a plausible field name.
+    close:
+      eyebrow: Get started
+      titleLead: Bring it into
+      titleAccent: your editor
+      lede: The skill is a folder of instructions and specifications in your project. Any assistant that reads skills from the repository picks it up; nothing else about your setup changes.
+      skillCtaLabel: The skill on GitHub
+      consoleCtaLabel: Rehearse in DevTools
+      applyCtaLabel: Apply for sandbox access
+      noteParts:
+        - "You still need credentials to send anything: the skill writes and validates without them, and the sandbox answers once your application is through."
+news:
+  _comment: "The news page: its own copy, then the feed. This file is the source: app/news/page.tsx reads it through lib/local-content.ts and only falls back to the CMS snapshot when it is missing."
+  page:
+    seo:
+      metaTitle: News · NHCX
+      metaDescription: Milestones of the SBX 2.0 preview site, documentation refreshes, and the NHA and NRCeS material the corpus reproduces.
+    eyebrow: NEWS
+    title: What changed on this site and in the documentation
+    intro: Milestones of the SBX 2.0 preview site, refreshes of the documentation corpus, and pointers to the NHA and NRCeS material the corpus reproduces. Nothing here is a press release.
+    featuredTag: Documentation
+    featuredDate: 22 Aug 2026
+    featuredTitle: "Documentation corpus refreshed: 64 pages in 12 chapters"
+    featuredDescription: "The reader and the assistant now run on the corpus built on 22 August 2026 from NHA’s published material: claim flows, FHIR references, protocol headers, codes and troubleshooting."
+    featuredLinkLabel: Open the documentation →
+    featuredImageNote: Documentation
+    upcomingTitle: Sessions
+    events: []
+    upcomingNote: No developer sessions are scheduled. When one is, it is announced here.
+    enquiriesTitle: Questions about this site
+    enquiriesText: This is the SBX 2.0 preview of the sandbox portal. Questions about its content go to the sandbox desk through the application form; the National Health Authority’s own press contacts are published on its official site.
+  items:
+    - date: 22 Aug 2026
+      tag: Documentation
+      tone: brand
+      title: "Documentation corpus refreshed: 64 pages in 12 chapters"
+      body: "Built on 22 August 2026 from NHA’s published material: claim flows, FHIR references, protocol headers, codes and troubleshooting. The reader, the search index and the assistant all read this set."
+      meta: documentation · this site
+      rank: 0
+    - date: 25 Aug 2026
+      tag: Milestone
+      tone: brand
+      title: "Learning path launched: two tracks, fourteen chapters with checks"
+      body: NHCX fundamentals for newcomers and the API implementation journey for integrators, each chapter ending in a short check. The path lives in the DevTools console alongside the API catalogue, with progress kept there.
+      meta: milestone L-B · this site
+      url: devtools:/learn
+      rank: 1
+    - date: 25 Aug 2026
+      tag: Milestone
+      tone: brand
+      title: "HCX DevTools page: per-platform builds with SHA-256 digests"
+      body: The nhcx-adapter release is listed per operating system and architecture with its checksums, and the page recommends the build for the machine it is read on.
+      meta: milestone L-A · this site
+      url: /devtools/
+      rank: 2
+    - date: 25 Aug 2026
+      tag: Milestone
+      tone: muted
+      title: Sandbox application form, API catalogue, playbook and service status
+      body: Apply for sandbox access and look the application up later; browse the 63-endpoint catalogue; follow the playbook per persona; watch component health on the status page.
+      meta: milestone L-A · this site
+      url: /apply/
+      rank: 3
+    - date: 14 Aug 2026
+      tag: NHA document
+      tone: muted
+      title: NHA integrator FAQ v1.1 reproduced in the corpus
+      body: The Commonly Asked Questions for NHCX APIs (registry codes, 401s, header formats, callbacks, the dummy payer and the PMJAY-specific rules) dated 14 August 2026 and marked approval pending in the source.
+      meta: documentation chapter 11.03
+      rank: 4
+    - date: 22 Aug 2026
+      tag: Reference
+      tone: muted
+      title: "NRCeS FHIR profiles: why NHCX mandates them over base R4"
+      body: What NRCeS publishes, which resources are profiled for the health-claim eObjects, and how to validate a payload against the ndhm.in package.
+      meta: documentation chapter 05.02
+      rank: 5
+    - date: 22 Aug 2026
+      tag: Reference
+      tone: muted
+      title: The NHA workflow status sheet, mapped to protocol headers
+      body: Every x-hcx-workflow_id (provider-initiated and payer-response codes) with its protocol status and NRCeS outcome.
+      meta: documentation chapter 09.01
+      rank: 6
+    - date: 22 Aug 2026
+      tag: Reference
+      tone: muted
+      title: "Participant onboarding guidelines: the two-stage path"
+      body: Sandbox registration, integration, certification, then production registration and go-live, with the registry APIs and identifiers used at each step.
+      meta: documentation chapter 10.01
+      rank: 7
+    - date: 22 Aug 2026
+      tag: Reference
+      tone: muted
+      title: Sandbox exit checklists for providers and payers
+      body: The 13 provider and 15 payer use cases assessed at certification, the exit criteria, and what changes at go-live.
+      meta: documentation chapter 10.02
+      rank: 8
+videos:
+  _comment: "The videos page: its own copy, then the library. This file is the source: app/videos/page.tsx reads it through lib/local-content.ts and only falls back to the CMS snapshot when it is missing."
+  page:
+    seo:
+      metaTitle: Videos · NHCX
+      metaDescription: Planned walkthroughs of the NHCX integration (onboarding, DevTools, claim workflows, security and certification) with the outline each recording will follow.
+    eyebrow: VIDEO LIBRARY
+    title: Walkthroughs of the integration, chapter by chapter
+    intro: Nothing has been recorded yet. Each entry below is a planned session with the outline it will follow; the recording replaces the outline when it is published. Webinar materials get their own group as sessions are held.
+    channelCta:
+      label: Start with the learning path in DevTools
+      url: devtools:/learn
+      style: secondary
+    featuredBadge: Planned · first recording
+    featuredTitle: "End to end: install DevTools, register a participant, run a coverage eligibility check"
+    featuredDescription: The first recording will follow the implementation journey of the learning path, from a fresh install to reading the on_check callback.
+    featuredMeta: not yet scheduled
+    footNote: Recordings and webinar materials are announced in the news feed.
+    footLink:
+      label: News →
+      url: /news/
+      style: ghost
+  videos:
+    - track: ONBOARDING
+      title: Applying for sandbox access
+      description: What the application asks for and what happens after you submit.
+      rank: 0
+      webinar: false
+      outline:
+        - text: The two applicant types and the documents each needs
+        - text: "Role on the exchange: provider, payer, TPA, HMIS vendor"
+        - text: What verification filters out and why review is semi-manual
+        - text: Reading your status on the Status page
+    - track: ONBOARDING
+      title: Participant codes, registry IDs and keys
+      description: The three identifiers that get confused at onboarding and where each is used.
+      rank: 1
+      webinar: false
+      outline:
+        - text: Registry ID per participant type; stripping leading zeros
+        - text: Role and registry enums and the 10001 collision
+        - text: Participant creation and the passcode confirmation
+        - text: Uploading your encryption certificate
+    - track: DEVTOOLS
+      title: Installing HCX DevTools
+      description: From the download table to a running console.
+      rank: 2
+      webinar: false
+      outline:
+        - text: Downloading the build for your platform and verifying the SHA-256
+        - text: First run of the console
+        - text: Pointing the kit at the sandbox gateway
+        - text: Where the staged documentation lives
+    - track: DEVTOOLS
+      title: Running a flow in the simulator
+      description: One transaction end to end, with the envelope opened up.
+      rank: 3
+      webinar: false
+      outline:
+        - text: "Choosing a family: eligibility, pre-auth, claim"
+        - text: Inspecting the JWE envelope and protected header
+        - text: Reading the 202 acknowledgement and the callback
+        - text: Injecting transport faults on outbound envelopes
+    - track: CLAIM WORKFLOWS
+      title: Coverage eligibility, request to callback
+      description: The full asynchronous round trip against the dummy payer.
+      rank: 4
+      webinar: false
+      outline:
+        - text: "The four purposes: discovery, validation, benefits, auth-requirements"
+        - text: Building the CoverageEligibilityRequest bundle
+        - text: Correlating /check with /on_check
+        - text: Reading the benefit and authorization fields
+    - track: CLAIM WORKFLOWS
+      title: Pre-authorisation outcomes
+      description: Every answer a payer can give, and what to do with each.
+      rank: 5
+      webinar: false
+      outline:
+        - text: Claim.use = preauthorization under workflow 12
+        - text: Approved, partially approved, queried, rejected, cancelled
+        - text: Answering a query on /communication/on_request
+        - text: Enhancement and cancellation via Task
+    - track: CLAIM WORKFLOWS
+      title: Claim submission and payment notice
+      description: From the discharge claim to the UTR.
+      rank: 6
+      webinar: false
+      outline:
+        - text: Switching the pre-auth payload to a claim
+        - text: The ClaimResponse decision table
+        - text: "PaymentNotice: settlement, TDS and the UTR"
+        - text: Acknowledging the notice
+    - track: SECURITY
+      title: JWE encryption in practice
+      description: Building and opening the encrypted payload.
+      rank: 7
+      webinar: false
+      outline:
+        - text: RSA-OAEP-256 and A256GCM
+        - text: Fetching and caching the recipient certificate
+        - text: The five-part compact serialization
+        - text: Decrypting a callback with your private key
+    - track: CERTIFICATION
+      title: Sandbox exit and go-live
+      description: What the certification review looks at and what to change afterwards.
+      rank: 8
+      webinar: false
+      outline:
+        - text: The provider and payer use-case checklists
+        - text: "Exit criteria: NRCeS profiles, correlation rules, ProtocolResponse"
+        - text: What changes at go-live
+        - text: Removing the dummy-payer scaffolding
+downloads:
+  groups:
+    - title: Specifications
+      description: The NHCX specifications as published by the National Health Authority on nhcx.abdm.gov.in.
+      items:
+        - title: Implementation guide
+          description: "The open protocol: message envelope, API pattern, authentication and the onward and return journey of every use case."
+          url: https://nhcx.abdm.gov.in/#/NHCX_Specifications/Implementation_Guide
+          type: Web page
+        - title: Domain data models
+          description: The HL7 FHIR R4 bundles for coverage eligibility, pre-authorisation, claim, payment notice and communication.
+          url: https://nhcx.abdm.gov.in/#/NHCX_Specifications/Domain_Data_Models
+          type: Web page
+        - title: Terminologies
+          description: ICD-10, SNOMED CT and the national code directories used for coded values.
+          url: https://nhcx.abdm.gov.in/#/NHCX_Specifications/Terminologies
+          type: Web page
+        - title: Transport security
+          description: TLS, JWS-signed API keys and JWE-encrypted payloads between participants and the exchange.
+          url: https://nhcx.abdm.gov.in/#/NHCX_Specifications/Transport_Security
+          type: Web page
+    - title: Policies and guidelines
+      items:
+        - title: Guidelines for participant onboarding
+          description: Who can join, the documents required, sandbox certification and the production onboarding steps.
+          url: https://nhcx.abdm.gov.in/#/NHCX_Specifications/Guidlines_for_Participant_Onboarding
+          type: Web page
+        - title: Guidelines for beneficiary authentication
+          description: How providers and payers authenticate a beneficiary through ABHA.
+          url: https://nhcx.abdm.gov.in/#/NHCX_Specifications/Guidlines_for_Beneficiary
+          type: Web page
+        - title: Guidelines for grievance redressal
+          url: https://nhcx.abdm.gov.in/#/NHCX_Specifications/Guidlines_for_Grievance_Redressal
+          type: Web page
+        - title: Health care operation policy
+          url: https://nhcx.abdm.gov.in/#/NHCX_Specifications/Health_Care_Operation_Policy
+          type: Web page
+        - title: ABDM website policy
+          url: https://abdm.gov.in/website-policy
+          type: Web page
+        - title: ABDM terms and conditions
+          url: https://abdm.gov.in/terms-condition
+          type: Web page
+    - title: Sandbox and developer resources
+      items:
+        - title: ABDM sandbox registration
+          description: "Register your organisation on the ABDM sandbox: the first step before NHCX integration."
+          url: https://sandbox.abdm.gov.in/sandbox/v3/sandbox-registration
+          type: Web page
+        - title: "ABDM sandbox: getting started"
+          url: https://sandbox.abdm.gov.in/sandbox/v3/new-documentation?doc=getting-started
+          type: Web page
+        - title: Milestone M1 (ABHA) integration
+          description: "Beneficiary authentication through ABHA: needed for production, not for sandbox testing."
+          url: https://sandbox.abdm.gov.in/sandbox/v3/new-documentation?doc=Milestone_one
+          type: Web page
+        - title: Postman collections
+          description: Ready-made requests for the sandbox APIs.
+          url: https://sandbox.abdm.gov.in/sandbox/v3/new-documentation?doc=postman_collections
+          type: Web page
+        - title: Sandbox test cases
+          description: The functional test cases to clear for sandbox certification.
+          url: https://sandbox.abdm.gov.in/sandbox/v3/new-documentation?doc=TestCases
+          type: Web page
+        - title: HCX sandbox documents and Swagger
+          description: API documentation for the claim, pre-auth, coverage-eligibility, communication and participant services.
+          url: https://hcxsbx.abdm.gov.in/#/documents
+          type: Web page
+        - title: NHA-ABDM on GitHub
+          description: Reference implementations and sample code from the National Health Authority.
+          url: https://github.com/NHA-ABDM
+          type: Repository
+        - title: ABDM sandbox webinars
+          url: https://sandbox.abdm.gov.in/sandbox/v3/webinars
+          type: Web page

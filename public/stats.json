@@ -1,0 +1,19 @@
+{
+  "source": "https://apisprod.nha.gov.in/pmjay/hcx/newhcxdashboard/v2/dashboard/stats?flag=Prod",
+  "fetched": "2026-09-07T04:12:40.376Z",
+  "payload": {
+    "integratorsSandboxPriv": 2648,
+    "integratorsSandboxGov": 10424,
+    "integratorsProdPriv": 884,
+    "integratorsProdGov": 46488,
+    "noofProdProvPriv": 842,
+    "noofProdProvGov": 46442,
+    "noofProdPayGov": 46,
+    "noofProdPayPriv": 38,
+    "claimsProcessedPriv": 27165,
+    "claimsProcessedGov": 85639034,
+    "preauthProcessedPriv": 147554,
+    "preauthProcessedGov": 157631860,
+    "lastUpdatedOn": "07-09-2026 09:09"
+  }
+}

@@ -1,30 +1,14 @@
 import type { Metadata } from 'next';
 import { getContent } from '@/lib/content';
+import { getSiteCopy } from '@/lib/site-copy';
 import { getAdapterRelease } from '@/lib/adapter';
 import { consoleUrl } from '@/lib/links';
 import { PageShell } from '@/components/SiteChrome';
 import DevToolsHero from '@/components/pages/DevToolsHero';
 import AdapterSection from '@/components/pages/AdapterSection';
-import UseCases, { type UseCase } from '@/components/pages/UseCases';
-
-/** What a reader opens DevTools to do, as opposed to what it contains. */
-const DEVTOOLS_USE_CASES: UseCase[] = [
-  {
-    icon: 'book',
-    title: 'Starting from zero',
-    text: 'Fourteen chapters across two tracks, from what the exchange is to how a claim settles, each ending in a short check that remembers where you got to.',
-  },
-  {
-    icon: 'braces',
-    title: 'Preparing your first claim',
-    text: 'Compose eligibility, pre-authorisation, claim and payment bundles against the ABDM profiles, and find what is wrong before a real send does.',
-  },
-  {
-    icon: 'play',
-    title: 'Testing with no counterparty',
-    text: 'A mock payer answers, so a whole flow runs end to end before anyone assigns you a partner — and when one fails, the decrypted request and callback are both there.',
-  },
-];
+import UseCases from '@/components/pages/UseCases';
+import '@/styles/dark.css';
+import '@/styles/devtools.css';
 
 /**
  * DevTools.
@@ -35,49 +19,64 @@ const DEVTOOLS_USE_CASES: UseCase[] = [
  * used to advertise a "UTI NHCX connector" that does not exist, and its hero,
  * flow strip, download table and run instructions all described it.
  *
- * The route still reads the `integration-kit-page` single type (pre-rename
- * UID); the fields that described the connector, and the closing checklist
- * and "which one do I need" cards, are no longer rendered.
+ * Dark end to end, on the shared dark surface (styles/dark.css, then
+ * styles/devtools.css): the page is where a developer comes to install
+ * something, and the tools it describes are terminals and consoles, so it is
+ * dressed like one rather than like the programme pages.
+ *
+ * Two sources of words meet here. The console section's title and intro come
+ * from the CMS `integration-kit-page` single type (pre-rename UID), because
+ * they were authored there; everything else — the hero, the use cases, the
+ * adapter section, the run instructions and the download labels — is
+ * `devtools` in content/site.json.
  */
 function devtoolsPage() {
   const { global, pages } = getContent();
-  return { global, page: pages.devtools };
+  const console_ = consoleUrl(global);
+  return { global, console_, page: pages.devtools, copy: getSiteCopy(console_, global.docsUrl).devtools };
 }
 
 export function generateMetadata(): Metadata {
-  const { page } = devtoolsPage();
+  const { page, copy } = devtoolsPage();
   const seo = page.seo as { metaTitle?: string; metaDescription?: string } | undefined;
   return {
-    title: seo?.metaTitle ?? 'DevTools · NHCX',
-    description: seo?.metaDescription ?? '',
+    title: seo?.metaTitle ?? copy.meta.title,
+    description: seo?.metaDescription ?? copy.meta.description,
   };
 }
 
 export default function DevToolsPage() {
-  const { global, page } = devtoolsPage();
+  const { global, console_, page, copy } = devtoolsPage();
 
-  // DevTools at /dev/, and the adapter's newest GitHub release
-  // (npm run sync:adapter): the two things this page is about.
-  const console_ = consoleUrl(global);
+  // The adapter's newest GitHub release (npm run sync:adapter); null when
+  // nothing has been synced, which the sections below say plainly.
   const adapter = getAdapterRelease();
 
   return (
     <PageShell global={global} currentPath="/devtools/">
-      <DevToolsHero release={adapter} consoleUrl={console_} />
+      <div className="dark-page">
+        <DevToolsHero copy={copy.hero} fallbackRepoUrl={copy.adapter.repoUrl} release={adapter} consoleUrl={console_} />
 
-      <section id="console" className="container kitp-section" aria-labelledby="console-title">
-        <div className="section-head">
-          <p className="eyebrow">In your browser</p>
-          <h2 id="console-title">{(page.consoleTitle as string) || 'DevTools'}</h2>
-          {page.consoleIntro && <p className="lede">{page.consoleIntro as string}</p>}
-          <a href={`${console_}/`} className="btn btn-secondary" rel="noopener">
-            Open DevTools
-          </a>
-        </div>
-        <UseCases title="What you'd use DevTools for" items={DEVTOOLS_USE_CASES} />
-      </section>
+        <section id="console" className="dk-section" aria-labelledby="console-title">
+          <div className="container kitp-section">
+            <div className="dk-head">
+              <h2 id="console-title">{(page.consoleTitle as string) || copy.console.fallbackTitle}</h2>
+              {page.consoleIntro && <p>{page.consoleIntro as string}</p>}
+              <a href={`${console_}/`} className="dk-btn dk-btn-primary" rel="noopener">
+                {copy.console.ctaLabel}
+              </a>
+            </div>
+            <UseCases title={copy.console.useCasesTitle} items={copy.console.useCases} />
+          </div>
+        </section>
 
-      <AdapterSection release={adapter} />
+        <AdapterSection
+          copy={copy.adapter}
+          quickStart={copy.quickStart}
+          download={copy.download}
+          release={adapter}
+        />
+      </div>
     </PageShell>
   );
 }
