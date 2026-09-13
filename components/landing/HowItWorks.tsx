@@ -1,107 +1,105 @@
-import type { HomeCopy } from '@/lib/site-copy';
+import { withBase } from '@/lib/paths';
+import TypicalFlow from '@/components/landing/TypicalFlow';
+import NetworkPacket from '@/components/landing/NetworkPacket';
 
-function Doc() {
-  return (
-    <svg width="17" height="21" viewBox="0 0 17 21" fill="none" stroke="#8E9AE9" strokeWidth="1.2" aria-hidden="true">
-      <path d="M1 1.5h9l5.5 5v13H1V1.5Z" fill="#0A2540" />
-      <path d="M10 1.5V6.5h5.5" />
-      <path d="M4 11h8M4 14.5h8M4 8h4" />
-    </svg>
-  );
-}
+const PROVIDERS = ['Government Hospital', 'Medical College & Hospital', 'Private Nursing Home', 'Day Care & OPD Clinics'];
+const PAYERS = ['Insurance Company', 'TPA', 'State Health Agency', 'Government Scheme'];
 
-function Packet({ className }: { className?: string }) {
-  return (
-    <span className={`lp-packet ${className ?? ''}`} aria-hidden="true">
-      <i />
-    </span>
-  );
-}
+/*
+ * The provider ↔ NHCX ↔ payer network, carried over from the previous
+ * landing page: each column's nodes hang off a trunk by dotted stubs, the
+ * trunk meets a dashed wire that marches towards the exchange, and a
+ * document travels along the wires through the exchange and back
+ * (NetworkPacket).
+ */
 
 function stubClass(i: number, n: number) {
-  return `lp-stub${i === 0 ? ' first' : ''}${i === n - 1 ? ' last' : ''}`;
+  return `how-stub${i === 0 ? ' first' : ''}${i === n - 1 ? ' last' : ''}`;
 }
 
-/** The dark "How NHCX works" band: statement, docs link and the provider ↔ NHCX ↔ payer network. */
-export default function HowItWorks({ copy }: { copy: HomeCopy['howItWorks'] }) {
+function Wire() {
   return (
-    <section id="how" className="lp-how" aria-labelledby="how-title">
-      <div className="lp-how-glow" aria-hidden="true" />
-      <div className="lp-wrap lp-how-inner">
-        <p className="lp-eyebrow on-dark" id="how-title" data-reveal="">
-          {copy.eyebrow}
-        </p>
-        <p className="lp-statement" data-reveal="" data-delay="60">
-          {copy.statementLead} <span>{copy.statementAccent}</span>
-        </p>
-        {/* wide: the two columns wired through the hub */}
-        <div className="lp-net" data-reveal="" data-delay="160" aria-label={copy.netLabel}>
-          <div className="lp-net-side left">
-            <div className="lp-net-label">{copy.providerLabel}</div>
-            <div className="lp-net-grid">
-              {copy.providers.map((p, i) => (
-                <div key={p} style={{ display: 'contents' }}>
-                  <div className="lp-node">{p}</div>
-                  <div className={stubClass(i, copy.providers.length)} aria-hidden="true" />
-                </div>
-              ))}
-            </div>
-          </div>
-          <div className="lp-wire">
-            <div className="lp-wire-line" aria-hidden="true" />
-            <Packet />
-          </div>
-          <div className="lp-doc">
-            <Doc />
-          </div>
-          <div className="lp-hub">{copy.hubLabel}</div>
-          <div className="lp-doc">
-            <Doc />
-          </div>
-          <div className="lp-wire">
-            <div className="lp-wire-line" aria-hidden="true" />
-            <Packet className="d2" />
-          </div>
-          <div className="lp-net-side right">
-            <div className="lp-net-label">{copy.payerLabel}</div>
-            <div className="lp-net-grid">
-              {copy.payers.map((p, i) => (
-                <div key={p} style={{ display: 'contents' }}>
-                  <div className={stubClass(i, copy.payers.length)} aria-hidden="true" />
-                  <div className="lp-node">{p}</div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
+    <div className="how-wire" aria-hidden="true">
+      <div className="how-wire-line" />
+    </div>
+  );
+}
 
-        {/* narrow: stacked */}
-        <div className="lp-net-stack" aria-hidden="true">
-          <div style={{ width: '100%' }}>
-            <div className="lp-net-label">{copy.providerLabel}</div>
-            <div className="lp-net-grid">
-              {copy.providers.map((p) => (
-                <div key={p} className="lp-node">
-                  {p}
-                </div>
+export default function HowItWorks() {
+  return (
+    <section className="how" aria-labelledby="how-title">
+      {/* The navy slab: the vector keeps its shape (notch, corners), and the
+          band continues below it in the gradient's end colour however tall
+          the pinned story makes the section. */}
+      <div className="how-bgs" aria-hidden="true">
+        <div className="how-shadow" style={{ backgroundImage: `url(${withBase('/assets/how-bg-shadow.png')})` }} />
+        <img className="how-bg" src={withBase('/assets/how-bg-vector.svg')} alt="" />
+        <div className="how-fill" />
+      </div>
+
+      <div className="wrap how-block">
+        <h2 className="vh" id="how-title">How NHCX works</h2>
+        <div className="how-body">
+          <div className="how-intro">
+            <p className="how-lede">
+              Idea is to transmit the health information that is already generated by a Provider hospital in digitized format to an Insurer without losing any of its essence,{' '}
+              <span>and that too in a protocol standard set by the Payer beforehand.</span>
+            </p>
+            <a className="btn btn--primary" href={withBase('/docs/')}>View Docs →</a>
+          </div>
+
+          {/* wide: the two columns wired through the hub */}
+          <div className="how-net" role="img" aria-label="Providers such as hospitals, nursing homes and clinics exchange documents with payers such as insurers and government schemes through NHCX">
+            <div className="how-side is-provider">
+              <p className="how-col-label">Provider</p>
+              <div className="how-grid">
+                {PROVIDERS.map((p, i) => (
+                  <div key={p} style={{ display: 'contents' }}>
+                    <div className="how-node">{p}</div>
+                    <div className={stubClass(i, PROVIDERS.length)} aria-hidden="true" />
+                  </div>
+                ))}
+              </div>
+            </div>
+            <Wire />
+            <div className="how-hub">NHCX</div>
+            <Wire />
+            <div className="how-side is-payer">
+              <p className="how-col-label">Payer</p>
+              <div className="how-grid">
+                {PAYERS.map((p, i) => (
+                  <div key={p} style={{ display: 'contents' }}>
+                    <div className={stubClass(i, PAYERS.length)} aria-hidden="true" />
+                    <div className="how-node">{p}</div>
+                  </div>
+                ))}
+              </div>
+            </div>
+            <NetworkPacket />
+          </div>
+
+          {/* narrow: stacked */}
+          <div className="how-stack" aria-hidden="true">
+            <p className="how-col-label">Provider</p>
+            <div className="how-stack-grid">
+              {PROVIDERS.map((p) => (
+                <div key={p} className="how-node">{p}</div>
               ))}
             </div>
-          </div>
-          <div className="lp-vwire" />
-          <div className="lp-hub">{copy.hubLabel}</div>
-          <div className="lp-vwire" />
-          <div style={{ width: '100%' }}>
-            <div className="lp-net-label">{copy.payerLabel}</div>
-            <div className="lp-net-grid">
-              {copy.payers.map((p) => (
-                <div key={p} className="lp-node">
-                  {p}
-                </div>
+            <div className="how-vwire" />
+            <div className="how-hub">NHCX</div>
+            <div className="how-vwire" />
+            <p className="how-col-label">Payer</p>
+            <div className="how-stack-grid">
+              {PAYERS.map((p) => (
+                <div key={p} className="how-node">{p}</div>
               ))}
             </div>
           </div>
         </div>
       </div>
+
+      <TypicalFlow />
     </section>
   );
 }

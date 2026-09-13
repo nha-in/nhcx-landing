@@ -1,22 +1,14 @@
-import type { HomeCopy } from '@/lib/site-copy';
 import { withBase } from '@/lib/paths';
 
-export default function SandboxCta({ copy, applyHref }: { copy: HomeCopy['sandbox']; applyHref: string }) {
+export default function SandboxCta() {
   return (
-    <section id="sandbox" className="lp-sandbox" aria-labelledby="sandbox-title">
-      <div className="lp-wrap">
-        <h2 id="sandbox-title" data-reveal="">
-          {copy.titleLead} <span>{copy.titleAccent}</span>
-          {copy.titleTail}
+    <section className="cta" aria-labelledby="cta-title">
+      <div className="wrap">
+        <h2 className="cta-title" id="cta-title">
+          Build in the <b className="is-blue">Sandbox</b><b>.</b> Certify Once. Go <b>Live</b>
         </h2>
-        <p data-reveal="" data-delay="60">
-          {copy.text}
-        </p>
-        <div data-reveal="" data-delay="120">
-          <a href={withBase(applyHref)} className="btn btn-primary">
-            {copy.ctaLabel} <span className="chev" aria-hidden="true">›</span>
-          </a>
-        </div>
+        <p className="cta-lede">Free to test and certify for Hospitals, Insurer, TPA’s, Government schemes and solutoin vendors</p>
+        <a className="btn btn--primary" href={withBase('/apply/')}>Get Started →</a>
       </div>
     </section>
   );

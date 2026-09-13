@@ -1,24 +1,20 @@
-/**
- * The shape of a downloadable release: one row per platform build, grouped by
- * operating system.
- *
- * nhcx-adapter is the release the site lists (lib/adapter.ts, filled by
- * `npm run sync:adapter` from its GitHub releases); these types and helpers are
- * what its download table is built on, and are deliberately not tied to where
- * the archives are hosted — `url` may be a staged path or an absolute URL.
+/*
+ * The shape of the NHCX Adapter's published release: one row per platform
+ * build, grouped by operating system. Carried over from the previous site
+ * (lib/downloads.ts and lib/adapter.ts there).
  */
 
 /** One platform build in a release. */
 export interface DistBuild {
   /** Archive filename, e.g. `nhcx-adapter_v1.0.1_darwin_arm64.tar.gz`. */
   file: string;
-  /** Where the archive is downloaded from — a staged path or an absolute URL. */
+  /** Where the archive is downloaded from. */
   url: string;
   version: string;
-  /** Go's GOOS — `darwin`, `linux`, `windows`, `freebsd`. */
+  /** Go's GOOS: `darwin`, `linux`, `windows`, `freebsd`. */
   os: string;
   osLabel: string;
-  /** Go's GOARCH — `arm64`, `amd64`, `386`, … */
+  /** Go's GOARCH: `arm64`, `amd64`, `386`, … */
   arch: string;
   archLabel: string;
   /** What a reader recognises the architecture by, e.g. "Apple silicon". */
@@ -32,11 +28,17 @@ export interface DistBuild {
   sha256: string;
 }
 
-export interface DistManifest {
+export interface AdapterRelease {
+  /** `nha-in/nhcx-adapter`. */
+  repo: string;
+  repoUrl: string;
+  releasesUrl: string;
+  releaseUrl: string;
+  /** Tag name, e.g. `v1.0.1`. */
   version: string;
-  /** Release date, ISO 8601 — the newest archive in the set. */
+  /** Publication date, ISO 8601. */
   released: string;
-  /** That date as `23 Aug 2026`. */
+  /** That date as `30 Aug 2026`. */
   releasedLabel: string;
   checksumsUrl: string | null;
   builds: DistBuild[];
@@ -49,7 +51,7 @@ export interface DistPlatform {
   builds: DistBuild[];
 }
 
-/** The manifest's builds grouped by operating system, order preserved. */
+/** The builds grouped by operating system, order preserved. */
 export function groupByPlatform(builds: DistBuild[]): DistPlatform[] {
   const platforms: DistPlatform[] = [];
   for (const build of builds) {

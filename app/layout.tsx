@@ -1,17 +1,17 @@
 import type { Metadata } from 'next';
-import { getContent } from '@/lib/content';
-import '@/styles/globals.css';
 import { withBase } from '@/lib/paths';
-import ThemeEditor from '@/components/ThemeEditor';
+import '@/styles/globals.css';
+import '@/styles/landing.css';
+import '@/styles/pmjay.css';
+import '@/styles/tools.css';
 
-export function generateMetadata(): Metadata {
-  const { landing } = getContent();
-  return {
-    title: landing.seo?.metaTitle ?? 'National Health Claim Exchange',
-    description: landing.seo?.metaDescription ?? '',
-    icons: { icon: withBase('/assets/hcx-favicon.png') },
-  };
-}
+export const metadata: Metadata = {
+  title: 'National Health Claims Exchange',
+  description:
+    'NHCX brings India’s healthcare ecosystem together with standardized, interoperable claim data — enabling seamless, transparent, and efficient exchange across systems.',
+  // The HCX mark in every tab; the PM-JAY page sets its own emblem.
+  icons: { icon: withBase('/assets/hcx-icon.png') },
+};
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -20,14 +20,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link
-          href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap"
+          href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap"
           rel="stylesheet"
         />
       </head>
-      <body>
-        {children}
-        <ThemeEditor />
-      </body>
+      <body id="top">{children}</body>
     </html>
   );
 }

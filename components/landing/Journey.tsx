@@ -1,88 +1,67 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
-import type { HomeCopy } from '@/lib/site-copy';
+import { type CSSProperties, useEffect, useRef } from 'react';
+import { withBase } from '@/lib/paths';
+import JourneyArt from '@/components/landing/JourneyArt';
 
-/**
- * "How a typical flow looks like" — a claim's round trip, told as a pinned
- * scroll story on wide screens (the page scrolls 520vh while the stage stays
- * put; the path draws, the packet moves, one waypoint card at a time) and
- * as a plain vertical timeline on narrow screens or under reduced motion.
- * Both variants are in the HTML; CSS picks one by viewport width.
- *
- * The five steps come from content/site.json; the geometry does not, because
- * the node positions, the stops along the path and the curves themselves are
- * one drawing rather than five editable values.
+/*
+ * "Integration journey from Registration to Production" as a stack of
+ * sticky cards: each step sticks just under the header as it arrives, the
+ * next slides up over it, and the titles of the steps already passed pile up
+ * at the top of the viewport — the pattern of the solutions list on
+ * aubergine.co. It is CSS only (position: sticky with a stepped top offset
+ * per card), so it costs nothing on scroll and degrades to a plain list.
  */
 
-const NODES: Array<[number, number]> = [
-  [150, 420],
-  [380, 305],
-  [600, 215],
-  [900, 330],
-  [400, 472],
+const STEPS = [
+  {
+    title: 'Complete you ABDM milestones',
+    body: 'ABDM milestone M1 is a prerequisite before starting your NHCX integration and gaining API access, for Payer and Provider roles; whereas for Providers both M1 and M2 are recommended.',
+    link: { label: 'Sandbox Registration', href: '/apply/' },
+    tags: ['ABDM Sandbox', 'Milestone M1', 'Milestone M2'],
+    art: 'badge',
+  },
+  {
+    title: 'Develop and Test in Sandbox',
+    body: 'Apply for the NHCX Sandbox with the intended role and integrate with your application against the published APIs and FHIR profiles. Test the end to end claims journey including insurance plan, coverage eligibility, pre-authorisation, claims and payment communication using the sandbox environment.',
+    link: { label: 'HCX Sandbox Documents', href: '/docs/' },
+    tags: ['Sandbox APIs', 'FHIR profiles', 'Eligibility', 'Pre-authorisation', 'Claims', 'Payment'],
+    art: 'layers',
+  },
+  {
+    title: 'FHIR Validation and UAT',
+    body: 'Proceed with the required functional test cases for NHCX workflows and validation of your FHIR payloads. Demonstrate the working capabilities for individual use cases during UAT post integration in order to establish your production readiness.',
+    link: { label: 'Test Cases', href: '/docs/test-cases/' },
+    tags: ['Functional test cases', 'FHIR validation', 'Review and demo'],
+    art: 'eye',
+  },
+  {
+    title: 'HTC Demo and Go Live',
+    body: 'Receive role based Production access for NHCX on your Client ID already assigned to you after ABDM M1 certification. Configure your Participant ID along with credentials to establish connect with NHCX gateway and thus start processing claims.',
+    link: { label: 'Sandbox Registration', href: '/apply/' },
+    tags: ['Production access', 'Participant credentials', 'Live claims'],
+    art: 'rocket',
+  },
 ];
-const STOPS = [0, 0.16, 0.34, 0.55, 0.78];
-const FWD = 'M150,420 Q262,392 380,305 Q502,218 600,215 Q772,226 900,330';
-const RET = 'M900,330 C820,478 420,516 150,420';
 
-export default function Journey({ copy }: { copy: HomeCopy['journey'] }) {
-  const wrap = useRef<HTMLDivElement>(null);
-  const steps = copy.steps;
+export default function Journey() {
+  const list = useRef<HTMLOListElement>(null);
 
+  // A card is "covered" from the moment the next card's top edge overlaps
+  // it; its illustration fades out then, so a passed card shows its title
+  // alone. Measured on scroll from the cards' own rectangles, which are
+  // consistent under the desktop page zoom.
   useEffect(() => {
-    const el = wrap.current;
-    if (!el) return;
-    const fwd = el.querySelector<SVGPathElement>('[data-path="fwd"]');
-    const ret = el.querySelector<SVGPathElement>('[data-path="ret"]');
-    if (!fwd || !ret) return;
-    const pk = Array.from(el.querySelectorAll<SVGCircleElement>('[data-packet]'));
-    const cam = el.querySelector<SVGGElement>('[data-cam]');
-    const wps = Array.from(el.querySelectorAll<HTMLElement>('[data-wp]'));
-    const ticks = Array.from(el.querySelectorAll<HTMLElement>('[data-tick]'));
-    const glows = Array.from(el.querySelectorAll<SVGCircleElement>('[data-glow]'));
-    const fLen = fwd.getTotalLength();
-    const rLen = ret.getTotalLength();
-    fwd.style.strokeDasharray = `${fLen}px`;
-    ret.style.strokeDasharray = `${rLen}px`;
-
-    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if (reduced) {
-      fwd.style.strokeDashoffset = '0px';
-      ret.style.strokeDashoffset = '0px';
-      wps.forEach((w) => w.classList.add('is-on'));
-      ticks.forEach((t) => t.classList.add('is-on'));
-      return;
-    }
-
+    const root = list.current;
+    if (!root) return;
+    const cards = Array.from(root.querySelectorAll<HTMLElement>('.journey-step'));
     let queued = false;
-    let last = -1;
     const update = () => {
       queued = false;
-      const total = Math.max(el.offsetHeight - window.innerHeight, 1);
-      const p = Math.min(Math.max(-el.getBoundingClientRect().top / total, 0), 1);
-      const fT = Math.min(p / 0.78, 1);
-      const rT = p <= 0.78 ? 0 : (p - 0.78) / 0.22;
-      fwd.style.strokeDashoffset = `${fLen * (1 - fT)}px`;
-      ret.style.strokeDashoffset = `${rLen * (1 - rT)}px`;
-      const pt = rT > 0 ? ret.getPointAtLength(rT * rLen) : fwd.getPointAtLength(fT * fLen);
-      pk.forEach((c) => {
-        c.setAttribute('cx', pt.x.toFixed(1));
-        c.setAttribute('cy', pt.y.toFixed(1));
-      });
-      let idx = 0;
-      for (let i = 0; i < STOPS.length; i++) if (p >= STOPS[i]) idx = i;
-      if (idx !== last) {
-        last = idx;
-        wps.forEach((w, i) => w.classList.toggle('is-on', i === idx));
-        ticks.forEach((t, i) => t.classList.toggle('is-on', i === idx));
-        glows.forEach((g, i) => g.setAttribute('opacity', i === idx ? '0.20' : '0'));
-        if (cam) {
-          const [nx, ny] = NODES[idx];
-          const dx = ((600 - nx) * 0.12).toFixed(1);
-          const dy = ((300 - ny) * 0.12).toFixed(1);
-          cam.setAttribute('transform', `translate(${dx},${dy}) translate(600,280) scale(1.05) translate(-600,-280)`);
-        }
+      for (let i = 0; i < cards.length - 1; i++) {
+        const here = cards[i].getBoundingClientRect();
+        const next = cards[i + 1].getBoundingClientRect();
+        cards[i].classList.toggle('is-covered', next.top < here.bottom - 1);
       }
     };
     const onScroll = () => {
@@ -101,88 +80,36 @@ export default function Journey({ copy }: { copy: HomeCopy['journey'] }) {
   }, []);
 
   return (
-    <section id="journey" className="lp-journey" aria-labelledby="journey-title">
-      {/* wide: pinned stage */}
-      <div className="lp-journey-scroll" ref={wrap}>
-        <div className="lp-journey-stage">
-          <div className="lp-wrap lp-journey-head">
-            <p className="lp-eyebrow on-dark bare">{copy.eyebrow}</p>
-            <h2 id="journey-title">{copy.title}</h2>
-          </div>
-          <div className="lp-journey-graph-wrap">
-            <div className="lp-journey-graph">
-              <div className="lp-journey-canvas">
-                <svg viewBox="0 0 1200 560" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
-                  <g data-cam="">
-                    <path d={RET} fill="none" stroke="rgba(255,255,255,0.10)" strokeWidth="2" strokeDasharray="7 8" />
-                    <path data-path="ret" d={RET} fill="none" stroke="#8E9AE9" strokeWidth="2.2" />
-                    <path d={FWD} fill="none" stroke="rgba(255,255,255,0.12)" strokeWidth="2" />
-                    <path data-path="fwd" d={FWD} fill="none" stroke="#3D52DA" strokeWidth="2.6" />
-                    {NODES.slice(0, 4).map(([x, y], i) => (
-                      <circle key={i} data-glow="" cx={x} cy={y} r={i === 2 ? 34 : 26} fill="#3D52DA" opacity="0" />
-                    ))}
-                    <circle cx="150" cy="420" r="6" fill="#ADBDCC" />
-                    <circle cx="380" cy="305" r="5" fill="#ADBDCC" />
-                    <circle cx="600" cy="215" r="10" fill="#FFFFFF" />
-                    <circle cx="600" cy="215" r="19" fill="none" stroke="rgba(255,255,255,0.30)" strokeWidth="1.5" />
-                    <circle cx="900" cy="330" r="6" fill="#ADBDCC" />
-                    <text x="150" y="452" textAnchor="middle" fill="#8792A2" fontFamily="'IBM Plex Mono', monospace" fontSize="13" letterSpacing="1.2">
-                      {copy.graphLabels.start}
-                    </text>
-                    <text x="600" y="180" textAnchor="middle" fill="#8792A2" fontFamily="'IBM Plex Mono', monospace" fontSize="13" letterSpacing="1.2">
-                      {copy.graphLabels.hub}
-                    </text>
-                    <text x="900" y="364" textAnchor="middle" fill="#8792A2" fontFamily="'IBM Plex Mono', monospace" fontSize="13" letterSpacing="1.2">
-                      {copy.graphLabels.end}
-                    </text>
-                    <circle data-packet="" cx="150" cy="420" r="16" fill="#3D52DA" opacity="0.28" />
-                    <circle data-packet="" cx="150" cy="420" r="5.5" fill="#FFFFFF" />
-                  </g>
-                </svg>
-                {steps.map((s, i) => (
-                  <div key={s.tag} className="lp-wp" data-wp={i}>
-                    <div className="lp-wp-tag">{s.tag}</div>
-                    <b>{s.title}</b>
-                    <p>{s.text}</p>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-          <div className="lp-wrap lp-ticks" aria-hidden="true">
-            {steps.map((s, i) => (
-              <div key={s.tick} className="lp-tick" data-tick={i}>
-                {s.tick}
-              </div>
-            ))}
-          </div>
+    <section className="journey" aria-labelledby="journey-title">
+      <div className="wrap">
+        <div className="journey-head">
+          <h2 className="journey-title" id="journey-title">Integrators’ journey from Registration to Production</h2>
+          <p className="journey-intro">
+            All it takes for a new Integrator from ABDM registration to settle claims on NHCX - embark on the journey, build and test in Sandbox, validate and demonstrate… then Go Live
+          </p>
         </div>
-      </div>
 
-      {/* narrow: vertical timeline */}
-      <div className="lp-journey-list">
-        <div className="lp-wrap">
-          <p className="lp-eyebrow on-dark bare">{copy.eyebrow}</p>
-          <h2>{copy.title}</h2>
-          <ol>
-            {steps.map((s, i) => {
-              const last = i === steps.length - 1;
-              return (
-                <li key={s.tag} className="lp-step" style={{ listStyle: 'none' }}>
-                  <div className="lp-step-rail" aria-hidden="true">
-                    {last ? <span className="lp-step-up">▲</span> : <span className={`lp-step-dot${i === 2 ? ' hub' : ''}`} />}
-                    {!last && <span className={`lp-step-line${i === steps.length - 2 ? ' dashed' : ''}`} />}
-                  </div>
-                  <div>
-                    <div className="lp-wp-tag">{s.tag}</div>
-                    <b>{s.title}</b>
-                    <p>{s.text}</p>
-                  </div>
-                </li>
-              );
-            })}
-          </ol>
-        </div>
+        <ol className="journey-list" ref={list} style={{ '--steps': STEPS.length } as CSSProperties}>
+          {STEPS.map((s, i) => (
+            <li className="journey-step" key={s.title} style={{ top: `calc(var(--stack-top) + ${i} * var(--stack-row))` }}>
+              <div className="journey-text">
+                <h3>{s.title}</h3>
+                <p>{s.body}</p>
+                <a className="journey-link" href={withBase(s.link.href)}>
+                  {s.link.label} <b aria-hidden="true">→</b>
+                </a>
+                <ul className="journey-tags" aria-label="Covers">
+                  {s.tags.map((t) => (
+                    <li key={t}>{t}</li>
+                  ))}
+                </ul>
+              </div>
+              <div className="journey-art">
+                <JourneyArt kind={s.art} />
+              </div>
+            </li>
+          ))}
+        </ol>
       </div>
     </section>
   );

@@ -1,55 +1,42 @@
 import type { Metadata } from 'next';
-import { getContent } from '@/lib/content';
-import { getSiteCopy } from '@/lib/site-copy';
-import { consoleUrl } from '@/lib/links';
-import { PageShell } from '@/components/SiteChrome';
-import PmjayHero from '@/components/pages/PmjayHero';
-import { PmjayChanged, PmjayFacts, PmjayJourney, PmjaySides, PmjayStart } from '@/components/pages/PmjaySections';
-import '@/styles/dark.css';
-import '@/styles/pmjay.css';
+import { withBase } from '@/lib/paths';
+import Header from '@/components/landing/Header';
+import Footer from '@/components/landing/Footer';
+import PmjayHero from '@/components/pmjay/PmjayHero';
+import PmjayOnNhcx from '@/components/pmjay/PmjayOnNhcx';
+import PmjayBenefits from '@/components/pmjay/PmjayBenefits';
+import PmjayChanged from '@/components/pmjay/PmjayChanged';
+import PmjayTravels from '@/components/pmjay/PmjayTravels';
+import PmjaySides from '@/components/pmjay/PmjaySides';
+import PmjayCta from '@/components/pmjay/PmjayCta';
 
-/**
- * PM-JAY.
- *
- * The scheme's own page on this site: what PM-JAY is, and what its claims
- * look like once they travel over NHCX rather than over a per-payer portal.
- * It is written for the two ends of a scheme claim — the empanelled hospital
- * that raises it and the State Health Agency or insurer that settles it —
- * and it sends both to the same sandbox as every other participant.
- *
- * The page describes what the exchange is for, not a migration that has
- * happened: it carries no rollout dates, no adoption figures and no claim
- * volumes, because those belong to the programme to state and to change.
- * pmjay.gov.in remains the scheme's own front door and the hero links to it.
- *
- * The copy is `pmjay` in content/site.json, like the landing sections and the
- * DevTools page, rather than a Strapi single type: it is a designed page, and
- * the CMS (cms/app.py) edits that file directly.
+export const metadata: Metadata = {
+  title: 'PM-JAY on NHCX · National Health Claims Exchange',
+  description: 'What PM-JAY is, and what its claims look like once they travel over NHCX: the cover, the benefits, what a hospital does differently, and how a scheme claim travels.',
+  icons: { icon: withBase('/assets/animation/pmjay.svg') },
+};
+
+/*
+ * PM-JAY: the scheme's own page, built the way the DevTools and AI Skill
+ * pages are: its words in lib/pmjay-copy.ts, small section components, and
+ * the shared page pieces in styles/tools.css (`.tl`), with what only this
+ * page has in styles/pmjay.css (`.pj`). On this page the primary colour is
+ * the scheme's orange.
  */
-
-function pmjay() {
-  const { global } = getContent();
-  const console_ = consoleUrl(global);
-  return { global, console_, copy: getSiteCopy(console_, global.docsUrl).pmjay };
-}
-
-export function generateMetadata(): Metadata {
-  const { copy } = pmjay();
-  return { title: copy.meta.title, description: copy.meta.description };
-}
-
 export default function PmjayPage() {
-  const { global, console_, copy } = pmjay();
-  const applyHref = global.applyCta?.url || '/apply/';
-
   return (
-    <PageShell global={global} currentPath="/pmjay/">
-      <PmjayHero copy={copy.hero} applyHref={applyHref} />
-      <PmjayFacts copy={copy.facts} />
-      <PmjayChanged copy={copy.changed} />
-      <PmjayJourney copy={copy.journey} />
-      <PmjaySides copy={copy.sides} />
-      <PmjayStart copy={copy.start} applyHref={applyHref} consoleUrl={console_} />
-    </PageShell>
+    <>
+      <Header current="/pmjay/" />
+      <main className="tl pj">
+        <PmjayHero />
+        <PmjayOnNhcx />
+        <PmjayBenefits />
+        <PmjayChanged />
+        <PmjayTravels />
+        <PmjaySides />
+        <PmjayCta />
+      </main>
+      <Footer />
+    </>
   );
 }
