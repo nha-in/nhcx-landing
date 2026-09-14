@@ -1,19 +1,19 @@
 {
   "source": "https://apisprod.nha.gov.in/pmjay/hcx/newhcxdashboard/v2/dashboard/stats?flag=Prod",
-  "fetched": "2026-09-12T09:25:17.142Z",
+  "fetched": "2026-09-14T19:59:51.247Z",
   "payload": {
-    "integratorsSandboxPriv": 2684,
+    "integratorsSandboxPriv": 2692,
     "integratorsSandboxGov": 10424,
-    "integratorsProdPriv": 902,
-    "integratorsProdGov": 46880,
-    "noofProdProvPriv": 860,
-    "noofProdProvGov": 46834,
+    "integratorsProdPriv": 904,
+    "integratorsProdGov": 46936,
+    "noofProdProvPriv": 862,
+    "noofProdProvGov": 46890,
     "noofProdPayGov": 46,
     "noofProdPayPriv": 38,
-    "claimsProcessedPriv": 28015,
-    "claimsProcessedGov": 86729246,
-    "preauthProcessedPriv": 150342,
-    "preauthProcessedGov": 159922969,
-    "lastUpdatedOn": "12-09-2026 02:09"
+    "claimsProcessedPriv": 28452,
+    "claimsProcessedGov": 87156278,
+    "preauthProcessedPriv": 151549,
+    "preauthProcessedGov": 160804474,
+    "lastUpdatedOn": "15-09-2026 01:09"
   }
 }

@@ -19,10 +19,9 @@ site:
     description: NHCX brings India’s healthcare ecosystem together with standardized, interoperable claim data — enabling seamless, transparent, and efficient exchange across systems.
 
   header:
-    homeLabel: NHCX home
-    markAlt: HCX
     logoLabel: National Health Authority — ABDM NHCX
-    logoAlt: National Health Authority, Ayushman Bharat Digital Mission
+    nhaAlt: National Health Authority, Ministry of Health and Family Welfare
+    abdmAlt: Ayushman Bharat Digital Mission
     navLabel: Primary
     nav:
       - label: Home
@@ -99,7 +98,7 @@ home:
     ledeStrong: completely digitized format
     cta:
       label: View Docs
-      href: /docs/
+      href: 'https://abdm-docs.dev.eka.care/docs/nhcx/v1/'
 
   stats:
     ariaLabel: NHCX statistics
@@ -241,7 +240,7 @@ home:
     ledeTail: and that too in a protocol standard set by the Payer beforehand.
     cta:
       label: View Docs →
-      href: /docs/
+      href: 'https://abdm-docs.dev.eka.care/docs/nhcx/v1/'
     netLabel: Providers such as hospitals, nursing homes and clinics exchange documents with payers such as insurers and government schemes through NHCX
     providerLabel: Provider
     payerLabel: Payer
@@ -338,7 +337,7 @@ home:
         body: Apply for the NHCX Sandbox with the intended role and integrate with your application against the published APIs and FHIR profiles. Test the end to end claims journey including insurance plan, coverage eligibility, pre-authorisation, claims and payment communication using the sandbox environment.
         link:
           label: HCX Sandbox Documents
-          href: /docs/
+          href: 'https://abdm-docs.dev.eka.care/docs/nhcx/v1/'
         tags:
           - Sandbox APIs
           - FHIR profiles
@@ -351,7 +350,7 @@ home:
         body: Proceed with the required functional test cases for NHCX workflows and validation of your FHIR payloads. Demonstrate the working capabilities for individual use cases during UAT post integration in order to establish your production readiness.
         link:
           label: Test Cases
-          href: /docs/test-cases/
+          href: 'https://abdm-docs.dev.eka.care/docs/nhcx/v1/'
         tags:
           - Functional test cases
           - FHIR validation
@@ -504,7 +503,7 @@ pmjay:
         lead: Run by NHA with the states
         text: The National Health Authority runs PM-JAY and the exchange nationally; each State Health Agency runs the scheme in its own state.
         link: Read the specification
-        href: /docs/
+        href: 'https://abdm-docs.dev.eka.care/docs/nhcx/v1/'
 
   benefits:
     title: PMJAY Benefits
@@ -805,7 +804,7 @@ skill:
     title: NHCX is just one prompt away · AI skill
     description: 'An agent skill that teaches your coding assistant the National Health Claim Exchange: the protocol, the FHIR bundles, the envelope and the sandbox, so an integration can be asked for rather than assembled by hand.'
 
-  url: https://github.com/nha-in/nhcx-skill
+  url: https://github.com/nha-in/docs/tree/docs/nhcx-base/plugins/nhcx/skills
 
   hero:
     kicker: Agentic AI for NHCX
@@ -926,64 +925,28 @@ skill:
         text: It sends to the sandbox, waits for the asynchronous callback, decrypts it and reads it. A failure is the next input rather than the end of the attempt.
 
   knows:
-    titleLead: A ladder, not a chat.
-    titleAccent: Eleven stages, each closed on evidence
-    lede: 'Point the skill at a working HMIS and it adds a claims module beside it, or at an empty folder and it builds a claims desk of its own. Either way it climbs the same eleven stages. Each one reads the stage before it, writes one file into nhcx-build/ in your project, and ends at a gate that closes only on evidence: a file, a line, a command and its output.'
-    phases:
-      - title: Agree
-        stages:
-          - 'n': 1
-            title: Idea
-            writes: 1-idea.md
-            gate: The mode, the payers and the scope, agreed with you
-          - 'n': 2
-            title: Planning
-            writes: 2-planning.md
-            gate: Every later stage has an owner, an estimate and a test
-      - title: Understand
-        stages:
-          - 'n': 3
-            title: Discovery
-            writes: 3-discovery.md
-            gate: Every answer points at the file or table that proves it
-          - 'n': 4
-            title: Flow and data mapping
-            writes: 4-flow-data-mapping.md
-            gate: Every leg has a home and its three correlation ids
-          - 'n': 5
-            title: Screen plan
-            writes: 5-screen-plan.md
-            gate: Every value on screen traced to a received message
-          - 'n': 6
-            title: Code plan
-            writes: 6-code-plan.md
-            gate: Every module has its files and the pin it is held to
-      - title: Build
-        stages:
-          - 'n': 7
-            title: Write the code
-            writes: 7-modules/
-            gate: Thirteen modules, each done in order
-            modules: 13
-          - 'n': 8
-            title: Validate the modules
-            writes: 8-validation.md
-            gate: Every module passes, or carries a named exception
-      - title: Prove
-        stages:
-          - 'n': 9
-            title: Write the tests
-            writes: 9-tests.md
-            gate: Every row of the test matrix has a test
-          - 'n': 10
-            title: Run the tests
-            writes: 10-test-run.md
-            gate: The offline rung passes; live rungs only when you start them
-          - 'n': 11
-            title: The report
-            writes: 11-report.md
-            gate: Every gap named, so a stranger could pick it up
-    gateLabel: Gate
+    titleLead: From first idea to live claims,
+    titleAccent: one checked step at a time
+    lede: Point the skill at a working HMIS and it adds a claims module beside it, or at an empty folder and it builds a claims desk of its own. It works through the build in order, and nothing moves on until the step before it has been checked.
+    stages:
+      - range: 01–02
+        title: Idea and plan
+        text: 'Integrate an HMIS or build a standalone claims desk: the mode, the payers and the scope, agreed with you, then an owner, an estimate and a test for every stage.'
+      - range: '03'
+        title: Discovery
+        text: Every question about your system answered with the file, table or endpoint that proves it, or written down as a gap.
+      - range: 04–05
+        title: Flow and screens
+        text: Every leg of the claim given a home and its three correlation ids, and every value on screen traced to a message the exchange sent.
+      - range: 06–07
+        title: Code
+        text: A code plan that holds each module to a pin, then thirteen modules written in order, each against its own “Done when” list.
+      - range: '08'
+        title: Validation
+        text: 'Every module run through its checks and recorded as evidence: a command and its output. It passes, or carries a named exception.'
+      - range: 09–11
+        title: Tests and report
+        text: A test for every row of the matrix, the offline suite run, and a report that names every gap so a stranger could pick it up.
     carriesTitle: What every stage reads from
     carries:
       - title: The flow
@@ -998,7 +961,6 @@ skill:
         text: Nothing the exchange already knows is typed again, and no screen shows a decision the exchange has not sent.
       - title: The test pyramid
         text: A test-case matrix per use case, an offline suite held to the pins, and a report that says which rungs were really climbed.
-    note: Stop and come back any time. Nothing lives in the agent’s memory; everything lives in nhcx-build/, where the next session picks up at the first open gate.
 
   prompts:
     titleLead: Prompts that are
@@ -1027,33 +989,34 @@ skill:
   close:
     titleLead: Bring it into
     titleAccent: the agent you use
-    lede: The skill is a folder of instructions and specifications. Install it for every agent in your project with one command, or clone it into the folder your agent reads skills from; nothing else about your setup changes.
-    skillCtaLabel: The skill on GitHub
-    note: 'You still need credentials to send anything: the skill writes and validates without them, and the sandbox answers once your application is through.'
-    agents:
-      - key: any
-        label: Any agent
-        command: npx skills add nha-in/nhcx-skill
-        note: The skills installer finds the coding agents in your project and installs the skill for each of them.
-      - key: claude
-        label: Claude Code
-        folder: .claude/skills/nhcx
-      - key: codex
-        label: OpenAI Codex
-        folder: .codex/skills/nhcx
-      - key: copilot
-        label: GitHub Copilot
-        folder: .github/skills/nhcx
-      - key: cursor
-        label: Cursor
-        folder: .cursor/skills/nhcx
-      - key: gemini
-        label: Gemini CLI
-        folder: .gemini/skills/nhcx
-    tabsLabel: Coding agent
-    installFor: Install for
-    readsFrom: reads skills from
-    inRepo: in your repository.
+    lede: Seven skills, one for each part of the exchange. Each is self-contained, so install only the ones your integration needs; the skills installer sets each one up for every coding agent in your project, and nothing else about your setup changes.
+    skillCtaLabel: The skills on GitHub
+    note: 'You still need credentials to send anything: the skills write and validate without them, and the sandbox answers once your application is through.'
+    # One install line per skill in nha-in/docs, under plugins/nhcx/skills.
+    skills:
+      - key: coverage
+        label: Coverage
+        command: npx skills add nha-in/docs/plugins/nhcx/skills/nhcx-coverage
+      - key: insurance
+        label: Insurance
+        command: npx skills add nha-in/docs/plugins/nhcx/skills/nhcx-insurance
+      - key: preauth
+        label: Pre-auth
+        command: npx skills add nha-in/docs/plugins/nhcx/skills/nhcx-preauth
+      - key: claim
+        label: Claim
+        command: npx skills add nha-in/docs/plugins/nhcx/skills/nhcx-claim
+      - key: communication
+        label: Communication
+        command: npx skills add nha-in/docs/plugins/nhcx/skills/nhcx-communication
+      - key: payment
+        label: Payment
+        command: npx skills add nha-in/docs/plugins/nhcx/skills/nhcx-payment
+      - key: reprocess
+        label: Reprocess
+        command: npx skills add nha-in/docs/plugins/nhcx/skills/nhcx-reprocess
+    tabsLabel: NHCX skill
+    installFor: Install
 
 # ——————————————————————————————————————————————————————————————————————
 # The Links page (/links/).
@@ -1168,19 +1131,19 @@ faq:
     - topic: General
       q: What is NHCX?
       a: NHCX (National Health Claims Exchange) is a platform developed under the Ayushman Bharat Digital Mission (ABDM) to streamline and standardise the exchange of health-claim information between healthcare providers and payers. It enables digitised, machine-readable information to move between different systems using common standards.
-      more: /docs/
+      more: 'https://abdm-docs.dev.eka.care/docs/nhcx/v1/'
     - topic: General
       q: Who can use NHCX?
       a: Hospitals, nursing homes and diagnostic centres on the provider side; insurers, TPAs, state health agencies and government schemes on the payer side; and the solution vendors who build for them.
-      more: /docs/
+      more: 'https://abdm-docs.dev.eka.care/docs/nhcx/v1/'
     - topic: General
       q: How does NHCX make claim processing easier?
       a: Claims travel as structured FHIR bundles instead of PDFs and images, so a payer’s system can read them without re-typing, and both sides see the same status at every step.
-      more: /docs/
+      more: 'https://abdm-docs.dev.eka.care/docs/nhcx/v1/'
     - topic: General
       q: What standards does NHCX use?
       a: HL7 FHIR R4 for the clinical and financial content, the HCX protocol for the exchange envelope, and ABDM identifiers for participants and patients.
-      more: /docs/
+      more: 'https://abdm-docs.dev.eka.care/docs/nhcx/v1/'
     - topic: Onboarding
       q: Who should onboard to the sandbox?
       a: Any hospital, insurer, TPA, government scheme or software vendor building health-claim exchange capability. The sandbox exists so each participant can test its own components against the communication standards and get certified before touching production.

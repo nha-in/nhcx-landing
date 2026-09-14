@@ -2,10 +2,11 @@ import type { Metadata } from 'next';
 import Header from '@/components/landing/Header';
 import Footer from '@/components/landing/Footer';
 import { SkillClose, SkillHero, SkillKnows, SkillLoop, SkillPrompts, SkillRules } from '@/components/skill/SkillSections';
+import { META } from '@/lib/skill-copy';
 
 export const metadata: Metadata = {
-  title: 'NHCX is just one prompt away · AI skill',
-  description: 'An agent skill that teaches your coding assistant the National Health Claim Exchange: the protocol, the FHIR bundles, the envelope and the sandbox, so an integration can be asked for rather than assembled by hand.',
+  title: META.title,
+  description: META.description,
 };
 
 /*

@@ -1,5 +1,4 @@
-import { Check } from 'lucide-react';
-import { withBase } from '@/lib/paths';
+import { Sparkles } from 'lucide-react';
 import { CLOSE, HERO, KNOWS, LOOP, PROMPTS, RULES, SKILL_URL } from '@/lib/skill-copy';
 import CopyButton from '@/components/shared/CopyButton';
 import SkillTerminal from '@/components/skill/SkillTerminal';
@@ -61,7 +60,7 @@ export function SkillLoop() {
               <i />
             </span>
             <span className="sk-ring-core">
-              <img className="sk-ring-mark" src={withBase('/assets/hcx-logo.png')} alt="" />
+              <Sparkles className="sk-ring-mark" strokeWidth={1.6} />
             </span>
             {LOOP.ringNodes.map((node, i) => (
               <span key={node} className={`sk-node n${i + 1}`}>
@@ -87,44 +86,20 @@ export function SkillLoop() {
 }
 
 /*
- * What the skill is, from the skill itself: the eleven stages it climbs in
- * four phases, each with the file it writes and the gate that closes it, then
- * the references every stage reads from.
+ * What the skill is, from the skill itself: its eleven stages in six small
+ * blocks, then the references every stage reads from.
  */
 export function SkillKnows() {
   return (
     <section className="tl-section is-alt" aria-labelledby="sk-knows-title">
       <div className="wrap">
         <Head id="sk-knows-title" lead={KNOWS.titleLead} accent={KNOWS.titleAccent} text={KNOWS.lede} />
-        <ol className="sk-ladder">
-          {KNOWS.phases.map((phase) => (
-            <li key={phase.title} className="sk-ladder-col">
-              <h3 className="sk-ladder-phase">{phase.title}</h3>
-              <ol className="sk-stages">
-                {phase.stages.map((stage) => (
-                  <li key={stage.n} className="sk-stage">
-                    <div className="sk-stage-top">
-                      <span className="sk-stage-num">{String(stage.n).padStart(2, '0')}</span>
-                      <h4>{stage.title}</h4>
-                    </div>
-                    <code>{stage.writes}</code>
-                    {stage.modules && (
-                      <span className="sk-modules" aria-hidden="true">
-                        {Array.from({ length: stage.modules }, (_, i) => (
-                          <i key={i} />
-                        ))}
-                      </span>
-                    )}
-                    <p>
-                      <Check size={15} strokeWidth={2.4} aria-hidden="true" />
-                      <span>
-                        <span className="vh">{KNOWS.gateLabel}: </span>
-                        {stage.gate}
-                      </span>
-                    </p>
-                  </li>
-                ))}
-              </ol>
+        <ol className="sk-steps">
+          {KNOWS.stages.map((stage) => (
+            <li key={stage.title} className="sk-step">
+              <span className="sk-step-num">{stage.range}</span>
+              <h3>{stage.title}</h3>
+              <p>{stage.text}</p>
             </li>
           ))}
         </ol>
@@ -138,7 +113,6 @@ export function SkillKnows() {
             </li>
           ))}
         </ul>
-        <p className="tl-note">{KNOWS.note}</p>
       </div>
     </section>
   );

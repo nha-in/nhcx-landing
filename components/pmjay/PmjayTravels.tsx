@@ -293,7 +293,7 @@ export default function PmjayTravels() {
               <div className="pj-stage">
                 <ClaimWindow step={step} />
                 <div className="pj-stage-foot pj-mono">
-                  <span>Claim journey</span>
+                  <span>{TRAVELS.footLabel}</span>
                   <span>
                     {String(step + 1).padStart(2, '0')} / {String(n).padStart(2, '0')}
                   </span>

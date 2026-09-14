@@ -1,16 +1,22 @@
 import type { Metadata } from 'next';
 import { withBase } from '@/lib/paths';
+import { META } from '@/lib/site-copy';
 import '@/styles/globals.css';
 import '@/styles/landing.css';
 import '@/styles/pmjay.css';
 import '@/styles/tools.css';
 
 export const metadata: Metadata = {
-  title: 'National Health Claims Exchange',
-  description:
-    'NHCX brings India’s healthcare ecosystem together with standardized, interoperable claim data — enabling seamless, transparent, and efficient exchange across systems.',
-  // The HCX mark in every tab; the PM-JAY page sets its own emblem.
-  icons: { icon: withBase('/assets/hcx-icon.png') },
+  title: META.title,
+  description: META.description,
+  // The PM-JAY emblem in every tab; the PNG is for browsers without SVG favicons.
+  icons: {
+    icon: [
+      { url: withBase('/assets/animation/pmjay.svg'), type: 'image/svg+xml' },
+      { url: withBase('/assets/brand/pmjay-icon-192.png'), type: 'image/png', sizes: '192x192' },
+    ],
+    apple: withBase('/assets/brand/pmjay-apple-touch.png'),
+  },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

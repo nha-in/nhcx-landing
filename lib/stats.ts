@@ -1,33 +1,24 @@
 /**
  * The production NHCX figures from the NHA dashboard API.
  *
- * The API is public and sends `access-control-allow-origin: *` with a
- * preflight that allows GET and the `appName` header, so a browser on this
- * site can read it directly. It is therefore read twice, on purpose:
+ * They are fetched at build, not by the reader: `npm run sync:stats`
+ * (scripts/sync-stats.mjs, which holds the endpoint) stores the API's raw
+ * payload in public/stats.json, the HTML is rendered from that file, and
+ * components/landing/Stats.tsx re-reads the served /stats.json on mount, so
+ * replacing that one file moves the figures on without a rebuild.
  *
- *   at build   `npm run sync:stats` stores the raw payload in
- *              content/stats.json, which is what the HTML is rendered from
- *   in the page components/landing/Stats.tsx re-reads the endpoint on mount
- *              and replaces the figures if they have moved on
- *
- * The build-time copy is what makes the first paint correct and complete —
- * no empty cells, no layout shift, no spinner, and the right numbers with
- * JavaScript off or the API down. The live read is what stops the figures
- * being as old as the last deploy. Both dates come from the API's own
- * `lastUpdatedOn`, never from the build or the clock, so a re-read can tell a
- * figure that has moved on from the same one arriving twice.
+ * Both dates come from the API's own `lastUpdatedOn`, never from the build or
+ * the clock, so a re-read can tell a figure that has moved on from the same
+ * one arriving twice.
  *
  * The mapping lives here rather than in the sync script, and the script
- * stores the payload untouched, so the client and the server cannot drift
- * into reading the same API two different ways.
+ * stores the payload untouched, so the build and the page cannot drift into
+ * reading it two different ways.
  *
  * Nothing in this file touches the filesystem: it is imported by a client
- * component, so reading content/stats.json lives in lib/stats-file.ts and
+ * component, so reading public/stats.json lives in lib/stats-file.ts and
  * node:fs never reaches the browser bundle through here.
  */
-export const STATS_ENDPOINT =
-  'https://apisprod.nha.gov.in/pmjay/hcx/newhcxdashboard/v2/dashboard/stats?flag=Prod';
-
 export interface StatsRow {
   /** Payers on the exchange; the dashboard labels this "Integrators". */
   integrators: number;

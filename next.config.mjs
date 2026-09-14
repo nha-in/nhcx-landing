@@ -1,3 +1,5 @@
+import { fileURLToPath } from 'node:url';
+
 /**
  * The base path comes from NEXT_PUBLIC_BASE_PATH — empty for a preview at `/`,
  * `/landing` for the production export served under that prefix (see
@@ -18,7 +20,12 @@ const nextConfig = {
   // production build cannot trample the chunks a running dev server is
   // serving. `next build` keeps .next/ and exports to out/ as before.
   distDir: process.env.NEXT_DIST_DIR ?? '.next',
-
+  // Every word and link on the site is in content/site.yaml; this parses it
+  // at build time, one section per import (scripts/yaml-loader.cjs).
+  webpack(config) {
+    config.module.rules.push({ test: /\.ya?ml$/, use: fileURLToPath(new URL('./scripts/yaml-loader.cjs', import.meta.url)) });
+    return config;
+  },
 };
 
 export default nextConfig;

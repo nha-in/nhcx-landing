@@ -79,18 +79,18 @@ a { color: inherit; text-decoration: none; }
    a shade darker than the base, a one-pixel white line just inside the top
    edge, and a small soft shadow. The sheen sits between the background and
    the label. */
-.btn--primary, .btn--solid {
+.btn--primary {
   --btn-base: var(--blue-deep); --btn-base-hover: var(--blue-deep-hover);
   background: var(--btn-base); color: #fff;
   border: 1px solid color-mix(in srgb, var(--btn-base) 72%, #000);
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.18), 0 1px 3px rgba(20, 24, 40, 0.22);
   transition: transform 120ms ease, background-color 120ms ease, border-color 120ms ease, box-shadow 120ms ease;
 }
-.btn--primary::before, .btn--solid::before {
+.btn--primary::before {
   content: ''; position: absolute; inset: 0; z-index: -1; border-radius: inherit; pointer-events: none;
   background: linear-gradient(180deg, rgba(255, 255, 255, 0.22) 0%, rgba(255, 255, 255, 0.06) 55%, rgba(255, 255, 255, 0) 100%);
 }
-.btn--primary:hover, .btn--solid:hover {
+.btn--primary:hover {
   background: var(--btn-base-hover); border-color: color-mix(in srgb, var(--btn-base-hover) 72%, #000);
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.22), 0 2px 6px rgba(20, 24, 40, 0.26);
 }

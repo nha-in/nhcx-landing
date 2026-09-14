@@ -5,12 +5,12 @@ import DevToolsHero from '@/components/devtools/DevToolsHero';
 import UseCases from '@/components/devtools/UseCases';
 import AdapterDownload from '@/components/devtools/AdapterDownload';
 import QuickStart from '@/components/devtools/QuickStart';
-import { ADAPTER, CONSOLE, DEVTOOLS_URL, DOWNLOAD, QUICKSTART } from '@/lib/devtools-copy';
+import { ADAPTER, CONSOLE, DEVTOOLS_URL, DOWNLOAD, META, QUICKSTART } from '@/lib/devtools-copy';
 import { ADAPTER_RELEASE } from '@/lib/adapter-release';
 
 export const metadata: Metadata = {
-  title: 'DevTools · NHCX',
-  description: 'Two developer tools for NHCX: DevTools, which teaches and rehearses the exchange in a browser, and the NHCX Adapter, the binary that carries it in production.',
+  title: META.title,
+  description: META.description,
 };
 
 /*

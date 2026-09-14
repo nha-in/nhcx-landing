@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
 import { withBase } from '@/lib/paths';
+import { BENEFITS } from '@/lib/home-copy';
 
 /*
  * "NHCX Benefits" — the four cards from the design as a horizontal
@@ -15,64 +16,12 @@ import { withBase } from '@/lib/paths';
  * clips it. On narrow screens the cards stack open, one under another.
  */
 
-const CARDS = [
-  {
-    key: 'exchange',
-    eyebrow: 'One exchange',
-    heading: (
-      <>
-        Independent exchange between <span>Providers</span> and <span>Payers.</span>
-      </>
-    ),
-    stats: [
-      ['40K+', 'Hospitals served'],
-      ['Open', 'Standards based'],
-    ],
-    photo: '0% 0%',
-  },
-  {
-    key: 'digital',
-    eyebrow: 'Digital claims',
-    heading: (
-      <>
-        Transforming Health Claims from <span>Paper to Digital</span>
-      </>
-    ),
-    stats: [
-      ['FHIR', 'Structured claims'],
-      ['API', 'Enabled exchange'],
-    ],
-    photo: '40% 0%',
-  },
-  {
-    key: 'patient',
-    eyebrow: 'Patient experience',
-    heading: (
-      <>
-        Making the Health Insurance Journey <span>Simpler for Patients.</span>
-      </>
-    ),
-    stats: [
-      ['Less', 'Repetition'],
-      ['Faster', 'Claim Exchange'],
-    ],
-    photo: '100% 0%',
-  },
-  {
-    key: 'scale',
-    eyebrow: 'National scale',
-    heading: (
-      <>
-        Powering Claims for the World’s <span>Largest Health Assurance Scheme.</span>
-      </>
-    ),
-    stats: [
-      ['PMJAY', 'Enabled'],
-      ['₹5 lakh', 'Cover per family/yr'],
-    ],
-    photo: '70% 0%',
-  },
-];
+const CARDS = BENEFITS.cards;
+
+/** A heading with its *starred* words in the accent colour. */
+function accent(text: string) {
+  return text.split(/\*([^*]+)\*/).map((part, i) => (i % 2 ? <span key={i}>{part}</span> : part));
+}
 
 export default function Benefits() {
   const [active, setActive] = useState(0);
@@ -82,12 +31,14 @@ export default function Benefits() {
     <section className="benefits" aria-labelledby="benefits-title">
       <div className="wrap">
         <div className="benefits-head">
-          <h2 className="benefits-title" id="benefits-title">NHCX Benefits</h2>
+          <h2 className="benefits-title" id="benefits-title">
+            {BENEFITS.title}
+          </h2>
           <div className="benefits-nav">
-            <button type="button" className="benefits-arrow" aria-label="Previous benefit" onClick={() => step(-1)}>
+            <button type="button" className="benefits-arrow" aria-label={BENEFITS.previousLabel} onClick={() => step(-1)}>
               <ArrowLeft size={24} strokeWidth={1.5} />
             </button>
-            <button type="button" className="benefits-arrow" aria-label="Next benefit" onClick={() => step(1)}>
+            <button type="button" className="benefits-arrow" aria-label={BENEFITS.nextLabel} onClick={() => step(1)}>
               <ArrowRight size={24} strokeWidth={1.5} />
             </button>
           </div>
@@ -107,7 +58,7 @@ export default function Benefits() {
                 <button
                   type="button"
                   className="benefit-strip"
-                  aria-label={`Show: ${card.eyebrow}`}
+                  aria-label={`${BENEFITS.showPrefix} ${card.eyebrow}`}
                   aria-expanded={open}
                   tabIndex={open ? -1 : 0}
                   onClick={() => setActive(i)}
@@ -118,12 +69,12 @@ export default function Benefits() {
                   <div className="benefit-panel">
                     <div className="benefit-body">
                       <div className="benefit-text">
-                        <h3 className="benefit-heading">{card.heading}</h3>
+                        <h3 className="benefit-heading">{accent(card.heading)}</h3>
                         <dl className="benefit-stats">
-                          {card.stats.map(([big, small]) => (
-                            <div key={small}>
-                              <dt>{big}</dt>
-                              <dd>{small}</dd>
+                          {card.stats.map((stat) => (
+                            <div key={stat.label}>
+                              <dt>{stat.value}</dt>
+                              <dd>{stat.label}</dd>
                             </div>
                           ))}
                         </dl>

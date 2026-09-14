@@ -9,19 +9,20 @@
 
 import type { CSSProperties } from 'react';
 import { ArrowLeftRight, BookOpen, Cable, FlaskConical } from 'lucide-react';
+import { TOOL } from '@/lib/home-copy';
 
 export default function InsideTool() {
   return (
     <section className="tool" aria-labelledby="tool-title">
       <div className="wrap">
         <h2 className="tool-title" id="tool-title">
-          See whats happening
-          <span>DevTools</span>
+          {TOOL.titleLead}
+          <span>{TOOL.titleAccent}</span>
         </h2>
         <div className="tool-grid">
           <article className="tool-card is-dev">
-            <h3>Dev Environment</h3>
-            <p style={{ maxWidth: '30ch' }}>Build, validate and test NHCX integrations safely before connecting to production.</p>
+            <h3>{TOOL.dev.title}</h3>
+            <p style={{ maxWidth: '30ch' }}>{TOOL.dev.text}</p>
             <div className="tool-icon is-dev" aria-hidden="true">
               <span className="tool-icon-ring" />
               <FlaskConical size={44} strokeWidth={1.6} />
@@ -93,7 +94,7 @@ export default function InsideTool() {
                   </g>
                   <g fill="#94a3b8" fontFamily="'IBM Plex Mono', monospace" fontSize="14" letterSpacing="1.6">
                     <text x="18" y="0" dy="404" fill="#94a3b8">
-                      SANDBOX
+                      {TOOL.dev.art.sandbox}
                     </text>
                   </g>
                 </svg>
@@ -102,8 +103,8 @@ export default function InsideTool() {
           </article>
 
           <article className="tool-card is-reference">
-            <h3>Reference Payer &amp; Provider</h3>
-            <p style={{ maxWidth: '46ch' }}>Simulate both sides of a claim exchange to test complete NHCX workflows end to end.</p>
+            <h3>{TOOL.reference.title}</h3>
+            <p style={{ maxWidth: '46ch' }}>{TOOL.reference.text}</p>
             <div className="tool-icon is-ref" aria-hidden="true">
               <span className="tool-icon-ring" />
               <ArrowLeftRight size={44} strokeWidth={1.6} />
@@ -170,10 +171,10 @@ export default function InsideTool() {
                 </g>
                 <g fontFamily="'IBM Plex Mono', monospace" fontSize="18" letterSpacing="1.8" fill="#64748b" textAnchor="middle">
                   <text x="96" y="178">
-                    PROVIDER
+                    {TOOL.reference.art.provider}
                   </text>
                   <text x="364" y="178">
-                    PAYER
+                    {TOOL.reference.art.payer}
                   </text>
                 </g>
                 <g>
@@ -181,14 +182,14 @@ export default function InsideTool() {
                     <rect x="160" y="8" width="140" height="30" rx="8" fill="#ffffff" strokeWidth="1" style={{ stroke: 'var(--acc)' }}>
                     </rect>
                     <text x="230" y="28" fontFamily="'IBM Plex Mono', monospace" fontSize="16" fill="#1f4ee0" textAnchor="middle" letterSpacing=".4">
-                      claim.submit
+                      {TOOL.reference.art.submit}
                     </text>
                   </g>
                   <g className="tk" style={{ '--anim': 'dcDrift', animationTimingFunction: 'ease-out', animationDelay: '1.75s', transformBox: 'fill-box', transformOrigin: 'center', opacity: '0' } as CSSProperties}>
                     <rect x="150" y="184" width="160" height="30" rx="8" fill="#ffffff" strokeWidth="1" style={{ stroke: 'var(--acc)' }}>
                     </rect>
                     <text x="230" y="204" fontFamily="'IBM Plex Mono', monospace" fontSize="16" fill="#1f4ee0" textAnchor="middle" letterSpacing=".4">
-                      claim.response
+                      {TOOL.reference.art.response}
                     </text>
                   </g>
                 </g>
@@ -207,8 +208,8 @@ export default function InsideTool() {
           </article>
 
           <article className="tool-card is-docs">
-            <h3>Documentation</h3>
-            <p style={{ maxWidth: '34ch' }}>Find implementation guides, API specifications and technical references for building on NHCX.</p>
+            <h3>{TOOL.docs.title}</h3>
+            <p style={{ maxWidth: '34ch' }}>{TOOL.docs.text}</p>
             <div className="tool-icon is-docs" aria-hidden="true">
               <span className="tool-icon-ring" />
               <BookOpen size={44} strokeWidth={1.6} />
@@ -276,19 +277,19 @@ export default function InsideTool() {
                   </g>
                   <g fontFamily="'IBM Plex Mono', monospace" fontSize="14" letterSpacing=".6" fill="#64748b" textAnchor="middle">
                     <text x="56" y="388">
-                      DOCS
+                      {TOOL.docs.art.docs}
                     </text>
                     <text x="160" y="388">
-                      OPENAPI
+                      {TOOL.docs.art.openapi}
                     </text>
                     <text x="264" y="388">
-                      SNIPPETS
+                      {TOOL.docs.art.snippets}
                     </text>
                   </g>
                   <rect x="104" y="196" width="112" height="40" rx="20" fill="#ffffff" stroke="#d7dfec" strokeWidth="1" className="tk" style={{ '--anim': 'dcLit', animationTimingFunction: 'ease-in-out', animationDelay: '1.0s' } as CSSProperties}>
                   </rect>
                   <text x="160" y="223" fontFamily="'IBM Plex Mono', monospace" fontSize="14" letterSpacing="2.2" fill="#64748b" textAnchor="middle">
-                    BUILD
+                    {TOOL.docs.art.build}
                   </text>
                   <rect x="30" y="14" width="260" height="136" rx="12" fill="#ffffff" stroke="#d7dfec" strokeWidth="1" className="tk" style={{ '--anim': 'dcLit', animationTimingFunction: 'ease-in-out', animationDelay: '1.55s' } as CSSProperties}>
                   </rect>
@@ -315,7 +316,7 @@ export default function InsideTool() {
                   <rect x="70" y="98" width="180" height="34" rx="8" fill="none" stroke="none">
                   </rect>
                   <text x="160" y="120" fontFamily="'IBM Plex Mono', monospace" fontSize="14" letterSpacing="1.6" fill="#94a3b8" textAnchor="middle">
-                    APP
+                    {TOOL.docs.art.app}
                   </text>
                   <g className="tk" style={{ '--anim': 'dcPop', animationTimingFunction: 'cubic-bezier(.3,1.4,.4,1)', animationDelay: '2.0s', transformBox: 'fill-box', transformOrigin: 'center', opacity: '0' } as CSSProperties}>
                     <rect x="70" y="98" width="180" height="34" rx="8" fill="#f0fdf4" stroke="#16a34a" strokeWidth="1">
@@ -323,7 +324,7 @@ export default function InsideTool() {
                     <path d="M86 114 l3.6 3.8 l6.8 -7.6" fill="none" stroke="#16a34a" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round">
                     </path>
                     <text x="169" y="120" fontFamily="'IBM Plex Mono', monospace" fontSize="14" letterSpacing=".6" fill="#15803d" textAnchor="middle">
-                      NHCX COMPLIANT
+                      {TOOL.docs.art.compliant}
                     </text>
                   </g>
                 </svg>
@@ -333,9 +334,9 @@ export default function InsideTool() {
 
           <article className="tool-card is-adapter">
             <h3>
-              NHCX Adapter <span className="tool-opt">(Optional)</span>
+              {TOOL.adapter.title} <span className="tool-opt">{TOOL.adapter.optional}</span>
             </h3>
-            <p style={{ maxWidth: '46ch' }}>Connect existing hospital or payer systems to NHCX without rebuilding your core workflows.</p>
+            <p style={{ maxWidth: '46ch' }}>{TOOL.adapter.text}</p>
             <div className="tool-icon is-adapter" aria-hidden="true">
               <span className="tool-icon-ring" />
               <Cable size={44} strokeWidth={1.6} />
@@ -374,19 +375,19 @@ export default function InsideTool() {
                 </g>
                 <g fontFamily="'IBM Plex Mono', monospace" fontSize="20" letterSpacing="1.4" fill="#64748b" textAnchor="middle">
                   <text x="71" y="73">
-                    HMIS
+                    {TOOL.adapter.art.hmis}
                   </text>
                   <text x="71" y="161">
-                    PAYER
+                    {TOOL.adapter.art.payer}
                   </text>
                   <text x="395" y="117">
-                    NHCX
+                    {TOOL.adapter.art.nhcx}
                   </text>
                   <text x="71" y="118" fontSize="16" fill="#94a3b8" letterSpacing="2.2">
-                    OR
+                    {TOOL.adapter.art.or}
                   </text>
                   <text x="240" y="170" fontSize="16" fill="#94a3b8" letterSpacing="2.2">
-                    ADAPTER
+                    {TOOL.adapter.art.adapter}
                   </text>
                 </g>
                 <g fill="none" strokeWidth="1" strokeLinecap="round">

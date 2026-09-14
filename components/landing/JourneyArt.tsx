@@ -1,7 +1,7 @@
 /*
  * The four integration-journey illustrations, inline so each part can move.
- * The badge, layers and eye are the design's exported shapes (the files in
- * public/assets/journey-*.svg) split into their parts; the rocket is drawn
+ * The badge, layers and eye are the design's exported shapes, split into
+ * their parts; the rocket is drawn
  * in the same two blues, standing in for the design's play arrow. All the
  * motion is CSS ("journey illustrations" in styles/landing.css) and stops
  * under reduced motion.

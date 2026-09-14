@@ -13,11 +13,10 @@
   background: #fff; border-bottom: 1px solid var(--line);
 }
 .hdr-brand { display: flex; align-items: center; gap: 12px; flex: 0 0 auto; min-width: 0; }
-/* The HCX mark from the previous site, with its divider, ahead of the NHA and ABDM logos. */
-.hdr-mark { display: block; flex: 0 0 auto; height: 41px; padding-right: 12px; border-right: 1px solid var(--line-2); }
-.hdr-mark img { height: 41px; width: auto; }
-.hdr-logo { display: block; flex: 0 0 auto; height: 41px; }
-.hdr-logo img { height: 41px; width: auto; max-width: none; }
+/* NHA and ABDM logos side by side, both files cropped to their artwork so
+   one shared height gives them the same visual size. */
+.hdr-logo { display: flex; align-items: center; gap: 16px; flex: 0 0 auto; height: 41px; }
+.hdr-logo img { display: block; height: 41px; width: auto; max-width: none; }
 .hdr-nav { display: flex; align-items: stretch; gap: 8px; height: 100%; padding: 0 12px; min-width: 0; overflow-x: auto; scrollbar-width: none; }
 .hdr-nav::-webkit-scrollbar { display: none; }
 .hdr-link {
@@ -46,10 +45,9 @@
 
 @media (max-width: 760px) {
   .hdr { padding: 0 16px; }
-  .hdr-logo, .hdr-mark { height: 27px; }
-  .hdr-logo img, .hdr-mark img { height: 27px; }
+  .hdr-logo { height: 27px; gap: 10px; }
+  .hdr-logo img { height: 27px; }
   .hdr-brand { gap: 8px; }
-  .hdr-mark { padding-right: 8px; }
   .hdr-nav { padding: 0; gap: 0; }
   .hdr-link { width: auto; padding: 0 8px; font-size: 13px; flex: 0 0 auto; }
 }
@@ -119,8 +117,6 @@
   background: linear-gradient(180deg, #fff 0%, #fbfcfe 42%, #e8f7f1 78%, #a6dfcc 100%);
 }
 .bx .wrap { display: flex; flex-direction: column; }
-.bx-eyebrow { display: flex; align-items: center; gap: 10px; font-family: var(--bx-mono); font-size: 13px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--bx-ink-3); }
-.bx-eyebrow::before { content: ''; width: 1px; height: 14px; background: var(--bx-ink-4); }
 .bx-title { margin-top: 14px; max-width: 26em; font-size: 40px; font-weight: 500; letter-spacing: -0.024em; line-height: 1.26; color: #061b31; }
 .bx-title span { color: #9aa6b8; }
 .bx-grid { margin-top: 44px; display: grid; grid-template-columns: minmax(0, 1.7fr) minmax(0, 1fr); gap: 12px; }
@@ -306,11 +302,6 @@
   background: linear-gradient(to bottom, rgba(21, 47, 133, 0), #152f85 16vw);
 }
 .how-block { display: flex; flex-direction: column; gap: 40px; }
-.how-eyebrow {
-  display: inline-flex; align-items: center; align-self: flex-start;
-  padding: 0 12px; border-left: 1px solid #597aff;
-  font-size: 18px; text-transform: uppercase; color: #8b9bdb;
-}
 .how-body { display: flex; flex-direction: column; gap: 120px; }
 .how-intro { display: flex; flex-direction: column; align-items: flex-start; gap: 24px; }
 .how-lede { font-size: 28px; color: #fff; }
@@ -885,8 +876,6 @@
   width: 577px; flex: 0 0 577px; height: 100%; padding: 40px 32px;
   background: var(--bg); color: #fff;
 }
-.benefit-eyebrow { display: flex; align-items: flex-start; gap: 5px; font-size: 18px; font-weight: 600; text-transform: uppercase; color: #fff; }
-.benefit-eyebrow img { width: 14px; height: 19px; }
 .benefit-body { display: flex; flex: 1 0 0; flex-direction: column; gap: 40px; width: 494px; max-width: 100%; min-height: 0; }
 .benefit-text { display: flex; flex-direction: column; gap: 40px; }
 .benefit-heading { font-size: 48px; font-weight: 600; color: var(--head); }

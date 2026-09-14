@@ -113,7 +113,7 @@ export default function NetworkPacket() {
 
   return (
     <span className="how-packet" ref={ref} aria-hidden="true">
-      {/* The file icon (public/assets/icon-file-text.svg), inline so it takes its colour from the stylesheet. */}
+      {/* The file icon, inline so it takes its colour from the stylesheet. */}
       <svg viewBox="0 0 33 33" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path
           d="M27.5 11L19.25 2.75H8.25C7.52065 2.75 6.82118 3.03973 6.30546 3.55546C5.78973 4.07118 5.5 4.77065 5.5 5.5V27.5C5.5 28.2293 5.78973 28.9288 6.30546 29.4445C6.82118 29.9603 7.52065 30.25 8.25 30.25H24.75C25.4793 30.25 26.1788 29.9603 26.6945 29.4445C27.2103 28.9288 27.5 28.2293 27.5 27.5V11ZM19.25 2.75L19.25 11H27.5M22 17.875H11M22 23.375H11M13.75 12.375H11"

@@ -10,7 +10,7 @@ import type { FaqItem } from '@/lib/faq';
  * at a time, the first open to begin with. Shared by the home page's FAQ
  * section and the FAQ page, which renders one per topic.
  */
-export default function FaqAccordion({ items, idPrefix = 'faq', openFirst = true }: { items: FaqItem[]; idPrefix?: string; openFirst?: boolean }) {
+export default function FaqAccordion({ items, moreLabel, idPrefix = 'faq', openFirst = true }: { items: FaqItem[]; moreLabel: string; idPrefix?: string; openFirst?: boolean }) {
   const [open, setOpen] = useState<number | null>(openFirst ? 0 : null);
 
   return (
@@ -27,7 +27,9 @@ export default function FaqAccordion({ items, idPrefix = 'faq', openFirst = true
             <div className="faq-a" id={panelId} hidden={!isOpen}>
               <p>{item.a}</p>
               {item.more && (
-                <a className="faq-more" href={withBase(item.more)}>Learn More  →</a>
+                <a className="faq-more" href={withBase(item.more)}>
+                  {moreLabel}
+                </a>
               )}
             </div>
           </li>

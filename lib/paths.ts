@@ -4,26 +4,24 @@
  * The export is served under `/landing/` in production (scripts/web-apps.conf,
  * landing/deploy/nginx/landing.conf) and at `/` in local previews. Next.js
  * prefixes its own chunks from `basePath` in next.config.mjs, but the site
- * writes plain anchors — content from the CMS, hand-written routes, the
- * search index, staged files under public/ — and those must be prefixed by
- * hand. Every such href goes through `withBase()`, so the same export works
- * at either location and the base-path check (scripts/check-base-path.mjs)
- * can fail the build when one is missed.
+ * writes plain anchors (the links in content/site.yaml, the pages' own
+ * routes, files under public/) and those must be prefixed by hand. Every
+ * such href goes through `withBase()`, so the same export works at either
+ * location.
  *
- * `NEXT_PUBLIC_BASE_PATH` is read at call time rather than module load: in
- * the browser bundle Next inlines the value at build time, and in the smoke
- * tests the same code renders once with and once without a base path.
+ * `NEXT_PUBLIC_BASE_PATH` is read at call time rather than module load; in
+ * the browser bundle Next inlines the value at build time.
  */
 
 /** The configured base path, normalised to `/landing` (or `` for none). */
-export function basePath(): string {
+function basePath(): string {
   const raw = (process.env.NEXT_PUBLIC_BASE_PATH ?? '').trim();
   if (!raw || raw === '/') return '';
   return `/${raw.replace(/^\/+|\/+$/g, '')}`;
 }
 
 /** True for a root-absolute path on this site (`/apis/`), false for anything else. */
-export function isSiteAbsolute(href: string): boolean {
+function isSiteAbsolute(href: string): boolean {
   return href.startsWith('/') && !href.startsWith('//');
 }
 

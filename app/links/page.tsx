@@ -1,11 +1,11 @@
 import type { Metadata } from 'next';
 import Header from '@/components/landing/Header';
 import Footer from '@/components/landing/Footer';
-import { LINK_GROUPS } from '@/lib/links-data';
+import { LINK_GROUPS, LINKS_PAGE } from '@/lib/links-data';
 
 export const metadata: Metadata = {
-  title: 'Links · NHCX',
-  description: 'The NHCX specifications, the programme’s policies and guidelines, and the guides for getting onto the ABDM sandbox.',
+  title: LINKS_PAGE.meta.title,
+  description: LINKS_PAGE.meta.description,
 };
 
 /* The arrow out of a box: every row here leaves the site. */
@@ -32,12 +32,10 @@ export default function LinksPage() {
         <section className="tl-hero" aria-labelledby="ln-title">
           <div className="wrap tl-hero-inner">
             <h1 className="tl-title" id="ln-title">
-              <span className="tl-kicker">Links</span>
-              Specifications, policies and <span className="tl-accent">guides</span>
+              <span className="tl-kicker">{LINKS_PAGE.hero.kicker}</span>
+              {LINKS_PAGE.hero.titleLead} <span className="tl-accent">{LINKS_PAGE.hero.titleAccent}</span>
             </h1>
-            <p className="tl-lede">
-              Everything the programme publishes about NHCX, in one place: the open specification and its data models, the policies and guidelines that govern participation, and the guides for getting onto the sandbox.
-            </p>
+            <p className="tl-lede">{LINKS_PAGE.hero.lede}</p>
           </div>
         </section>
 

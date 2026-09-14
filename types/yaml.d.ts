@@ -1,6 +1,7 @@
-/* content/*.yaml is parsed at build time (scripts/yaml-loader.cjs); each
-   copy module in lib/ gives its part of the file a type. */
-declare module '*.yaml' {
-  const content: Record<string, unknown>;
-  export default content;
+/* content/site.yaml is parsed at build time (scripts/yaml-loader.cjs).
+   Import one section of it as `@/content/site.yaml?<section>`; each copy
+   module in lib/ gives its section a type. */
+declare module '@/content/site.yaml?*' {
+  const section: unknown;
+  export default section;
 }

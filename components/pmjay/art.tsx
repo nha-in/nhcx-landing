@@ -81,21 +81,6 @@ export function IconBiometric() {
   );
 }
 
-export function IconSettle() {
-  return (
-    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-      <rect x="4.6" y="3.2" width="14.8" height="17.6" rx="2.4" fill="#ffe4d3">
-      </rect>
-      <rect x="4.6" y="3.2" width="14.8" height="17.6" rx="2.4" strokeWidth="1.4" style={{ stroke: 'var(--blue)' }}>
-      </rect>
-      <path d="M8.4 7.8h7.2M8.4 10.8h4.4" stroke="#f7a074" strokeWidth="1.4" strokeLinecap="round">
-      </path>
-      <path d="M8.5 15.4l2.3 2.3 4.5-4.5" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" style={{ stroke: 'var(--blue)' }}>
-      </path>
-    </svg>
-  );
-}
-
 export function IconCheck() {
   return (
     <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true" style={{ marginTop: '2px' }}>

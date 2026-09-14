@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { type Stats as StatsData, type StatsRow, groupDigits, parseStats } from '@/lib/stats';
 import { withBase } from '@/lib/paths';
+import { STATS } from '@/lib/home-copy';
 import FallingCount from '@/components/landing/FallingCount';
 
 /*
@@ -22,15 +23,10 @@ import FallingCount from '@/components/landing/FallingCount';
  * same behaviour, and the same numbers, as the previous landing page.
  */
 
-const MEASURES: Array<{ key: keyof StatsRow; label: string }> = [
-  { key: 'integrators', label: 'Integrators' },
-  { key: 'providers', label: 'Hospitals' },
-  { key: 'preauth', label: 'Pre auth' },
-  { key: 'claims', label: 'Claims' },
-];
-const SECTORS: Array<{ key: string; label: string; className: string }> = [
-  { key: 'priv', label: 'Private', className: 'is-private' },
-  { key: 'gov', label: 'Government', className: 'is-govt' },
+const MEASURES: Array<keyof StatsRow> = ['integrators', 'providers', 'preauth', 'claims'];
+const SECTORS: Array<{ key: 'priv' | 'gov'; className: string }> = [
+  { key: 'priv', className: 'is-private' },
+  { key: 'gov', className: 'is-govt' },
 ];
 
 /** The design's figures, shown only when no stats.json has ever been synced. */
@@ -137,21 +133,21 @@ export default function Stats({ stats: initial }: { stats: StatsData | null }) {
     Math.max(0, value - (behind[sector]?.[measure] ?? 0));
 
   return (
-    <section className="stats" aria-label="NHCX statistics">
+    <section className="stats" aria-label={STATS.ariaLabel}>
       <div className="stats-head">
-        <p>NHCX Statistics Private and Govt</p>
+        <p>{STATS.title}</p>
       </div>
       <dl className="stats-list">
         {MEASURES.map((measure) => (
-          <div className="stat" key={measure.key}>
-            <dt className="stat-label">{measure.label}</dt>
+          <div className="stat" key={measure}>
+            <dt className="stat-label">{STATS.measures[measure]}</dt>
             <dd className="stat-values">
               {SECTORS.map((sector) => {
                 const row = stats.rows[sector.key];
                 if (!row) return null;
                 return (
-                  <span className={`stat-pill ${sector.className}`} key={sector.key} title={sector.label}>
-                    <FallingCount value={groupDigits(shown(sector.key, measure.key, row[measure.key]))} />
+                  <span className={`stat-pill ${sector.className}`} key={sector.key} title={STATS.sectors[sector.key]}>
+                    <FallingCount value={groupDigits(shown(sector.key, measure, row[measure]))} />
                   </span>
                 );
               })}

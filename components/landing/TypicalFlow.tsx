@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
+import { FLOW } from '@/lib/home-copy';
 
 /*
  * "How a typical flow looks like" — a claim's round trip, carried over from
@@ -14,14 +15,7 @@ import { useEffect, useRef } from 'react';
  * positions, the stops along the path and the curves belong together.
  */
 
-const STEPS = [
-  { tag: '01 · HMIS / LMIS / RIS / EMR', title: 'Patient Records', text: 'Clinical Notes, Treatment Plan, Procedure Details, Diagnostic Reports, Discharge Summary and Itemized Bill sent to Payer addressee.', tick: 'HMIS / EMR' },
-  { tag: '02 · In Transit', title: 'Schema checked and validated', text: 'The structured information enters pipeline as an encrypted payload in FHIR R4 format with due digital authorization from both sender and receiver.', tick: 'In transit' },
-  { tag: '03 · NHCX Gateway', title: 'Record transaction and Deliver', text: 'NHCX maintains log of transaction about sender and receiver from Participant IDs and the purpose of the transaction from Workflow ID and forwards to the Beneficiary.', tick: 'NHCX Gateway' },
-  { tag: '04 · Payer Engine', title: 'Claim Processing', text: 'Payer matches the data received against its existing records and adjudicates the claim easily based on the every minute details made available.', tick: 'Payer engine' },
-  { tag: '05 · The Response', title: 'Communication of Decision', text: 'The return leg follows the same sets of protocol in the reverse direction with Provider receiving a callback.', tick: 'The response' },
-];
-const LABELS = { start: 'HMIS', hub: 'NHCX', end: 'PAYER' };
+const { steps: STEPS, labels: LABELS } = FLOW;
 
 const NODES: Array<[number, number]> = [
   [150, 420],
@@ -309,7 +303,7 @@ export default function TypicalFlow() {
       <div className="flow-scroll" ref={wrap}>
         <div className="flow-stage">
           <div className="wrap">
-            <h2 className="vh">How a typical flow looks like</h2>
+            <h2 className="vh">{FLOW.title}</h2>
           </div>
           <div className="flow-graph-wrap">
             <div className="flow-graph">
@@ -356,7 +350,7 @@ export default function TypicalFlow() {
       {/* narrow: vertical timeline */}
       <div className="flow-list">
         <div className="wrap">
-          <h2 className="vh">How a typical flow looks like</h2>
+          <h2 className="vh">{FLOW.title}</h2>
           <ol>
             {STEPS.map((s, i) => {
               const last = i === STEPS.length - 1;

@@ -2,41 +2,30 @@
 
 import { useState } from 'react';
 import CopyButton from '@/components/shared/CopyButton';
-import { CLOSE, SKILL_URL } from '@/lib/skill-copy';
+import { CLOSE } from '@/lib/skill-copy';
 
 /*
- * One install line per coding agent. The first tab is the generic one: the
- * skills installer finds the agents in a project and installs for each. The
- * others clone the skill into the folder that agent reads skills from. Copy
- * copies the plain command.
+ * One install line per NHCX skill: pick the part of the exchange, copy its
+ * `npx skills add` command. The skills installer sets the skill up for every
+ * coding agent it finds in the project.
  */
 export default function AgentInstall() {
-  const [key, setKey] = useState(CLOSE.agents[0].key);
-  const agent = CLOSE.agents.find((a) => a.key === key) ?? CLOSE.agents[0];
-  const command = agent.command ?? `git clone ${SKILL_URL} ${agent.folder}`;
+  const [key, setKey] = useState(CLOSE.skills[0].key);
+  const skill = CLOSE.skills.find((s) => s.key === key) ?? CLOSE.skills[0];
 
   return (
     <div className="sk-agents">
-      <div className="sk-agent-tabs" role="tablist" aria-label="Coding agent">
-        {CLOSE.agents.map((a) => (
-          <button key={a.key} type="button" role="tab" aria-selected={a.key === key} className={`sk-agent${a.key === key ? ' is-on' : ''}`} onClick={() => setKey(a.key)}>
-            {a.label}
+      <div className="sk-agent-tabs" role="tablist" aria-label={CLOSE.tabsLabel}>
+        {CLOSE.skills.map((s) => (
+          <button key={s.key} type="button" role="tab" aria-selected={s.key === key} className={`sk-agent${s.key === key ? ' is-on' : ''}`} onClick={() => setKey(s.key)}>
+            {s.label}
           </button>
         ))}
       </div>
-      <div className="tl-cmd" role="tabpanel" aria-label={`Install for ${agent.label}`}>
-        <code>{command}</code>
-        <CopyButton text={command} />
+      <div className="tl-cmd" role="tabpanel" aria-label={`${CLOSE.installFor} ${skill.label}`}>
+        <code>{skill.command}</code>
+        <CopyButton text={skill.command} />
       </div>
-      <p className="sk-agent-note">
-        {agent.folder ? (
-          <>
-            {agent.label} reads skills from <code>{agent.folder.replace(/[^/]+$/, '')}</code> in your repository.
-          </>
-        ) : (
-          agent.note
-        )}
-      </p>
     </div>
   );
 }

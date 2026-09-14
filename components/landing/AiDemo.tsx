@@ -3,6 +3,8 @@
 import { useEffect, useRef, useState } from 'react';
 import { ArrowRight, Check, Database, FlaskConical, LayoutTemplate, Loader2, Server, Sparkles } from 'lucide-react';
 import { withBase } from '@/lib/paths';
+import { AI, type AiIcon } from '@/lib/home-copy';
+import { timeline } from '@/lib/timeline';
 
 /*
  * The AI card's demonstration, played when it scrolls into view: an AI mark
@@ -15,16 +17,9 @@ import { withBase } from '@/lib/paths';
  * at once.
  */
 
-const QUESTION = 'Please integrate my HMIS with NHCX';
-const REPLY = 'On it. Four steps, and your HMIS is talking to NHCX.';
-const STEPS = [
-  { icon: Database, title: 'Understanding HMIS', doing: 'Reading your schema and workflows', done: '12 entities mapped to FHIR R4' },
-  { icon: LayoutTemplate, title: 'Adding pages', doing: 'Eligibility, pre-auth, claim, payment', done: '4 pages added to your HMIS' },
-  { icon: Server, title: 'Building backend', doing: 'Wiring the NHCX gateway calls', done: '6 endpoints and callbacks wired' },
-  { icon: FlaskConical, title: 'Running tests', doing: 'Against the NHCX sandbox', done: '38 of 38 tests passed' },
-];
+const ICONS: Record<AiIcon, typeof Database> = { database: Database, layout: LayoutTemplate, server: Server, flask: FlaskConical };
+const { question: QUESTION, reply: REPLY, steps: STEPS } = AI.demo;
 const STEP_MS = 1150;
-const SUMMARY = ['FHIR R4 valid', 'Encrypted end to end', 'Sandbox certified'];
 
 type Stage = 'logo' | 'prompt' | 'magic' | 'answer';
 type State = { stage: Stage; typed: number; replied: number; running: number; finished: number; ready: boolean };
@@ -42,12 +37,7 @@ export default function AiDemo() {
       setS(FINAL);
       return;
     }
-    let timers: number[] = [];
-    const at = (ms: number, fn: () => void) => timers.push(window.setTimeout(fn, ms));
-    const clear = () => {
-      timers.forEach(clearTimeout);
-      timers = [];
-    };
+    const { at, clear } = timeline();
     const play = () => {
       clear();
       setS(START);
@@ -100,7 +90,7 @@ export default function AiDemo() {
       {/* 2. The prompt, typed */}
       <div className="ai-prompt" aria-hidden={stage === 'logo'}>
         <span className="ai-prompt-text">
-          {s.typed === 0 ? <span className="ai-prompt-hint">Ask anything with AI</span> : QUESTION.slice(0, s.typed)}
+          {s.typed === 0 ? <span className="ai-prompt-hint">{AI.demo.hint}</span> : QUESTION.slice(0, s.typed)}
           {stage === 'prompt' && <span className="ai-caret" />}
         </span>
         <span className="ai-sparkle" aria-hidden="true">
@@ -127,7 +117,7 @@ export default function AiDemo() {
 
         <ol className="ai-steps">
           {STEPS.map((step, i) => {
-            const Icon = step.icon;
+            const Icon = ICONS[step.icon];
             const state = i < s.finished ? 'done' : i === s.running ? 'running' : 'todo';
             return (
               <li key={step.title} className={`ai-step is-${state}`}>
@@ -150,11 +140,11 @@ export default function AiDemo() {
 
         <div className={`ai-ready${s.ready ? ' is-on' : ''}`}>
           <div className="ai-ready-text">
-            <b>Integration ready</b>
-            <span>{SUMMARY.join(' · ')}</span>
+            <b>{AI.demo.ready.title}</b>
+            <span>{AI.demo.ready.summary.join(' · ')}</span>
           </div>
-          <a className="btn btn--primary ai-ready-btn" href={withBase('/apply/')} tabIndex={s.ready ? 0 : -1}>
-            Test with Sandbox Payer <ArrowRight size={18} aria-hidden="true" />
+          <a className="btn btn--primary ai-ready-btn" href={withBase(AI.demo.cta.href)} tabIndex={s.ready ? 0 : -1}>
+            {AI.demo.cta.label} <ArrowRight size={18} aria-hidden="true" />
           </a>
         </div>
       </div>

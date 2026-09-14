@@ -8,7 +8,7 @@ export default tseslint.config(
     // Any `NEXT_DIST_DIR=.next-*` build output, not just the two the npm
     // scripts name: a scratch build directory is generated code and linting
     // it buries the real findings under thousands of errors.
-    ignores: ['.next*/**', 'out/**', 'node_modules/**', 'public/**', 'test/dist/**', 'next-env.d.ts', 'lib/cms-types.ts'],
+    ignores: ['.next*/**', 'out/**', 'node_modules/**', 'public/**', 'next-env.d.ts'],
   },
   ...tseslint.configs.recommended,
   {

@@ -1,5 +1,5 @@
 import type { PmjayIcon } from '@/lib/pmjay-copy';
-import { IconBiometric, IconCashless, IconCover, IconHmis, IconSettle, IconStates } from '@/components/pmjay/art';
+import { IconBiometric, IconCashless, IconCover, IconHmis, IconStates } from '@/components/pmjay/art';
 
 /* The page's line icons, by the names the copy file uses. */
 const ICONS: Record<PmjayIcon, () => React.JSX.Element> = {
@@ -8,7 +8,8 @@ const ICONS: Record<PmjayIcon, () => React.JSX.Element> = {
   states: IconStates,
   hmis: IconHmis,
   biometric: IconBiometric,
-  settle: IconSettle,
+  // A settled claim shares the cashless mark: a cleared bill.
+  settle: IconCashless,
 };
 
 export default function PmjayGlyph({ name }: { name: PmjayIcon }) {

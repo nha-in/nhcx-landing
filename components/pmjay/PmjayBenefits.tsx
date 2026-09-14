@@ -13,6 +13,9 @@ import PmjayGlyph from '@/components/pmjay/icons';
  */
 
 const fmt = (n: number) => Math.round(n).toLocaleString('en-IN');
+/* How long each blank field on the card is drawn, in the order of its labels. */
+const ROW_WIDTHS = [132, 44, 82, 68, 92];
+const ID_WIDTHS = [72, 64, 56];
 
 export default function PmjayBenefits() {
   const { card } = BENEFITS;
@@ -69,7 +72,7 @@ export default function PmjayBenefits() {
               tabIndex={0}
               role="button"
               aria-pressed={open}
-              aria-label="Ayushman card. Activate to see the cover used this year."
+              aria-label={card.ariaLabel}
             >
               <div className="pj-flip-inner">
                 {/* Front: the card as issued. */}
@@ -78,7 +81,7 @@ export default function PmjayBenefits() {
                     <div className="pj-card-marks">
                       <img className="pj-card-logo" src={withBase('/assets/animation/pmjay.svg')} alt="" />
                     </div>
-                    <div className="pj-card-band">आयुष्मान कार्ड / AYUSHMAN CARD</div>
+                    <div className="pj-card-band">{card.band}</div>
                   </div>
                   <div className="pj-card-body">
                     <div className="pj-card-photo" aria-hidden="true">
@@ -88,45 +91,32 @@ export default function PmjayBenefits() {
                       </svg>
                     </div>
                     <div className="pj-card-rows">
-                      {(
-                        [
-                          ['नाव / NAME', 132],
-                          ['जन्म वर्ष / YOB', 44],
-                          ['गाव / VILLAGE', 82],
-                          ['तालुका / TOWN', 68],
-                          ['जिल्हा / DISTRICT', 92],
-                        ] as Array<[string, number]>
-                      ).map(([label, w]) => (
+                      {card.rows.map((label, i) => (
                         <div key={label}>
                           <span>{label}</span>
-                          <i style={{ width: w }} />
+                          <i style={{ width: ROW_WIDTHS[i] ?? 80 }} />
                         </div>
                       ))}
                     </div>
                     <div className="pj-card-side">
-                      <b>₹5 लाखां</b>
-                      <em>मोफत उपचार</em>
+                      <b>{card.coverLine}</b>
+                      <em>{card.coverNote}</em>
                       {/* A real code: it opens the beneficiary portal. */}
                       <img className="pj-card-qr" src={withBase('/assets/brand/pmjay-card-qr.svg')} alt="" />
-                      <small>State: MAHARASHTRA</small>
+                      <small>{card.state}</small>
                     </div>
                   </div>
                   <div className="pj-card-ids">
-                    {(
-                      [
-                        ['ABHA NUMBER', 72],
-                        ['PM-JAY ID', 64],
-                        ['RATION CARD', 56],
-                      ] as Array<[string, number]>
-                    ).map(([label, w]) => (
+                    {card.ids.map((label, i) => (
                       <span key={label}>
-                        {label} <i style={{ width: w }} />
+                        {label} <i style={{ width: ID_WIDTHS[i] ?? 60 }} />
                       </span>
                     ))}
                   </div>
                   <div className="pj-card-foot">
-                    <div>आयुष्मान भारत प्रधानमंत्री जन आरोग्य योजना</div>
-                    <div>AYUSHMAN BHARAT PRADHAN MANTRI – JAN AROGYA YOJANA</div>
+                    {card.foot.map((line) => (
+                      <div key={line}>{line}</div>
+                    ))}
                   </div>
                 </div>
 
@@ -135,23 +125,25 @@ export default function PmjayBenefits() {
                   <p className="tl-eyebrow">{card.backLabel}</p>
                   <div className="pj-back-big">
                     <b>₹{fmt(card.cover - card.claimed * k)}</b>
-                    <span>remaining of ₹5,00,000</span>
+                    <span>
+                      {card.remainingOf} ₹{fmt(card.cover)}
+                    </span>
                   </div>
                   <div className="pj-back-bar">
                     <i style={{ width: `${(card.claimed / card.cover) * 100 * k}%` }} />
                   </div>
                   <div className="pj-back-facts">
                     <div>
-                      <span>Claimed</span>
+                      <span>{card.claimedLabel}</span>
                       <b>₹{fmt(card.claimed * k)}</b>
                     </div>
                     <div>
-                      <span>Hospitalisations</span>
-                      <b>2</b>
+                      <span>{card.staysLabel}</span>
+                      <b>{card.stays}</b>
                     </div>
                     <div>
-                      <span>Paid at hospital</span>
-                      <b className="is-green">₹0</b>
+                      <span>{card.paidLabel}</span>
+                      <b className="is-green">{card.paid}</b>
                     </div>
                   </div>
                   <p className="pj-back-note">{card.note}</p>
