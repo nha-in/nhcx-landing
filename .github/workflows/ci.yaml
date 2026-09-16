@@ -10,7 +10,6 @@ permissions:
   contents: read
 
 concurrency:
-  # One deploy per branch at a time; never cancel one in flight.
   group: deploy-s3-${{ github.ref_name }}
   cancel-in-progress: false
 
@@ -45,13 +44,13 @@ jobs:
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v5
         with:
-          aws-access-key-id: ${{ env.IS_PROD == 'true' && secrets.PROD_AWS_ACCESS_KEY_ID || secrets.DEV_AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ env.IS_PROD == 'true' && secrets.PROD_AWS_SECRET_ACCESS_KEY || secrets.DEV_AWS_SECRET_ACCESS_KEY }}
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ env.AWS_REGION }}
 
       - name: Sync to S3
         env:
-          S3_BUCKET: ${{ env.IS_PROD == 'true' && secrets.PROD_S3_BUCKET || secrets.DEV_S3_BUCKET }}
+          S3_BUCKET: ${{ secrets.S3_BUCKET }}
         run: |
           set -euo pipefail
           aws s3 sync dist/ "s3://${S3_BUCKET}/" --delete
