@@ -55,6 +55,25 @@ jobs:
           set -euo pipefail
           aws s3 sync out/ "s3://${S3_BUCKET}/" --delete
 
+      - name: Invalidate CloudFront cache
+        id: invalidate
+        env:
+          DISTRIBUTION_ID: ${{ secrets.CLOUDFRONT_DISTRIBUTION_ID }}
+          PATHS: ${{ vars.INVALIDATION_PATHS || '/*' }}
+        run: |
+          set -euo pipefail
+          INVALIDATION_ID=$(aws cloudfront create-invalidation \
+            --distribution-id "$DISTRIBUTION_ID" \
+            --paths "$PATHS" \
+            --query 'Invalidation.Id' --output text)
+          echo "Invalidation: $INVALIDATION_ID"
+          echo "id=$INVALIDATION_ID" >> "$GITHUB_OUTPUT"
+
+          aws cloudfront wait invalidation-completed \
+            --distribution-id "$DISTRIBUTION_ID" \
+            --id "$INVALIDATION_ID"
+          echo "Invalidation completed"
+
       - name: Summary
         if: always()
         env:
