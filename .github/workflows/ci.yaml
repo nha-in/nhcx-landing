@@ -6,16 +6,32 @@ on:
       - main
       - develop
 
+permissions:
+  contents: read
+
+concurrency:
+  # One deploy per branch at a time; never cancel one in flight.
+  group: deploy-s3-${{ github.ref_name }}
+  cancel-in-progress: false
+
+env:
+  AWS_REGION: ap-south-1
+  IS_PROD: ${{ github.ref_name == 'main' }}
+
 jobs:
   deploy:
-    runs-on: ubuntu-latest
-
+    name: Deploy to ${{ github.ref_name == 'main' && 'production' || 'development' }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    environment: ${{ github.ref_name == 'main' && 'production' || 'development' }}
     steps:
-      - name: Checkout
-        uses: actions/checkout@v5
+      - name: Checkout repository
+        uses: actions/checkout@v6
+        with:
+          persist-credentials: false
 
       - name: Setup Node
-        uses: actions/setup-node@v5
+        uses: actions/setup-node@v6
         with:
           node-version: 22
           cache: npm
@@ -26,26 +42,31 @@ jobs:
       - name: Build
         run: npm run build
 
-      - name: Configure AWS - Production
-        if: github.ref == 'refs/heads/main'
+      - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v5
         with:
-          aws-access-key-id: ${{ secrets.PROD_AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.PROD_AWS_SECRET_ACCESS_KEY }}
-          aws-region: ap-south-1
+          aws-access-key-id: ${{ env.IS_PROD == 'true' && secrets.PROD_AWS_ACCESS_KEY_ID || secrets.DEV_AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ env.IS_PROD == 'true' && secrets.PROD_AWS_SECRET_ACCESS_KEY || secrets.DEV_AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ env.AWS_REGION }}
 
-      - name: Configure AWS - Development
-        if: github.ref == 'refs/heads/develop'
-        uses: aws-actions/configure-aws-credentials@v5
-        with:
-          aws-access-key-id: ${{ secrets.DEV_AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.DEV_AWS_SECRET_ACCESS_KEY }}
-          aws-region: ap-south-1
+      - name: Sync to S3
+        env:
+          S3_BUCKET: ${{ env.IS_PROD == 'true' && secrets.PROD_S3_BUCKET || secrets.DEV_S3_BUCKET }}
+        run: |
+          set -euo pipefail
+          aws s3 sync dist/ "s3://${S3_BUCKET}/" --delete
 
-      - name: Deploy Production
-        if: github.ref == 'refs/heads/main'
-        run: aws s3 sync dist/ s3://${{ secrets.PROD_S3_BUCKET }}/ --delete
-
-      - name: Deploy Development
-        if: github.ref == 'refs/heads/develop'
-        run: aws s3 sync dist/ s3://${{ secrets.DEV_S3_BUCKET }}/ --delete
+      - name: Summary
+        if: always()
+        env:
+          ENVIRONMENT: ${{ github.ref_name == 'main' && 'production' || 'development' }}
+        run: |
+          {
+            echo "### Deploy — \`${ENVIRONMENT}\`"
+            echo ""
+            echo "| Field | Value |"
+            echo "|-------|-------|"
+            echo "| Branch | \`${GITHUB_REF_NAME}\` |"
+            echo "| Commit | \`${GITHUB_SHA}\` |"
+            echo "| Status | ${{ job.status == 'success' && 'Deployed' || 'Failed' }} |"
+          } >> "$GITHUB_STEP_SUMMARY"
