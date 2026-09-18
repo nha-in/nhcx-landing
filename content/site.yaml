@@ -33,8 +33,9 @@ site:
       - label: AI Skill
         href: /skill/
         glow: true
-      - label: Links
-        href: /links/
+      # Hidden for now: the page and its content stay, it is only off the nav.
+      # - label: Links
+      #   href: /links/
 
   footer:
     managedBy:
@@ -98,7 +99,7 @@ home:
     ledeStrong: completely digitized format
     cta:
       label: View Docs
-      href: 'https://abdm-docs.dev.eka.care/docs/nhcx/v1/'
+      href: 'https://docs.abdm.gov.in/docs/nhcx/v1/'
 
   stats:
     ariaLabel: NHCX statistics
@@ -240,7 +241,7 @@ home:
     ledeTail: and that too in a protocol standard set by the Payer beforehand.
     cta:
       label: View Docs →
-      href: 'https://abdm-docs.dev.eka.care/docs/nhcx/v1/'
+      href: 'https://docs.abdm.gov.in/docs/nhcx/v1/'
     netLabel: Providers such as hospitals, nursing homes and clinics exchange documents with payers such as insurers and government schemes through NHCX
     providerLabel: Provider
     payerLabel: Payer
@@ -337,7 +338,7 @@ home:
         body: Apply for the NHCX Sandbox with the intended role and integrate with your application against the published APIs and FHIR profiles. Test the end to end claims journey including insurance plan, coverage eligibility, pre-authorisation, claims and payment communication using the sandbox environment.
         link:
           label: HCX Sandbox Documents
-          href: 'https://abdm-docs.dev.eka.care/docs/nhcx/v1/'
+          href: 'https://docs.abdm.gov.in/docs/nhcx/v1/'
         tags:
           - Sandbox APIs
           - FHIR profiles
@@ -350,7 +351,7 @@ home:
         body: Proceed with the required functional test cases for NHCX workflows and validation of your FHIR payloads. Demonstrate the working capabilities for individual use cases during UAT post integration in order to establish your production readiness.
         link:
           label: Test Cases
-          href: 'https://abdm-docs.dev.eka.care/docs/nhcx/v1/'
+          href: 'https://docs.abdm.gov.in/docs/nhcx/v1/'
         tags:
           - Functional test cases
           - FHIR validation
@@ -503,7 +504,7 @@ pmjay:
         lead: Run by NHA with the states
         text: The National Health Authority runs PM-JAY and the exchange nationally; each State Health Agency runs the scheme in its own state.
         link: Read the specification
-        href: 'https://abdm-docs.dev.eka.care/docs/nhcx/v1/'
+        href: 'https://docs.abdm.gov.in/docs/nhcx/v1/'
 
   benefits:
     title: PMJAY Benefits
@@ -695,7 +696,7 @@ devtools:
     title: DevTools · NHCX
     description: 'Two developer tools for NHCX: DevTools, which teaches and rehearses the exchange in a browser, and the NHCX Adapter, the binary that carries it in production.'
 
-  url: https://nhcx.sbxstage.in/dev
+  url: /dev
 
   hero:
     kicker: Developer tools for NHCX
@@ -734,9 +735,7 @@ devtools:
 
   adapter:
     title: NHCX Adapter
-    introBefore: 'One binary between your system and NHCX. Your software posts a FHIR bundle to it and reads a plain callback back; the adapter does the '
-    introCode: x-hcx-*
-    introAfter: ' headers, the encryption, the certificates and the acknowledgements. Nothing else about your system changes.'
+    intro: One binary between your system and NHCX. Your software posts a FHIR bundle to it and reads a plain callback back; the adapter does the protocol headers, the encryption, the certificates and the acknowledgements. Nothing else about your system changes.
     useCasesTitle: What you’d use the adapter for
     useCases:
       - icon: plug
@@ -989,34 +988,174 @@ skill:
   close:
     titleLead: Bring it into
     titleAccent: the agent you use
-    lede: Seven skills, one for each part of the exchange. Each is self-contained, so install only the ones your integration needs; the skills installer sets each one up for every coding agent in your project, and nothing else about your setup changes.
-    skillCtaLabel: The skills on GitHub
+    lede: 'Three ways in, from lightest to fullest: copy one skill into your project, install all seven as a plugin, or connect the docs server so the agent can look things up as it works.'
     note: 'You still need credentials to send anything: the skills write and validate without them, and the sandbox answers once your application is through.'
-    # One install line per skill in nha-in/docs, under plugins/nhcx/skills.
-    skills:
-      - key: coverage
-        label: Coverage
-        command: npx skills add nha-in/docs/plugins/nhcx/skills/nhcx-coverage
-      - key: insurance
-        label: Insurance
-        command: npx skills add nha-in/docs/plugins/nhcx/skills/nhcx-insurance
-      - key: preauth
-        label: Pre-auth
-        command: npx skills add nha-in/docs/plugins/nhcx/skills/nhcx-preauth
-      - key: claim
-        label: Claim
-        command: npx skills add nha-in/docs/plugins/nhcx/skills/nhcx-claim
-      - key: communication
-        label: Communication
-        command: npx skills add nha-in/docs/plugins/nhcx/skills/nhcx-communication
-      - key: payment
-        label: Payment
-        command: npx skills add nha-in/docs/plugins/nhcx/skills/nhcx-payment
-      - key: reprocess
-        label: Reprocess
-        command: npx skills add nha-in/docs/plugins/nhcx/skills/nhcx-reprocess
     tabsLabel: NHCX skill
+    agentsLabel: Coding agent
     installFor: Install
+
+    # Block 1: one skill. Seven skills, one per part of the exchange, in nha-in/docs under plugins/nhcx/skills.
+    skill:
+      label: Skill
+      title: Install one skill
+      text: Each skill is self-contained, so install only the ones your integration needs.
+      skills:
+        - key: coverage
+          label: Coverage
+          name: nhcx-coverage
+          command: npx skills add nha-in/docs/plugins/nhcx/skills/nhcx-coverage
+          builds: "Policy search and coverage eligibility: discovery, validation and benefits."
+          usecases: [A2, B1, D3]
+        - key: insurance
+          label: Insurance
+          name: nhcx-insurance
+          command: npx skills add nha-in/docs/plugins/nhcx/skills/nhcx-insurance
+          builds: "The payer's package master: requested once per facility and policy, reused, and quoted from."
+          usecases: [B2, D1]
+        - key: preauth
+          label: Pre-auth
+          name: nhcx-preauth
+          command: npx skills add nha-in/docs/plugins/nhcx/skills/nhcx-preauth
+          builds: "Pre-authorisation, its query answers, enhancement, cancellation and predetermination."
+          usecases: [B3, B8, B9, D2, D4, D5, D6, D7, D8]
+        - key: claim
+          label: Claim
+          name: nhcx-claim
+          command: npx skills add nha-in/docs/plugins/nhcx/skills/nhcx-claim
+          builds: "The discharge and the claim, the claim query answer, and the decision."
+          usecases: [B5, D9, D10]
+        - key: communication
+          label: Communication
+          name: nhcx-communication
+          command: npx skills add nha-in/docs/plugins/nhcx/skills/nhcx-communication
+          builds: "Payer queries and notifications: notifications acknowledged, queries answered."
+          usecases: [B4]
+        - key: payment
+          label: Payment
+          name: nhcx-payment
+          command: npx skills add nha-in/docs/plugins/nhcx/skills/nhcx-payment
+          builds: "Payment notices, each recorded once and acknowledged at once."
+          usecases: [B7, D13]
+        - key: reprocess
+          label: Reprocess
+          name: nhcx-reprocess
+          command: npx skills add nha-in/docs/plugins/nhcx/skills/nhcx-reprocess
+          builds: "Reprocessing a decided claim, the balance of a short payment, and status enquiries."
+          usecases: [A5, B8, D11, D12]
+      # The table of the seven skills: what each builds and the NHCX use cases it covers.
+      table:
+        skill: Skill
+        builds: What it builds
+        usecases: Use cases
+        pick: Show install commands for
+      # Use-case codes and titles from the catalogue at nhcx-use-cases, which has a
+      # heading per code. {anchor} is that heading's slug, built from the code and title.
+      usecaseLinks:
+        href: https://docs.abdm.gov.in/docs/nhcx/v1/concepts/nhcx-use-cases#{anchor}
+        hint: Read the use case
+      series:
+        A: Shared
+        B: Provider
+        D: PMJAY provider
+      usecases:
+        A2: { title: Get policy, text: "Find a beneficiary's policy and the payer's processor code." }
+        A5: { title: Get status, text: Ask where a pre-auth or claim stands with a status Task. }
+        B1: { title: Check coverage eligibility, text: The check goes out; whether cover is in force and the wallet come back. }
+        B2: { title: Request insurance plan, text: The package master lands and is stored once per policy. }
+        B3: { title: Submit pre-authorisation, text: Sent on 12, acknowledged on 20, decided on 21 or 23; an enhancement goes on 13. }
+        B4: { title: Respond to a communication, text: "A payer's CommunicationRequest is classified and answered on its own thread." }
+        B5: { title: Submit claim, text: "Filed under the pre-auth's number on 15, acknowledged on 25, decided on 26 or 291." }
+        B7: { title: Acknowledge payment notice, text: The notice is filed by claim number, recorded once and acknowledged. }
+        B8: { title: Reprocess or cancel, text: Reopen a decided claim on 36, or withdraw a live pre-auth with PC01. }
+        B9: { title: Submit predetermination, text: A quote comes back as a ClaimResponse; nothing else changes. }
+        D1: { title: Fetch the insurance plan, text: "The scheme's package master, with its document requirements and questionnaires." }
+        D2: { title: Authenticate the beneficiary, text: A biometric token, or the consent questionnaire fallback. Not an NHCX call. }
+        D3: { title: Check coverage eligibility, text: The wallet answer on workflow 5. }
+        D4: { title: Submit pre-authorisation, text: HPIN, consent and documents from the master; acknowledged on 20, decided on 21 or 23. }
+        D5: { title: Resubmit pre-authorisation, text: Workflow 121; after a rejection the sandbox wants a fresh 12. }
+        D6: { title: Raise an enhancement, text: "A second package under the parent's number on 13; a query on it answered on 131." }
+        D7: { title: Answer a pre-authorisation query, text: The query answered as a fresh submit on 19 with a new correlation id. }
+        D8: { title: Cancel pre-authorisation, text: A cancel Task on PC01; PC02 comes back. }
+        D9: { title: Submit claim, text: "The package alone under the pre-auth's number, with the discharge and its documents." }
+        D10: { title: Answer a claim query, text: "The payer's query answered on 161 with a written reply." }
+        D11: { title: Reprocess a rejected claim, text: A reprocess Task on 36; the scheme answers 37 and reopens the case. }
+        D12: { title: Claim a shortfall, text: A reprocess Task for the balance of a short payment. }
+        D13: { title: Acknowledge the payment notice, text: Notice 30 filed and acknowledged on 17. }
+      # Where each agent reads project skills from: {dir} in the git line below.
+      agents:
+        - key: claude
+          label: Claude Code
+          dir: .claude/skills
+        - key: codex
+          label: Codex
+          dir: .agents/skills
+        - key: cursor
+          label: Cursor
+          dir: .cursor/skills
+        - key: copilot
+          label: GitHub Copilot
+          dir: .github/skills
+        - key: gemini
+          label: Gemini CLI
+          dir: .gemini/skills
+      git:
+        title: With git alone
+        text: No installer, only git. It fetches just the skill's folder and copies it to where your agent reads skills from.
+        # {skill} is the skill's folder name, {dir} the agent's skills directory.
+        command: git clone --depth 1 --filter=blob:none --sparse https://github.com/nha-in/docs .nhcx && git -C .nhcx sparse-checkout set plugins/nhcx/skills/{skill} && mkdir -p {dir} && cp -R .nhcx/plugins/nhcx/skills/{skill} {dir}/ && rm -rf .nhcx
+      npx:
+        title: With npx skills
+        text: The skills installer finds every coding agent in the project and sets the skill up for each.
+      github:
+        title: On GitHub
+        text: Read the skills first, or download a folder by hand.
+        label: The skills on GitHub
+
+    # Block 2: the plugin, all seven skills at once.
+    plugin:
+      label: Plugin
+      title: Install the plugin
+      text: All seven skills in one install, updated in place. Add the marketplace once, then install the NHCX plugin into your agent.
+      agents:
+        - key: claude
+          label: Claude Code
+          command: claude plugin marketplace add nha-in/docs && claude plugin install nhcx@nha-in
+        - key: codex
+          label: Codex
+          command: codex plugin marketplace add nha-in/docs
+          text: Then open /plugins in Codex and install nhcx.
+        - key: other
+          label: Cursor, Copilot and others
+          command: Fetch and execute the instructions to set me up for NHCX integration from https://docs.abdm.gov.in/agent-setup/nhcx.md
+          prompt: true
+          text: These agents install plugins only from their own marketplaces, where NHCX is not listed yet. Paste the line above into the agent, and it fetches the current setup from the docs.
+
+    # Block 3: the docs MCP server, for looking things up while the agent works.
+    mcp:
+      label: MCP
+      badge: Recommended
+      title: Connect the docs server
+      text: A live MCP server over the documentation. The agent searches it, decodes error codes and checks request bodies as it works, alongside a skill or on its own.
+      name: nhcx-docs
+      url: https://docs.abdm.gov.in/mcp
+      # {name} and {url} come from the two lines above. An entry with `file` is a config file to add, shown without a shell prompt.
+      agents:
+        - key: claude
+          label: Claude Code
+          command: claude mcp add --transport http {name} {url} -s user
+        - key: codex
+          label: Codex
+          command: codex mcp add {name} --url {url}
+        - key: cursor
+          label: Cursor
+          file: .cursor/mcp.json
+          command: '{ "mcpServers": { "{name}": { "url": "{url}" } } }'
+        - key: vscode
+          label: VS Code
+          command: code --add-mcp '{"name":"{name}","type":"http","url":"{url}"}'
+        - key: gemini
+          label: Gemini CLI
+          command: gemini mcp add --transport http {name} {url}
 
 # ——————————————————————————————————————————————————————————————————————
 # The Links page (/links/).
@@ -1131,19 +1270,19 @@ faq:
     - topic: General
       q: What is NHCX?
       a: NHCX (National Health Claims Exchange) is a platform developed under the Ayushman Bharat Digital Mission (ABDM) to streamline and standardise the exchange of health-claim information between healthcare providers and payers. It enables digitised, machine-readable information to move between different systems using common standards.
-      more: 'https://abdm-docs.dev.eka.care/docs/nhcx/v1/'
+      more: 'https://docs.abdm.gov.in/docs/nhcx/v1/'
     - topic: General
       q: Who can use NHCX?
       a: Hospitals, nursing homes and diagnostic centres on the provider side; insurers, TPAs, state health agencies and government schemes on the payer side; and the solution vendors who build for them.
-      more: 'https://abdm-docs.dev.eka.care/docs/nhcx/v1/'
+      more: 'https://docs.abdm.gov.in/docs/nhcx/v1/'
     - topic: General
       q: How does NHCX make claim processing easier?
       a: Claims travel as structured FHIR bundles instead of PDFs and images, so a payer’s system can read them without re-typing, and both sides see the same status at every step.
-      more: 'https://abdm-docs.dev.eka.care/docs/nhcx/v1/'
+      more: 'https://docs.abdm.gov.in/docs/nhcx/v1/'
     - topic: General
       q: What standards does NHCX use?
       a: HL7 FHIR R4 for the clinical and financial content, the HCX protocol for the exchange envelope, and ABDM identifiers for participants and patients.
-      more: 'https://abdm-docs.dev.eka.care/docs/nhcx/v1/'
+      more: 'https://docs.abdm.gov.in/docs/nhcx/v1/'
     - topic: Onboarding
       q: Who should onboard to the sandbox?
       a: Any hospital, insurer, TPA, government scheme or software vendor building health-claim exchange capability. The sandbox exists so each participant can test its own components against the communication standards and get certified before touching production.

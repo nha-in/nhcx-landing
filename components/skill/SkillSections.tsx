@@ -8,7 +8,7 @@ import AgentInstall from '@/components/skill/AgentInstall';
  * The sections of the AI Skill page, carried over from the previous site on
  * this site's theme: the hero with the working terminal, the loop the agent
  * runs, the stages it climbs, prompts to copy, the rules it keeps, and the close
- * with an install line for each coding agent.
+ * with three ways in: a skill, the plugin and the docs MCP server.
  */
 
 export function SkillHero() {
@@ -60,7 +60,7 @@ export function SkillLoop() {
               <i />
             </span>
             <span className="sk-ring-core">
-              <Sparkles className="sk-ring-mark" strokeWidth={1.6} />
+              <Sparkles className="sk-ring-mark" strokeWidth={2} />
             </span>
             {LOOP.ringNodes.map((node, i) => (
               <span key={node} className={`sk-node n${i + 1}`}>
@@ -163,11 +163,6 @@ export function SkillClose() {
         </h2>
         <p className="tl-sub">{CLOSE.lede}</p>
         <AgentInstall />
-        <div className="tl-cta">
-          <a className="btn btn--primary" href={SKILL_URL} target="_blank" rel="noopener noreferrer">
-            {CLOSE.skillCtaLabel} <span aria-hidden="true">↗</span>
-          </a>
-        </div>
         <p className="tl-note">{CLOSE.note}</p>
       </div>
     </section>

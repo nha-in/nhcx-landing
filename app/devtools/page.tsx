@@ -44,9 +44,7 @@ export default function DevToolsPage() {
             <div className="tl-head">
               <h2 className="tl-h2" id="adapter-title">{ADAPTER.title}</h2>
               <p className="tl-sub">
-                {ADAPTER.introBefore}
-                <code>{ADAPTER.introCode}</code>
-                {ADAPTER.introAfter}
+                {ADAPTER.intro}
               </p>
             </div>
 

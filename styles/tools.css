@@ -184,11 +184,11 @@
 .sk-caret { display: inline-block; width: 2px; height: 1em; margin-left: 3px; vertical-align: -0.12em; background: #fff; animation: sk-blink 900ms steps(2, start) infinite; }
 @keyframes sk-blink { 50% { opacity: 0; } }
 .sk-search-spark { flex: none; display: inline-flex; color: #fff; filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.8)); }
-.sk-search.is-magic .sk-search-spark { animation: sk-spark-spin 800ms var(--ease-out); }
+.sk-search.is-magic .sk-search-spark { animation: sk-spark-pop 800ms var(--ease-out); }
 .sk-burst { position: absolute; right: 28px; top: 50%; width: 0; height: 0; pointer-events: none; }
 .sk-burst i { position: absolute; left: -3px; top: -3px; width: 6px; height: 6px; border-radius: 50%; background: #fff; box-shadow: 0 0 8px #fff; opacity: 0; }
 .sk-search.is-magic .sk-burst i { animation: sk-burst 800ms var(--ease-out) forwards; }
-@keyframes sk-spark-spin { 0% { transform: rotate(0) scale(1); } 50% { transform: rotate(180deg) scale(1.5); } 100% { transform: rotate(360deg) scale(1); } }
+@keyframes sk-spark-pop { 0% { transform: scale(1); opacity: 0.9; } 45% { transform: scale(1.5); opacity: 1; } 72% { transform: scale(0.92); } 100% { transform: scale(1); opacity: 0.9; } }
 @keyframes sk-burst { 0% { opacity: 1; transform: rotate(calc(var(--i) * 36deg)) translateX(0) scale(1); } 100% { opacity: 0; transform: rotate(calc(var(--i) * 36deg)) translateX(64px) scale(0.2); } }
 
 /* the streamed reply */
@@ -227,24 +227,48 @@
 .sk-ready-text span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 12.5px; color: #5a6478; }
 .sk-ready-check { flex: none; display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; border-radius: 50%; background: #0f9d58; color: #fff; }
 
-/* the loop: a dot walks the ring and each node lights as it arrives */
+/* The loop: the dot travels the ring without pausing, about one turn every
+   8s, and the blue arc draws in behind it as it goes. Its pace wanders:
+   the lap's keyframes cover uneven amounts of the circle, so it hurries and
+   dawdles, and a slower sway (5.6s against 8s) rides on top, so the two never
+   line up the same way twice. CSS has no random, and this is what stands in
+   for one. The arc carries the same keyframes as the dot, and the sway is put
+   on the svg rather than the arc, so the two stay together; the track under it
+   is a plain circle, which looks the same however it is turned.
+   The circle is r=118, so its circumference is 741.4 and each angle below is
+   741.4 * (1 - degrees / 360). It starts a quarter turn anticlockwise, at the
+   top with the dot, and the arc fades as it closes, then draws again. */
 .sk-loop-grid { display: grid; grid-template-columns: 360px minmax(0, 1fr); gap: 72px; align-items: center; margin-top: 56px; }
 .sk-ring { position: relative; width: 300px; height: 300px; margin: 0 auto; }
-.sk-ring svg { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+.sk-ring svg { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; animation: sk-sway 5.6s ease-in-out infinite; }
 .sk-ring-track { fill: none; stroke: #e5e7eb; stroke-width: 1.5; }
-.sk-ring-dash { fill: none; stroke: rgba(31, 78, 224, 0.5); stroke-width: 1.5; stroke-dasharray: 3 11; stroke-linecap: round; animation: sk-march 3.2s linear infinite; }
-@keyframes sk-march { to { stroke-dashoffset: -28; } }
-.sk-arm { position: absolute; inset: 0; animation: sk-orbit 8s linear infinite, sk-orbit-sway 5.6s ease-in-out infinite; }
-@keyframes sk-orbit { 0% { rotate: 0deg; } 9% { rotate: 44deg; } 25% { rotate: 90deg; } 38% { rotate: 124deg; } 50% { rotate: 180deg; } 59% { rotate: 226deg; } 75% { rotate: 270deg; } 90% { rotate: 330deg; } 100% { rotate: 360deg; } }
-@keyframes sk-orbit-sway { 0%, 100% { transform: rotate(-5deg); } 43% { transform: rotate(6deg); } 71% { transform: rotate(-2deg); } }
+.sk-ring-dash { fill: none; stroke: rgba(31, 78, 224, 0.5); stroke-width: 1.5; stroke-linecap: round; stroke-dasharray: 741.4; stroke-dashoffset: 741.4; transform: rotate(-90deg); transform-origin: 140px 140px; animation: sk-trace 8s linear infinite; }
+@keyframes sk-trace {
+  0% { stroke-dashoffset: 741.4; opacity: 1; }
+  9% { stroke-dashoffset: 651.8; }
+  25% { stroke-dashoffset: 556.1; }
+  38% { stroke-dashoffset: 486; }
+  50% { stroke-dashoffset: 370.7; }
+  59% { stroke-dashoffset: 275.9; }
+  75% { stroke-dashoffset: 185.4; }
+  88% { stroke-dashoffset: 74.1; opacity: 1; }
+  100% { stroke-dashoffset: 0; opacity: 0; }
+}
+.sk-arm { position: absolute; inset: 0; animation: sk-orbit 8s linear infinite, sk-sway 5.6s ease-in-out infinite; }
+@keyframes sk-orbit { 0% { rotate: 0deg; } 9% { rotate: 44deg; } 25% { rotate: 90deg; } 38% { rotate: 124deg; } 50% { rotate: 180deg; } 59% { rotate: 226deg; } 75% { rotate: 270deg; } 88% { rotate: 324deg; } 100% { rotate: 360deg; } }
+@keyframes sk-sway { 0%, 100% { transform: rotate(-5deg); } 43% { transform: rotate(6deg); } 71% { transform: rotate(-2deg); } }
 /* The track's top edge sits at 22/280 of the box; the dot's centre goes on it. */
 .sk-arm i { position: absolute; top: 7.857%; left: 50%; width: 12px; height: 12px; margin: -6px 0 0 -6px; border-radius: 50%; background: var(--blue); box-shadow: 0 0 0 5px rgba(31, 78, 224, 0.14), 0 0 22px 4px rgba(31, 78, 224, 0.4); }
 .sk-ring-core { position: absolute; inset: 84px; display: grid; place-content: center; border: 1px solid var(--line-2); border-radius: 50%; background: radial-gradient(circle at 50% 30%, rgba(31, 78, 224, 0.1), #fff); box-shadow: 0 16px 40px -20px rgba(31, 78, 224, 0.35); animation: sk-core-pulse 2.4s ease-out infinite; }
-/* The AI sparkle: it glows in time with the core's ripple, and every few
-   seconds turns once and swells, the same spin the hero prompt's sparkle does. */
-.sk-ring-mark { display: block; width: 64px; height: 64px; color: var(--blue); animation: sk-twinkle 4.8s ease-in-out infinite, sk-glow 2.4s ease-in-out infinite; }
+/* The AI sparkle: small in the middle of the ring, glowing in time with the
+   core's ripple, and twinkling like a star every few seconds. Two quick
+   brightenings with a dip between, barely a change in size, so it reads as a
+   light catching rather than a thing being zoomed. It never turns: a mark
+   that spins reads as a spinner, which is a thing waiting rather than a thing
+   thinking. */
+.sk-ring-mark { display: block; width: 13px; height: 13px; color: var(--blue); animation: sk-twinkle 3.6s ease-in-out infinite, sk-glow 2.4s ease-in-out infinite; }
 @keyframes sk-core-pulse { 0% { box-shadow: 0 16px 40px -20px rgba(31, 78, 224, 0.35), 0 0 0 0 rgba(31, 78, 224, 0.22); } 100% { box-shadow: 0 16px 40px -20px rgba(31, 78, 224, 0.35), 0 0 0 18px rgba(31, 78, 224, 0); } }
-@keyframes sk-twinkle { 0%, 70% { transform: rotate(0) scale(1); } 85% { transform: rotate(180deg) scale(1.18); } 100% { transform: rotate(360deg) scale(1); } }
+@keyframes sk-twinkle { 0%, 52% { transform: scale(1); opacity: 0.8; } 62% { transform: scale(1.12); opacity: 1; } 70% { transform: scale(0.98); opacity: 0.72; } 80% { transform: scale(1.08); opacity: 1; } 90%, 100% { transform: scale(1); opacity: 0.8; } }
 @keyframes sk-glow { 0%, 100% { filter: drop-shadow(0 0 0 rgba(31, 78, 224, 0)); } 50% { filter: drop-shadow(0 0 10px rgba(31, 78, 224, 0.45)); } }
 .sk-node { position: absolute; padding: 5px 11px; border-radius: 999px; border: 1px solid var(--line-2); background: #fff; font-family: var(--mono); font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); white-space: nowrap; animation: sk-node 8s ease-in-out infinite; }
 .sk-node.n1 { top: 8px; left: 50%; transform: translateX(-50%); animation-delay: 0s; }
@@ -287,12 +311,61 @@
 .sk-rule h3 { font-size: 21px; font-weight: 500; color: #000; }
 .sk-rule p { font-size: 17px; line-height: 1.55; color: var(--ink-4); }
 
-/* bring it into the agent you use: one tab per NHCX skill */
+/* bring it into the agent you use: three blocks (skill, plugin, MCP), each with its tabs */
 .sk-agent-tabs { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 32px; }
 .sk-agent { height: 42px; padding: 0 18px; border-radius: 999px; border: 1px solid var(--line-2); background: #fff; font-size: 15px; font-weight: 500; color: var(--ink-3); cursor: pointer; transition: border-color 150ms ease, color 150ms ease, background-color 150ms ease; }
 .sk-agent:hover { border-color: var(--blue); color: var(--blue); }
 .sk-agent.is-on { border-color: var(--blue); background: rgba(31, 78, 224, 0.08); color: var(--blue); }
-.sk-agents .tl-cmd { margin-top: 16px; }
+.sk-blocks { display: flex; flex-direction: column; gap: 24px; margin-top: 40px; }
+.sk-block { padding: 32px; border: 1px solid var(--line-2); border-radius: 14px; background: #fff; }
+.sk-block-head h3 { margin-top: 10px; font-size: 26px; font-weight: 500; color: #000; }
+.sk-block-head p { max-width: 720px; margin-top: 6px; font-size: 17px; line-height: 1.55; color: var(--ink-4); }
+.sk-block.is-featured { border-color: var(--blue); box-shadow: 0 24px 48px -32px rgba(31, 78, 224, 0.45); }
+.sk-block-badge { display: inline-flex; align-items: center; height: 24px; margin-left: 12px; padding: 0 10px; border-radius: 999px; background: var(--blue); font-size: 12px; font-weight: 600; letter-spacing: 0.02em; color: #fff; vertical-align: middle; }
+.sk-block-tag { font-family: var(--mono); font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--blue); }
+.sk-block .sk-agent-tabs { margin-top: 20px; }
+.sk-block .tl-cmd { margin-top: 16px; }
+.sk-block-note { max-width: 720px; margin-top: 16px; font-size: 16px; line-height: 1.55; color: var(--ink-4); }
+.sk-table { width: 100%; margin-top: 24px; border-collapse: collapse; font-size: 15px; }
+.sk-table th, .sk-table td { padding: 14px 12px; border-bottom: 1px solid var(--line-2); text-align: left; vertical-align: top; }
+.sk-table thead th { padding-top: 0; font-family: var(--mono); font-size: 12px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+.sk-table td { line-height: 1.5; color: var(--ink-4); }
+.sk-table tbody tr { transition: background-color 150ms ease; }
+.sk-table tbody tr.is-on { background: rgba(31, 78, 224, 0.05); }
+.sk-table-skill { padding: 0; border: 0; background: none; font-family: var(--mono); font-size: 14px; font-weight: 500; color: var(--ink-3); white-space: nowrap; cursor: pointer; }
+.sk-table-skill:hover, .sk-table tr.is-on .sk-table-skill { color: var(--blue); }
+.sk-ucs { display: flex; flex-wrap: wrap; gap: 6px; }
+.sk-uc { position: relative; display: inline-flex; align-items: center; height: 26px; padding: 0 9px; border: 1px solid var(--line-2); border-radius: 6px; background: #fff; font-family: var(--mono); font-size: 13px; color: var(--ink-3); transition: border-color 150ms ease, color 150ms ease; }
+a.sk-uc:hover, a.sk-uc:focus-visible { border-color: var(--blue); color: var(--blue); }
+.sk-uc-tip { position: absolute; z-index: 5; bottom: calc(100% + 8px); left: 50%; display: flex; flex-direction: column; gap: 4px; width: max-content; max-width: min(280px, calc(100vw - 48px)); padding: 12px 14px; border-radius: var(--radius); background: #0b1430; box-shadow: 0 16px 32px -16px rgba(15, 23, 42, 0.5); font-family: var(--sans); font-size: 13px; line-height: 1.45; color: rgba(233, 238, 255, 0.8); text-align: left; white-space: normal; opacity: 0; visibility: hidden; transform: translate(-50%, 4px); transition: opacity 150ms ease, transform 150ms ease, visibility 150ms; pointer-events: none; }
+.sk-uc-tip b { font-size: 14px; font-weight: 600; color: #fff; }
+.sk-uc-series { font-family: var(--mono); font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; color: #4fd1b5; }
+.sk-uc-go { margin-top: 2px; color: #9db4ff; }
+a.sk-uc:hover .sk-uc-tip, a.sk-uc:focus-visible .sk-uc-tip { opacity: 1; visibility: visible; transform: translate(-50%, 0); }
+@media (max-width: 720px) {
+  .sk-table thead { display: none; }
+  .sk-table, .sk-table tbody, .sk-table tr, .sk-table th, .sk-table td { display: block; }
+  .sk-table tr { padding: 12px 0; border-bottom: 1px solid var(--line-2); }
+  .sk-table th, .sk-table td { padding: 4px 8px; border: 0; }
+  .sk-uc-tip { left: 0; transform: translate(0, 4px); }
+  a.sk-uc:hover .sk-uc-tip, a.sk-uc:focus-visible .sk-uc-tip { transform: translate(0, 0); }
+}
+.sk-ways { margin-top: 12px !important; }
+.sk-way { padding-top: 24px; margin-top: 24px; border-top: 1px solid var(--line-2); }
+.sk-way h4 { font-size: 19px; font-weight: 500; color: #000; }
+.sk-way p { margin-top: 4px; font-size: 16px; line-height: 1.55; color: var(--ink-4); }
+.sk-way .sk-agent-tabs { margin-top: 14px; }
+.sk-way .sk-agent { height: 36px; padding: 0 14px; font-size: 14px; }
+.sk-way-link { margin-top: 16px; }
+.tl-cmd.is-prompt code { font-family: var(--sans); }
+.tl-cmd.is-prompt code::before { content: none; }
+.tl-cmd.is-file { flex-direction: column; align-items: flex-start; gap: 10px; }
+.tl-cmd.is-file code::before { content: none; }
+.sk-cmd-file { font-size: 12px; letter-spacing: 0.04em; color: rgba(233, 238, 255, 0.6); }
+@media (max-width: 640px) {
+  .sk-block { padding: 20px 16px; }
+  .sk-block-head h3 { font-size: 22px; }
+}
 
 /* ————— Links ————— */
 
@@ -336,7 +409,7 @@
   .sk-cards, .sk-steps { grid-template-columns: 1fr; }
   .sk-ring { width: 250px; height: 250px; }
   .sk-ring-core { inset: 70px; }
-  .sk-ring-mark { width: 52px; height: 52px; }
+  .sk-ring-mark { width: 12px; height: 12px; }
   .sk-term-body { padding: 18px 16px; font-size: 13px; }
   .sk-scards { grid-template-columns: 1fr; }
   .sk-prompt { flex-wrap: wrap; padding-left: 16px; }
@@ -346,7 +419,9 @@
   .ln-type { display: none; }
 }
 @media (prefers-reduced-motion: reduce) {
-  .dt-wire i, .dt-node, .sk-caret, .sk-search-spark, .sk-burst i, .sk-ring-dash, .sk-arm, .sk-node, .sk-rot, .sk-scard-bar, .sk-demo-mark-core, .sk-ring-core, .sk-ring-mark { animation: none !important; }
+  .dt-wire i, .dt-node, .sk-caret, .sk-search-spark, .sk-burst i, .sk-ring-dash, .sk-ring svg, .sk-arm, .sk-node, .sk-rot, .sk-scard-bar, .sk-demo-mark-core, .sk-ring-core, .sk-ring-mark { animation: none !important; }
   .dt-wire i { transform: translateX(-50%); opacity: 0.85; }
+  /* Still animation leaves the arc undrawn, so show the whole ring instead. */
+  .sk-ring-dash { stroke-dashoffset: 0; }
   .sk-caret { opacity: 1; }
 }

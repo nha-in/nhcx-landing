@@ -35,7 +35,7 @@ type DevtoolsContent = {
     flow: [string, string, string];
   };
   console: { title: string; intro: string; ctaLabel: string; useCasesTitle: string; useCases: UseCase[] };
-  adapter: { title: string; introBefore: string; introCode: string; introAfter: string; useCasesTitle: string; useCases: UseCase[]; downloadsTitle: string; releasedPrefix: string };
+  adapter: { title: string; intro: string; useCasesTitle: string; useCases: UseCase[]; downloadsTitle: string; releasedPrefix: string };
   quickstart: QuickStartCopy;
   download: DownloadCopy;
 };
