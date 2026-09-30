@@ -1,5 +1,4 @@
 import { artefacts } from '../content'
-import { AgentInstall } from './AgentInstall'
 
 export function Artefacts() {
   return (
@@ -21,7 +20,6 @@ export function Artefacts() {
             </div>
           ))}
         </div>
-        <AgentInstall />
       </div>
     </section>
   )

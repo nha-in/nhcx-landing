@@ -24,8 +24,9 @@ export default defineConfig({
   },
   server: {
     host: '0.0.0.0',
-    // 7000 is the Next landing, 5173 to 5175 are the portals.
-    port: 7001,
+    // Development ports: 8000 the proxy in front of the lot
+    // (deployment/development), 8001 the backend, 8002 this, 8003 devtools, 8004 uat.
+    port: 8002,
     strictPort: true,
   },
 })
